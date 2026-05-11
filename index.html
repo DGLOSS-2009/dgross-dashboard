@@ -165,6 +165,7 @@ tr.data-row:hover td{background:#FFFBF8}
 /* ===== DAILY TABLE ===== */
 .daily-date-col{color:var(--text-secondary);font-size:12px}
 
+.negative{color:var(--red)!important}
 .hm-row{display:grid;grid-template-columns:20px 1fr 40px 60px 50px;gap:6px;padding:5px 4px;border-radius:4px;font-size:11px;align-items:center}
 .hm-rank{font-weight:700;color:var(--gray);text-align:center}
 .hm-id{color:var(--text-secondary);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -242,7 +243,7 @@ tr.data-row:hover td{background:#FFFBF8}
   <div class="header">
     <div class="page-title" id="pageTitle">ダッシュボード</div>
     <div class="header-right">
-      <span class="update-time" id="updateTime">最終更新: 05/07</span>
+      <span class="update-time" id="updateTime">最終更新: 05/08（5/7分反映済）</span>
       <span class="period-badge">2026年5月</span>
       <div class="site-tabs" id="siteTabs">
         <div class="site-tab active" onclick="switchSite('all',this)">全体</div>
@@ -260,33 +261,33 @@ tr.data-row:hover td{background:#FFFBF8}
 
       <div class="alert">
         <div class="alert-dot"></div>
-        5月1日のデータを反映済みです。最終更新: 2026/05/07
+        5月7日のデータを反映済みです（累計2営業日）。最終更新: 2026/05/08
       </div>
 
       <!-- 売上ブロック -->
       <div class="section-label">SALES｜売上</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-        <div class="kpi-card orange">
+        <div class="kpi-card orange" id="kpi-sales">
           <div class="kpi-label">売上合計</div>
-          <div class="kpi-value c-orange">¥102万</div>
-          <div class="prog"><div class="prog-bg"><div class="prog-fill" style="width:3.1%;background:var(--orange)"></div></div><span style="font-size:11px;color:var(--orange)">3.1%</span></div>
-          <div class="kpi-sub">目標 ¥3,300万　進捗 3.1%</div>
+          <div class="kpi-value c-orange">¥201万</div>
+          <div class="prog"><div class="prog-bg"><div class="prog-fill" style="width:6.1%;background:var(--orange)"></div></div><span style="font-size:11px;color:var(--orange)">6.1%</span></div>
+          <div class="kpi-sub">目標 ¥3,300万　進捗 6.1%</div>
         </div>
-        <div class="kpi-card red">
+        <div class="kpi-card red" id="kpi-remain">
           <div class="kpi-label">残売上</div>
-          <div class="kpi-value c-red">−¥3,198万</div>
-          <div class="kpi-sub">残稼働 17日</div>
+          <div class="kpi-value c-red">−¥3,099万</div>
+          <div class="kpi-sub">残稼働 16日</div>
         </div>
-        <div class="kpi-card orange">
+        <div class="kpi-card orange" id="kpi-avg">
           <div class="kpi-label">1日あたり売上平均</div>
-          <div class="kpi-value c-orange">¥102万</div>
-          <div class="kpi-sub">目標日次 ¥183万（1日時点）</div>
+          <div class="kpi-value c-orange">¥100万</div>
+          <div class="kpi-sub">目標日次 ¥183万（2日時点）</div>
         </div>
-        <div class="kpi-card orange">
+        <div class="kpi-card orange" id="kpi-landing">
           <div class="kpi-label">着地見込み</div>
-          <div class="kpi-value c-amber">¥1,841万</div>
-          <div class="kpi-badge badge-red">達成率 55.8%</div>
-          <div class="kpi-sub">¥1,841万 / ¥3,300万</div>
+          <div class="kpi-value c-amber">¥1,805万</div>
+          <div class="kpi-badge badge-red">達成率 54.7%</div>
+          <div class="kpi-sub">¥1,805万 / ¥3,300万</div>
         </div>
       </div>
 
@@ -294,23 +295,23 @@ tr.data-row:hover td{background:#FFFBF8}
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
         <div class="kpi-card orange">
           <div class="kpi-label">単日MAX売上</div>
-          <div class="kpi-value c-green">¥102万</div>
-          <div class="kpi-sub">2026/05/01</div>
+          <div class="kpi-value c-green">¥118万</div>
+          <div class="kpi-sub">2026/05/07</div>
         </div>
         <div class="kpi-card gray">
           <div class="kpi-label">単日MIN売上</div>
           <div class="kpi-value c-muted">¥102万</div>
-          <div class="kpi-sub">2026/05/01（1日のみ）</div>
+          <div class="kpi-sub">2026/05/01</div>
         </div>
-        <div class="kpi-card red">
+        <div class="kpi-card red" id="kpi-cost">
           <div class="kpi-label">原価率</div>
-          <div class="kpi-value c-red">57.9%</div>
+          <div class="kpi-value c-red">62.1%</div>
           <div class="kpi-badge badge-red">目標 50.0%</div>
-          <div class="kpi-sub">人件費 ¥592,225</div>
+          <div class="kpi-sub">人件費 ¥1,245,934</div>
         </div>
-        <div class="kpi-card orange">
+        <div class="kpi-card orange" id="kpi-unit">
           <div class="kpi-label">稼働単価（全体）</div>
-          <div class="kpi-value c-orange">¥30,088</div>
+          <div class="kpi-value c-orange">¥36,969</div>
           <div class="kpi-sub">管理要基準 ¥30,000 ✅</div>
         </div>
       </div>
@@ -318,27 +319,27 @@ tr.data-row:hover td{background:#FFFBF8}
       <!-- 稼働・アポブロック -->
       <div class="section-label">WORK & APO｜稼働・アポイント</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-        <div class="kpi-card gray">
+        <div class="kpi-card gray" id="kpi-ops">
           <div class="kpi-label">稼働人数（平均）</div>
           <div class="kpi-value">34名</div>
-          <div class="kpi-sub">5月1日時点（1日平均）</div>
+          <div class="kpi-sub">2営業日平均</div>
         </div>
-        <div class="kpi-card gray">
+        <div class="kpi-card gray" id="kpi-apo">
           <div class="kpi-label">獲得アポ数</div>
-          <div class="kpi-value">61件</div>
-          <div class="kpi-sub">再送除外済み</div>
+          <div class="kpi-value">141件</div>
+          <div class="kpi-sub">再送除外済み（累計）※幸野除外</div>
         </div>
-        <div class="kpi-card red">
+        <div class="kpi-card red" id="kpi-cancel">
           <div class="kpi-label">キャンセル数 / キャンセル率</div>
-          <div class="kpi-value c-red">8件</div>
-          <div class="kpi-badge badge-red">キャンセル率 13.1%</div>
-          <div class="kpi-sub">有効アポ 53件</div>
+          <div class="kpi-value c-red">20件</div>
+          <div class="kpi-badge badge-red">キャンセル率 14.2%</div>
+          <div class="kpi-sub">有効アポ 121件</div>
         </div>
-        <div class="kpi-card gray">
+        <div class="kpi-card gray" id="kpi-call">
           <div class="kpi-label">コール数 / アポ率</div>
-          <div class="kpi-value">4,057件</div>
-          <div class="kpi-badge badge-orange">アポ率 2.1%</div>
-          <div class="kpi-sub">アポイント 87件</div>
+          <div class="kpi-value">7,900件</div>
+          <div class="kpi-badge badge-orange">アポ率 1.78%</div>
+          <div class="kpi-sub">アポイント（累計）※幸野除外</div>
         </div>
       </div>
 
@@ -389,36 +390,36 @@ tr.data-row:hover td{background:#FFFBF8}
               </tr>
             </thead>
             <tbody>
-              <tr class="sec-head"><td colspan="5">SALES｜売上</td></tr>
+              <tr class="sec-head"><td colspan="5">SALES｜売上（累計2営業日）</td></tr>
               <tr class="data-row"><td class="label-td">売上目標</td><td class="r">¥33,000,000</td><td class="r">¥24,090,000</td><td class="r">¥8,910,000</td><td class="r c-muted">—</td></tr>
-              <tr class="subtotal data-row"><td class="label-td">売上合計</td><td class="r">¥1,023,000</td><td class="r">¥947,000</td><td class="r">¥76,000</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">売上進捗率</td><td class="r c-orange">3.1%</td><td class="r c-orange">3.9%</td><td class="r c-red">0.9%</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">残売上</td><td class="r c-amber">−¥31,977,000</td><td class="r c-amber">−¥23,143,000</td><td class="r c-red">−¥8,834,000</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">着地見込み</td><td class="r c-orange">¥1,841万</td><td class="r c-orange">¥17,047万</td><td class="r c-amber">¥137万</td><td class="r c-muted">—</td></tr>
+              <tr class="subtotal data-row"><td class="label-td">売上合計</td><td class="r">¥2,006,000</td><td class="r">¥1,791,000</td><td class="r">¥215,000</td><td class="r c-muted">¥0</td></tr>
+              <tr class="data-row"><td class="label-td">売上進捗率</td><td class="r c-orange">6.1%</td><td class="r c-orange">7.4%</td><td class="r c-red">2.4%</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">残売上</td><td class="r c-amber">−¥30,994,000</td><td class="r c-amber">−¥22,299,000</td><td class="r c-red">−¥8,695,000</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">着地見込み</td><td class="r c-orange">¥1,805万</td><td class="r c-orange">¥1,612万</td><td class="r c-amber">¥194万</td><td class="r c-muted">—</td></tr>
               <tr class="sec-head"><td colspan="5">COST｜原価・人件費</td></tr>
               <tr class="data-row"><td class="label-td">原価率目標</td><td class="r">50.0%</td><td class="r">50.0%</td><td class="r">50.0%</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">原価率（実績）</td><td class="r c-red">57.9%</td><td class="r c-red">48.2%</td><td class="r c-red">153.5%</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">人件費</td><td class="r">¥592,225</td><td class="r">¥456,362</td><td class="r">¥116,696</td><td class="r">¥19,166</td></tr>
-              <tr class="data-row"><td class="label-td">粗利額</td><td class="r c-orange">¥430,775</td><td class="r c-orange">¥490,638</td><td class="r c-red">−¥40,696</td><td class="r c-muted">—</td></tr>
-              <tr class="sec-head"><td colspan="5">APO｜アポイント</td></tr>
-              <tr class="data-row"><td class="label-td">アポ数（獲得）</td><td class="r">61</td><td class="r">47</td><td class="r">9</td><td class="r">5</td></tr>
-              <tr class="data-row"><td class="label-td">キャンセル数</td><td class="r c-red">8</td><td class="r c-red">4</td><td class="r c-red">4</td><td class="r c-red">0</td></tr>
-              <tr class="subtotal data-row"><td class="label-td">請求ベース（アポ数）</td><td class="r">53</td><td class="r">43</td><td class="r">5</td><td class="r">5</td></tr>
-              <tr class="data-row"><td class="label-td">キャンセル率</td><td class="r c-amber">13.1%</td><td class="r c-amber">8.5%</td><td class="r c-red">44.4%</td><td class="r c-green">0.0%</td></tr>
+              <tr class="data-row"><td class="label-td">原価率（実績）</td><td class="r c-red">62.1%</td><td class="r c-amber">46.7%</td><td class="r c-red">102.1%</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">人件費</td><td class="r">¥1,245,934</td><td class="r">¥837,264</td><td class="r">¥219,621</td><td class="r">¥189,049</td></tr>
+              <tr class="data-row"><td class="label-td">粗利額</td><td class="r c-orange">¥760,066</td><td class="r c-orange">¥953,736</td><td class="r c-red">−¥4,621</td><td class="r c-muted">—</td></tr>
+              <tr class="sec-head"><td colspan="5">APO｜アポイント（累計2営業日）</td></tr>
+              <tr class="data-row"><td class="label-td">アポ数（獲得）</td><td class="r">141</td><td class="r">102</td><td class="r">23</td><td class="r">16</td></tr>
+              <tr class="data-row"><td class="label-td">キャンセル数</td><td class="r c-red">20</td><td class="r c-red">10</td><td class="r c-red">10</td><td class="r c-green">0</td></tr>
+              <tr class="subtotal data-row"><td class="label-td">請求ベース（アポ数）</td><td class="r">121</td><td class="r">92</td><td class="r">13</td><td class="r">16</td></tr>
+              <tr class="data-row"><td class="label-td">キャンセル率</td><td class="r c-amber">14.2%</td><td class="r c-amber">9.8%</td><td class="r c-red">43.5%</td><td class="r c-green">0.0%</td></tr>
               <tr class="sec-head"><td colspan="5">WORK｜稼働・工数</td></tr>
               <tr class="data-row"><td class="label-td">稼働人数</td><td class="r">34</td><td class="r">23</td><td class="r">10</td><td class="r">1</td></tr>
               <tr class="data-row"><td class="label-td">稼働工数</td><td class="r">34</td><td class="r">23</td><td class="r">10</td><td class="r c-muted">—</td></tr>
               <tr class="data-row"><td class="label-td">1日あたり工数</td><td class="r">34</td><td class="r">23</td><td class="r">10</td><td class="r c-muted">—</td></tr>
-              <tr class="sec-head"><td colspan="5">UNIT｜稼働単価</td></tr>
+              <tr class="sec-head"><td colspan="5">UNIT｜稼働単価（5/7単日）</td></tr>
               <tr class="data-row"><td class="label-td">単価目標</td><td class="r">¥35,000</td><td class="r">¥45,000</td><td class="r">¥25,000</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">稼働単価（全体）</td><td class="r">¥30,088</td><td class="r">¥41,173</td><td class="r c-amber">¥7,600</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">稼働単価（トップ）</td><td class="r c-green">¥68,636</td><td class="r c-green">¥68,636</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">稼働単価（ミドル）</td><td class="r">¥45,250</td><td class="r">¥45,250</td><td class="r">¥40,000</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">稼働単価（ルーキー）</td><td class="r">¥30,000</td><td class="r">¥30,000</td><td class="r">¥20,000</td><td class="r c-muted">—</td></tr>
-              <tr class="sec-head"><td colspan="5">CALL｜コール</td></tr>
-              <tr class="data-row"><td class="label-td">コール数</td><td class="r">4,057</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">アポイント</td><td class="r">87</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr class="data-row"><td class="label-td">アポ率</td><td class="r">2.1%</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">稼働単価（全体）</td><td class="r">¥36,969</td><td class="r c-green">¥52,200</td><td class="r c-amber">¥11,583</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">稼働単価（トップ）</td><td class="r c-green">—</td><td class="r c-green">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">稼働単価（ミドル）</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">稼働単価（ルーキー）</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="sec-head"><td colspan="5">CALL｜コール（累計2営業日）</td></tr>
+              <tr class="data-row"><td class="label-td">コール数</td><td class="r">7,900</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">アポイント</td><td class="r">149</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+              <tr class="data-row"><td class="label-td">アポ率</td><td class="r">1.78%</td><td class="r c-muted">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
             </tbody>
           </table>
         </div>
@@ -496,8 +497,22 @@ tr.data-row:hover td{background:#FFFBF8}
 
     <!-- ===== PAGE: OPERATOR ===== -->
     <div class="page" id="page-operator">
-<div class="card" style="margin-bottom:20px"><div class="card-title">サイト・ランク別 原価率 <span style="font-size:11px;color:var(--gray);font-weight:400">※ランクにカーソルを合わせるとスタッフ一覧が表示されます</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div><div style="font-size:12px;font-weight:500;color:var(--orange);margin-bottom:8px">新宿SC</div><table><thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead><tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-top">トップ</span><div class="popup-content"><div class="popup-title">トップ（新宿SC）12名</div><div class="popup-row"><span>平賀健介0202</span><span>¥137000</span></div><div class="popup-row"><span>島田</span><span>¥120000</span></div><div class="popup-row"><span>小林幸司0507</span><span>¥110000</span></div><div class="popup-row"><span>中村光伸1017</span><span>¥101000</span></div><div class="popup-row"><span>硴塚</span><span>¥97000</span></div><div class="popup-row"><span>清水久美子0122</span><span>¥60000</span></div><div class="popup-row"><span>久保浩二0513</span><span>¥52000</span></div><div class="popup-row"><span>木下翔太0424</span><span>¥30000</span></div><div class="popup-row"><span>橋爪朝寿0209</span><span>¥30000</span></div><div class="popup-row"><span>土屋麻佳0405</span><span>¥20000</span></div><div class="popup-row"><span>加藤隆治0210</span><span>¥18000</span></div><div class="popup-row"><span>内藤公誉1212</span><span>¥10000</span></div></div></div></td><td class="r">¥755000</td><td class="r">¥175,000</td><td class="r c-green">23.2%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル（新宿SC）7名</div><div class="popup-row"><span>岡本章宏0423</span><span>¥90000</span></div><div class="popup-row"><span>青木くらら0607</span><span>¥23000</span></div><div class="popup-row"><span>大友晶五0317</span><span>¥18000</span></div><div class="popup-row"><span>小橋正佳0706</span><span>—</span></div><div class="popup-row"><span>石塚</span><span>—</span></div><div class="popup-row"><span>川村義之0108</span><span>—</span></div><div class="popup-row"><span>君塚綾子1104</span><span>—</span></div></div></div></td><td class="r">¥181000</td><td class="r">¥90,000</td><td class="r c-green">49.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー（新宿SC）2名</div><div class="popup-row"><span>橋爪朝寿0209</span><span>¥30000</span></div><div class="popup-row"><span>田中千賀0209</span><span>—</span></div></div></div></td><td class="r">¥30000</td><td class="r">¥17,000</td><td class="r c-amber">56.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">管理者</span><div class="popup-content"><div class="popup-title">管理者（新宿SC）3名</div><div class="popup-row"><span>原田航0225</span><span>—</span></div><div class="popup-row"><span>木村明日美1116</span><span>—</span></div><div class="popup-row"><span>山田健太0425</span><span>—</span></div></div></div></td><td class="r">¥88000</td><td class="r">¥105,416</td><td class="r c-red">119.8%</td></tr></tbody></table></div><div><div style="font-size:12px;font-weight:500;color:var(--orange);margin-bottom:8px">リモートSC</div><table><thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead><tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル（リモートSC）6名</div><div class="popup-row"><span>松浦美紀0423</span><span>¥100000</span></div><div class="popup-row"><span>坪井有美0922</span><span>¥20000</span></div><div class="popup-row"><span>仁浦魁人0512</span><span>—</span></div><div class="popup-row"><span>伏見優孝0304</span><span>—</span></div><div class="popup-row"><span>横川祥玲0210</span><span>—</span></div><div class="popup-row"><span>津田唯佳0916</span><span>—</span></div></div></div></td><td class="r">¥120000</td><td class="r">¥56,000</td><td class="r c-green">46.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキープラス</span><div class="popup-content"><div class="popup-title">ルーキープラス（リモートSC）2名</div><div class="popup-row"><span>日高竹晴0825</span><span>¥20000</span></div><div class="popup-row"><span>佐々木真美0922</span><span>—</span></div></div></div></td><td class="r">¥20000</td><td class="r">¥19,500</td><td class="r c-red">97.5%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー（リモートSC）2名</div><div class="popup-row"><span>上田奈津子1014</span><span>—</span></div><div class="popup-row"><span>中井歩0707</span><span>—</span></div></div></div></td><td class="r">—</td><td class="r">¥23,000</td><td class="r c-green">—</td></tr></tbody></table></div></div></div>
-      <div class="row3" style="margin-bottom:20px">
+<div class="card" id="rank-cost-card" style="margin-bottom:20px">
+        <div class="card-title">ランク別 原価率 <span style="font-size:11px;color:var(--gray);font-weight:400">※ランクにカーソルを合わせるとスタッフ一覧</span></div>
+        <div id="rank-cost-table">
+          <table>
+            <thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead>
+            <tbody>
+              <tr><td><div class="popup-trigger"><span class="rank-badge rank-top">トップ</span><div class="popup-content"><div class="popup-title">トップ 11名</div><div class="popup-row"><span>平賀健介0202</span></div><div class="popup-row"><span>島田</span></div><div class="popup-row"><span>小林幸司0507</span></div><div class="popup-row"><span>中村光伸1017</span></div><div class="popup-row"><span>硴塚</span></div><div class="popup-row"><span>清水久美子0122</span></div><div class="popup-row"><span>久保浩二0513</span></div><div class="popup-row"><span>木下翔太0424</span></div><div class="popup-row"><span>土屋麻佳0405</span></div><div class="popup-row"><span>加藤隆治0210</span></div><div class="popup-row"><span>内藤公誉1212</span></div></div></div></td><td class="r">¥755,000</td><td class="r">¥175,000</td><td class="r c-green">23.2%</td></tr>
+              <tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル 13名</div><div class="popup-row"><span>岡本章宏0423</span></div><div class="popup-row"><span>松浦美紀0423</span></div><div class="popup-row"><span>青木くらら0607</span></div><div class="popup-row"><span>大友晶五0317</span></div><div class="popup-row"><span>坪井有美0922</span></div><div class="popup-row"><span>小橋正佳0706</span></div><div class="popup-row"><span>仁浦魁人0512</span></div><div class="popup-row"><span>石塚</span></div><div class="popup-row"><span>川村義之0108</span></div><div class="popup-row"><span>君塚綾子1104</span></div><div class="popup-row"><span>伏見優孝0304</span></div><div class="popup-row"><span>横川祥玲0210</span></div><div class="popup-row"><span>津田唯佳0916</span></div></div></div></td><td class="r">¥301,000</td><td class="r">¥146,000</td><td class="r c-green">48.5%</td></tr>
+              <tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキープラス</span><div class="popup-content"><div class="popup-title">ルーキープラス 2名</div><div class="popup-row"><span>日高竹晴0825</span></div><div class="popup-row"><span>佐々木真美0922</span></div></div></div></td><td class="r">¥40,000</td><td class="r">¥27,000</td><td class="r c-amber">67.5%</td></tr>
+              <tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー 4名</div><div class="popup-row"><span>橋爪朝寿0209</span></div><div class="popup-row"><span>上田奈津子1014</span></div><div class="popup-row"><span>中井歩0707</span></div><div class="popup-row"><span>田中千賀0209</span></div></div></div></td><td class="r">¥30,000</td><td class="r">¥40,000</td><td class="r c-red">133.3%</td></tr>
+              <tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">管理者</span><div class="popup-content"><div class="popup-title">管理者 3名</div><div class="popup-row"><span>原田航0225</span></div><div class="popup-row"><span>木村明日美1116</span></div><div class="popup-row"><span>山田健太0425</span></div></div></div></td><td class="r">¥88,000</td><td class="r">¥105,416</td><td class="r c-red">119.8%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+<div class="row3" style="margin-bottom:20px">
         <div class="card" style="margin-bottom:0">
           <div class="card-title">ランク別稼働単価</div>
           <table>
@@ -553,41 +568,51 @@ tr.data-row:hover td{background:#FFFBF8}
               </tr>
             </thead>
             <tbody>
-              <tr><td style="font-weight:500">平賀健介0202</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥137,000</td><td class="r">6</td><td class="r ">0</td><td class="r">6</td><td class="r">70</td><td class="r">8.6%</td><td class="r">8.0h</td><td class="r c-orange">14.5%</td><td class="r c-green">14.6%</td></tr>
-              <tr><td style="font-weight:500">島田</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥120,000</td><td class="r">4</td><td class="r ">0</td><td class="r">4</td><td class="r">80</td><td class="r">5.0%</td><td class="r">7.0h</td><td class="r c-orange">12.7%</td><td class="r c-green">14.6%</td></tr>
-              <tr><td style="font-weight:500">小林幸司0507</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥110,000</td><td class="r">4</td><td class="r ">0</td><td class="r">4</td><td class="r">101</td><td class="r">4.0%</td><td class="r">8.0h</td><td class="r c-orange">11.6%</td><td class="r c-green">16.0%</td></tr>
-              <tr><td style="font-weight:500">中村光伸1017</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥101,000</td><td class="r">5</td><td class="r ">0</td><td class="r">5</td><td class="r">66</td><td class="r">7.6%</td><td class="r">8.0h</td><td class="r c-orange">10.7%</td><td class="r c-green">17.4%</td></tr>
-              <tr><td style="font-weight:500">松浦美紀0423</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥100,000</td><td class="r">6</td><td class="r ">0</td><td class="r">6</td><td class="r">158</td><td class="r">3.8%</td><td class="r">8.8h</td><td class="r c-orange">131.6%</td><td class="r c-green">17.6%</td></tr>
-              <tr><td style="font-weight:500">硴塚</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥97,000</td><td class="r">4</td><td class="r c-red">1</td><td class="r">4</td><td class="r">185</td><td class="r">2.2%</td><td class="r">8.0h</td><td class="r c-orange">10.2%</td><td class="r c-green">20.6%</td></tr>
-              <tr><td style="font-weight:500">岡本章宏0423</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥90,000</td><td class="r">3</td><td class="r ">0</td><td class="r">3</td><td class="r">127</td><td class="r">2.4%</td><td class="r">6.0h</td><td class="r c-orange">9.5%</td><td class="r c-green">13.3%</td></tr>
-              <tr><td style="font-weight:500">清水久美子0122</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥60,000</td><td class="r">4</td><td class="r ">0</td><td class="r">4</td><td class="r">145</td><td class="r">2.8%</td><td class="r">8.0h</td><td class="r c-orange">6.3%</td><td class="r c-green">29.3%</td></tr>
-              <tr><td style="font-weight:500">久保浩二0513</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥52,000</td><td class="r">2</td><td class="r ">0</td><td class="r">2</td><td class="r">190</td><td class="r">1.1%</td><td class="r">8.0h</td><td class="r c-orange">5.5%</td><td class="r c-green">30.8%</td></tr>
-              <tr><td style="font-weight:500">木下翔太0424</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥30,000</td><td class="r">2</td><td class="r ">0</td><td class="r">2</td><td class="r">164</td><td class="r">1.2%</td><td class="r">8.0h</td><td class="r c-orange">3.2%</td><td class="r c-amber">53.3%</td></tr>
-              <tr><td style="font-weight:500">橋爪朝寿0209</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥30,000</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">311</td><td class="r">0.3%</td><td class="r">8.0h</td><td class="r c-orange">3.2%</td><td class="r c-green">34.7%</td></tr>
-              <tr><td style="font-weight:500">青木くらら0607</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥23,000</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">69</td><td class="r">1.4%</td><td class="r">11.2h</td><td class="r c-orange">2.4%</td><td class="r c-red">87.7%</td></tr>
-              <tr><td style="font-weight:500">土屋麻佳0405</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥20,000</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">191</td><td class="r">0.5%</td><td class="r">7.1h</td><td class="r c-orange">2.1%</td><td class="r c-amber">71.0%</td></tr>
-              <tr><td style="font-weight:500">日高竹晴0825</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥20,000</td><td class="r">1</td><td class="r c-red">1</td><td class="r">1</td><td class="r">102</td><td class="r">1.0%</td><td class="r">5.0h</td><td class="r c-orange">26.3%</td><td class="r c-green">37.5%</td></tr>
-              <tr><td style="font-weight:500">坪井有美0922</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥20,000</td><td class="r">1</td><td class="r c-red">1</td><td class="r">1</td><td class="r">172</td><td class="r">0.6%</td><td class="r">8.0h</td><td class="r c-orange">26.3%</td><td class="r c-amber">72.0%</td></tr>
-              <tr><td style="font-weight:500">大友晶五0317</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥18,000</td><td class="r">2</td><td class="r c-red">1</td><td class="r">2</td><td class="r">65</td><td class="r">3.1%</td><td class="r">8.0h</td><td class="r c-orange">1.9%</td><td class="r c-red">80.0%</td></tr>
-              <tr><td style="font-weight:500">加藤隆治0210</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥18,000</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">82</td><td class="r">1.2%</td><td class="r">8.0h</td><td class="r c-orange">1.9%</td><td class="r c-red">88.9%</td></tr>
-              <tr><td style="font-weight:500">内藤公誉1212</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥10,000</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">169</td><td class="r">0.6%</td><td class="r">5.0h</td><td class="r c-orange">1.1%</td><td class="r c-amber">75.0%</td></tr>
-              <tr><td style="font-weight:500">小橋正佳0706</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">3</td><td class="r ">0</td><td class="r">3</td><td class="r">—</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">仁浦魁人0512</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">129</td><td class="r">0.8%</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">上田奈津子1014</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">7.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">伏見優孝0304</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">1</td><td class="r ">0</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">石塚</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">206</td><td class="r">—</td><td class="r">7.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">木村明日美1116</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">山田健太0425</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">川村義之0108</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r c-red">1</td><td class="r">—</td><td class="r">111</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">君塚綾子1104</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">126</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">田中千賀0209</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">5.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">原田航0225</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">200</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">竹内実範0703</td><td><span class="rank-badge rank-mid">社員</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">中井歩0707</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">7.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">横川祥玲0210</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">131</td><td class="r">—</td><td class="r">8.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">津田唯佳0916</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">64</td><td class="r">—</td><td class="r">3.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-              <tr><td style="font-weight:500">佐々木真美0922</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r ">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">7.0h</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
-            </tbody>
+<tr><td style="font-weight:500">平賀健介0202</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥281,000</td><td class="r">14</td><td class="r c-red">1</td><td class="r">13</td><td class="r">151</td><td class="r">9.3%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">小林幸司0507</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥235,000</td><td class="r">8</td><td class="r">0</td><td class="r">8</td><td class="r">196</td><td class="r">4.1%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">島田</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥180,000</td><td class="r">6</td><td class="r">0</td><td class="r">6</td><td class="r">141</td><td class="r">4.3%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">木下翔太0424</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥153,000</td><td class="r">10</td><td class="r">0</td><td class="r">10</td><td class="r">308</td><td class="r">3.2%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">土屋麻佳0405</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥152,000</td><td class="r">7</td><td class="r">0</td><td class="r">7</td><td class="r">359</td><td class="r">1.9%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">幸野有希子CRM</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥150,000</td><td class="r">6</td><td class="r">0</td><td class="r">6</td><td class="r">101</td><td class="r">5.9%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">中村光伸1017</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥139,000</td><td class="r">7</td><td class="r">0</td><td class="r">7</td><td class="r">143</td><td class="r">4.9%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">清水久美子0122</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥110,000</td><td class="r">7</td><td class="r">0</td><td class="r">7</td><td class="r">250</td><td class="r">2.8%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">松浦美紀0423</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥100,000</td><td class="r">9</td><td class="r c-red">3</td><td class="r">6</td><td class="r">330</td><td class="r">2.7%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">木村明日美1116</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥96,000</td><td class="r">4</td><td class="r">0</td><td class="r">4</td><td class="r">110</td><td class="r">3.6%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">岡本章宏0423</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥90,000</td><td class="r">3</td><td class="r">0</td><td class="r">3</td><td class="r">127</td><td class="r">2.4%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">久保浩二0513</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥86,000</td><td class="r">4</td><td class="r c-red">1</td><td class="r">3</td><td class="r">408</td><td class="r">1.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">加藤隆治0210</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥74,000</td><td class="r">4</td><td class="r">0</td><td class="r">4</td><td class="r">148</td><td class="r">2.7%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">守繁日美子0707</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥71,000</td><td class="r">5</td><td class="r c-red">1</td><td class="r">4</td><td class="r">155</td><td class="r">3.2%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">内藤公誉1212</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥60,000</td><td class="r">6</td><td class="r">0</td><td class="r">6</td><td class="r">276</td><td class="r">2.2%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">硴塚</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥57,000</td><td class="r">4</td><td class="r c-red">1</td><td class="r">3</td><td class="r">408</td><td class="r">1.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">山田健太0425</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥44,000</td><td class="r">3</td><td class="r">0</td><td class="r">3</td><td class="r">82</td><td class="r">3.7%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">日高竹晴0825</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥43,000</td><td class="r">3</td><td class="r c-red">1</td><td class="r">2</td><td class="r">166</td><td class="r">1.8%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">橋爪朝寿0209</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥30,000</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">311</td><td class="r">0.3%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">青木くらら0607</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥23,000</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">69</td><td class="r">1.4%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">石塚</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥23,000</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">376</td><td class="r">0.3%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">岡崎裕美0818</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥23,000</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">91</td><td class="r">1.1%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">仁浦魁人0512</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥22,000</td><td class="r">3</td><td class="r">0</td><td class="r">3</td><td class="r">206</td><td class="r">1.5%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">大友晶五0317</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥22,000</td><td class="r">4</td><td class="r c-red">1</td><td class="r">3</td><td class="r">126</td><td class="r">3.2%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">土屋大興0512</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">¥22,000</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">80</td><td class="r">1.2%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">坪井有美0922</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">¥10,000</td><td class="r">1</td><td class="r c-red">1</td><td class="r">—</td><td class="r">250</td><td class="r">0.4%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">若松</td><td><span class="rank-badge rank-mid">社員</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">−¥70,000</td><td class="r">1</td><td class="r c-red">2</td><td class="r">—</td><td class="r">179</td><td class="r">0.6%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">橋本陽平0901</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">−¥55,000</td><td class="r">2</td><td class="r c-red">2</td><td class="r">—</td><td class="r">54</td><td class="r">3.7%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">船崎凜0916</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">−¥18,000</td><td class="r">—</td><td class="r c-red">1</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">田中千賀0209</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">坂本杏奈1208</td><td><span class="rank-badge rank-top">トップ</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">146</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">原田航0225</td><td><span class="rank-badge rank-mid">管理者</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">348</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">中井歩0707</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">柿﨑貴美子0512</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">1</td><td class="r c-red">1</td><td class="r">—</td><td class="r">123</td><td class="r">0.8%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">津田唯佳0916</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">74</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">上田奈津子1014</td><td><span class="rank-badge rank-rookie">ルーキー</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">4</td><td class="r">0</td><td class="r">4</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">伏見優孝0304</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">3</td><td class="r">0</td><td class="r">3</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">横川祥玲0210</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">リモートSC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">131</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">佐々木真美0922</td><td><span class="rank-badge rank-rookie">ルーキープラス</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">川村義之0108</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r c-red">1</td><td class="r">—</td><td class="r">235</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">竹内実範0703</td><td><span class="rank-badge rank-mid">社員</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">1</td><td class="r">0</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">佐藤誠0605</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">142</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">君塚綾子1104</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">新宿SC</td><td class="r">—</td><td class="r">—</td><td class="r">0</td><td class="r">—</td><td class="r">268</td><td class="r">0.0%</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+<tr><td style="font-weight:500">小橋正佳0706</td><td><span class="rank-badge rank-mid">ミドル</span></td><td style="color:var(--text-secondary)">AI</td><td class="r">—</td><td class="r">6</td><td class="r">0</td><td class="r">6</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r c-muted">—</td><td class="r c-muted">—</td></tr>
+</tbody>
           </table>
         </div>
       </div>
@@ -763,12 +788,29 @@ tr.data-row:hover td{background:#FFFBF8}
 
 
 <script>
+
+// ===== ランク別原価率テーブルデータ =====
+var RANK_TABLES = {
+  all: '<table>\n            <thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead>\n            <tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-top">トップ</span><div class="popup-content"><div class="popup-title">トップ 11名</div><div class="popup-row"><span>平賀健介0202</span></div><div class="popup-row"><span>島田</span></div><div class="popup-row"><span>小林幸司0507</span></div><div class="popup-row"><span>中村光伸1017</span></div><div class="popup-row"><span>硴塚</span></div><div class="popup-row"><span>清水久美子0122</span></div><div class="popup-row"><span>久保浩二0513</span></div><div class="popup-row"><span>木下翔太0424</span></div><div class="popup-row"><span>土屋麻佳0405</span></div><div class="popup-row"><span>加藤隆治0210</span></div><div class="popup-row"><span>内藤公誉1212</span></div></div></div></td><td class="r">¥755000</td><td class="r">¥175,000</td><td class="r c-green">23.2%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル 13名</div><div class="popup-row"><span>岡本章宏0423</span></div><div class="popup-row"><span>松浦美紀0423</span></div><div class="popup-row"><span>青木くらら0607</span></div><div class="popup-row"><span>大友晶五0317</span></div><div class="popup-row"><span>坪井有美0922</span></div><div class="popup-row"><span>小橋正佳0706</span></div><div class="popup-row"><span>仁浦魁人0512</span></div><div class="popup-row"><span>石塚</span></div><div class="popup-row"><span>川村義之0108</span></div><div class="popup-row"><span>君塚綾子1104</span></div><div class="popup-row"><span>伏見優孝0304</span></div><div class="popup-row"><span>横川祥玲0210</span></div><div class="popup-row"><span>津田唯佳0916</span></div></div></div></td><td class="r">¥301000</td><td class="r">¥146,000</td><td class="r c-green">48.5%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキープラス</span><div class="popup-content"><div class="popup-title">ルーキープラス 2名</div><div class="popup-row"><span>日高竹晴0825</span></div><div class="popup-row"><span>佐々木真美0922</span></div></div></div></td><td class="r">¥40000</td><td class="r">¥27,000</td><td class="r c-amber">67.5%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー 4名</div><div class="popup-row"><span>橋爪朝寿0209</span></div><div class="popup-row"><span>上田奈津子1014</span></div><div class="popup-row"><span>中井歩0707</span></div><div class="popup-row"><span>田中千賀0209</span></div></div></div></td><td class="r">¥30000</td><td class="r">¥40,000</td><td class="r c-red">133.3%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">管理者</span><div class="popup-content"><div class="popup-title">管理者 3名</div><div class="popup-row"><span>原田航0225</span></div><div class="popup-row"><span>木村明日美1116</span></div><div class="popup-row"><span>山田健太0425</span></div></div></div></td><td class="r">¥88000</td><td class="r">¥105,416</td><td class="r c-red">119.8%</td></tr></tbody>\n          </table>',
+  shinjuku: '<table>\n            <thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead>\n            <tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-top">トップ</span><div class="popup-content"><div class="popup-title">トップ 11名</div><div class="popup-row"><span>平賀健介0202</span></div><div class="popup-row"><span>島田</span></div><div class="popup-row"><span>小林幸司0507</span></div><div class="popup-row"><span>中村光伸1017</span></div><div class="popup-row"><span>硴塚</span></div><div class="popup-row"><span>清水久美子0122</span></div><div class="popup-row"><span>久保浩二0513</span></div><div class="popup-row"><span>木下翔太0424</span></div><div class="popup-row"><span>土屋麻佳0405</span></div><div class="popup-row"><span>加藤隆治0210</span></div><div class="popup-row"><span>内藤公誉1212</span></div></div></div></td><td class="r">¥755000</td><td class="r">¥175,000</td><td class="r c-green">23.2%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル 7名</div><div class="popup-row"><span>岡本章宏0423</span></div><div class="popup-row"><span>青木くらら0607</span></div><div class="popup-row"><span>大友晶五0317</span></div><div class="popup-row"><span>小橋正佳0706</span></div><div class="popup-row"><span>石塚</span></div><div class="popup-row"><span>川村義之0108</span></div><div class="popup-row"><span>君塚綾子1104</span></div></div></div></td><td class="r">¥181000</td><td class="r">¥90,000</td><td class="r c-green">49.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー 2名</div><div class="popup-row"><span>橋爪朝寿0209</span></div><div class="popup-row"><span>田中千賀0209</span></div></div></div></td><td class="r">¥30000</td><td class="r">¥17,000</td><td class="r c-amber">56.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">管理者</span><div class="popup-content"><div class="popup-title">管理者 3名</div><div class="popup-row"><span>原田航0225</span></div><div class="popup-row"><span>木村明日美1116</span></div><div class="popup-row"><span>山田健太0425</span></div></div></div></td><td class="r">¥88000</td><td class="r">¥105,416</td><td class="r c-red">119.8%</td></tr></tbody>\n          </table>',
+  remote: '<table>\n            <thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead>\n            <tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">ミドル</span><div class="popup-content"><div class="popup-title">ミドル 6名</div><div class="popup-row"><span>松浦美紀0423</span></div><div class="popup-row"><span>坪井有美0922</span></div><div class="popup-row"><span>仁浦魁人0512</span></div><div class="popup-row"><span>伏見優孝0304</span></div><div class="popup-row"><span>横川祥玲0210</span></div><div class="popup-row"><span>津田唯佳0916</span></div></div></div></td><td class="r">¥120000</td><td class="r">¥56,000</td><td class="r c-green">46.7%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキープラス</span><div class="popup-content"><div class="popup-title">ルーキープラス 2名</div><div class="popup-row"><span>日高竹晴0825</span></div><div class="popup-row"><span>佐々木真美0922</span></div></div></div></td><td class="r">¥20000</td><td class="r">¥19,500</td><td class="r c-red">97.5%</td></tr><tr><td><div class="popup-trigger"><span class="rank-badge rank-rookie">ルーキー</span><div class="popup-content"><div class="popup-title">ルーキー 2名</div><div class="popup-row"><span>上田奈津子1014</span></div><div class="popup-row"><span>中井歩0707</span></div></div></div></td><td class="r">—</td><td class="r">¥23,000</td><td class="r c-green">—</td></tr></tbody>\n          </table>',
+  ai: '<table>\n            <thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead>\n            <tbody><tr><td><div class="popup-trigger"><span class="rank-badge rank-mid">社員</span><div class="popup-content"><div class="popup-title">社員 1名</div><div class="popup-row"><span>竹内実範0703</span></div></div></div></td><td class="r">—</td><td class="r">¥19,166</td><td class="r c-green">—</td></tr></tbody>\n          </table>'
+};
+
+function updateRankCostTable(site) {
+  var el = document.getElementById('rank-cost-table');
+  if (el && RANK_TABLES[site]) {
+    el.innerHTML = RANK_TABLES[site];
+  }
+}
+
 // ===== サイト別データ =====
+// ===== サイト別データ（5/1+5/7 累計）※売上=案件金額-キャンセル受付日当日分 =====
 const SITE_DATA = {
-  all:      {sales:1023000, apo:61, cancel:8, valid:53, cancelRate:13.1, labor:592225, costRate:57.9, ops:34, unit:30088, calls:4057, apoRate:2.1, target:33000000},
-  shinjuku: {sales:947000,  apo:47, cancel:4, valid:43, cancelRate:8.5,  labor:456362, costRate:48.2, ops:23, unit:41173, calls:0,    apoRate:0,   target:24090000},
-  remote:   {sales:76000,   apo:9,  cancel:4, valid:5,  cancelRate:44.4, labor:116696, costRate:153.5,ops:10, unit:7600,  calls:0,    apoRate:0,   target:8910000},
-  ai:       {sales:0,       apo:5,  cancel:0, valid:5,  cancelRate:0.0,  labor:19166,  costRate:0,    ops:1,  unit:0,     calls:0,    apoRate:0,   target:0}
+  all:      {sales:2006000, apo:141, cancel:20, valid:121, cancelRate:14.2, labor:1245934, costRate:62.1, ops:34, unit:36969, calls:7900, apoRate:1.78, target:33000000},
+  shinjuku: {sales:1791000, apo:102, cancel:10, valid:92,  cancelRate:9.8,  labor:837264,  costRate:46.7, ops:23, unit:52200, calls:0,    apoRate:0,    target:24090000},
+  remote:   {sales:215000,  apo:23,  cancel:10, valid:13,  cancelRate:43.5, labor:219621,  costRate:102.1,ops:10, unit:11583, calls:0,    apoRate:0,    target:8910000},
+  ai:       {sales:0,       apo:16,  cancel:0,  valid:16,  cancelRate:0.0,  labor:189049,  costRate:0,    ops:1,  unit:0,     calls:0,    apoRate:0,    target:0}
 };
 
 let currentSite = 'all';
@@ -793,57 +835,109 @@ function switchSite(site, el) {
   updateDashboardKPI(site);
   updateDailyPage(site);
   updateOperatorFilter(site);
+  updateRankCostTable(site);
 }
 
-// ===== ダッシュボードKPI更新 =====
+// ===== ダッシュボードKPI更新（ID指定方式）=====
 function updateDashboardKPI(site) {
   var d = SITE_DATA[site];
   if (!d) return;
   var t = d.target;
-  var pct = t > 0 ? (d.sales/t*100).toFixed(1) : '0.0';
-  var landing = Math.round(d.sales * 18);
+  var elapsed = 2; // 経過営業日数
+  var pct     = t > 0 ? (d.sales/t*100).toFixed(1) : '0.0';
+  var avg     = Math.round(d.sales / elapsed / 10000);
+  var landing = Math.round(d.sales / elapsed * 18);
   var landingPct = t > 0 ? (landing/t*100).toFixed(1) : '0.0';
-  var cards = document.querySelectorAll('#page-dashboard .kpi-card');
-  if (cards.length < 4) return;
+  var remain  = t > 0 ? Math.round((t - d.sales) / 10000) : 0;
+  var cost    = d.sales > 0 ? d.costRate.toFixed(1) + '%' : '—';
+
+  function setVal(id, val) {
+    var el = document.querySelector('#' + id + ' .kpi-value');
+    if (el) el.textContent = val;
+  }
+  function setSub(id, val) {
+    var el = document.querySelector('#' + id + ' .kpi-sub');
+    if (el) el.textContent = val;
+  }
+  function setBadge(id, val) {
+    var el = document.querySelector('#' + id + ' .kpi-badge');
+    if (el) el.textContent = val;
+  }
+  function setProg(id, pctVal) {
+    var el = document.querySelector('#' + id + ' .prog-fill');
+    if (el) el.style.width = Math.min(parseFloat(pctVal), 100) + '%';
+    var sp = document.querySelector('#' + id + ' .prog + span, #' + id + ' span[style]');
+    if (sp) sp.textContent = pctVal + '%';
+  }
+
   // 売上合計
-  cards[0].querySelector('.kpi-value').textContent = '¥' + Math.round(d.sales/10000) + '万';
-  cards[0].querySelector('.kpi-sub').textContent = '目標 ¥' + Math.round(t/10000) + '万　進捗 ' + pct + '%';
+  setVal('kpi-sales', '¥' + Math.round(d.sales/10000) + '万');
+  setSub('kpi-sales', '目標 ¥' + Math.round(t/10000) + '万　進捗 ' + pct + '%');
+
   // 残売上
-  cards[1].querySelector('.kpi-value').textContent = t > 0 ? '−¥' + Math.round((t-d.sales)/10000) + '万' : '—';
+  setVal('kpi-remain', t > 0 ? '−¥' + remain + '万' : '—');
+  setSub('kpi-remain', '残稼働 ' + (18 - elapsed) + '日');
+
   // 1日あたり平均
-  cards[2].querySelector('.kpi-value').textContent = '¥' + Math.round(d.sales/10000) + '万';
+  setVal('kpi-avg', '¥' + avg + '万');
+  setSub('kpi-avg', '目標日次 ¥' + Math.round(t/18/10000) + '万（' + elapsed + '日時点）');
+
   // 着地見込み
-  cards[3].querySelector('.kpi-value').textContent = '¥' + Math.round(landing/10000) + '万';
-  cards[3].querySelector('.kpi-badge').textContent = '達成率 ' + landingPct + '%';
-  // 原価率（7番目）
-  if (cards[6]) {
-    cards[6].querySelector('.kpi-value').textContent = d.sales > 0 ? d.costRate.toFixed(1) + '%' : '—';
-    cards[6].querySelector('.kpi-sub').textContent = '人件費 ¥' + Math.round(d.labor/10000) + '万';
-  }
-  // 稼働単価（8番目）
-  if (cards[7]) {
-    cards[7].querySelector('.kpi-value').textContent = d.unit > 0 ? '¥' + d.unit.toLocaleString() : '—';
-  }
+  setVal('kpi-landing', '¥' + Math.round(landing/10000) + '万');
+  setBadge('kpi-landing', '達成率 ' + landingPct + '%');
+  setSub('kpi-landing', '¥' + Math.round(landing/10000) + '万 / ¥' + Math.round(t/10000) + '万');
+
+  // 原価率
+  setVal('kpi-cost', cost);
+  setSub('kpi-cost', '人件費 ¥' + Math.round(d.labor/10000) + '万');
+
+  // 稼働単価
+  setVal('kpi-unit', d.unit > 0 ? '¥' + d.unit.toLocaleString() : '—');
+
+  // 稼働人数
+  setVal('kpi-ops', d.ops + '名');
+
+  // 獲得アポ数
+  setVal('kpi-apo', d.apo + '件');
+
+  // キャンセル
+  setVal('kpi-cancel', d.cancel + '件');
+  setBadge('kpi-cancel', 'キャンセル率 ' + d.cancelRate.toFixed(1) + '%');
+  setSub('kpi-cancel', '有効アポ ' + d.valid + '件');
+
+  // コール
+  setVal('kpi-call', d.calls > 0 ? d.calls.toLocaleString() + '件' : '—');
+  setBadge('kpi-call', 'アポ率 ' + (d.apoRate > 0 ? d.apoRate.toFixed(2) : '—') + '%');
 }
 
 // ===== 日次明細更新 =====
 function updateDailyPage(site) {
-  var d = SITE_DATA[site];
-  if (!d) return;
   var tbody = document.getElementById('dailyTableBody');
   if (!tbody) return;
-  tbody.innerHTML =
-    '<tr>' +
-    '<td class="daily-date-col">1営業日</td>' +
-    '<td>2026/05/01</td>' +
-    '<td class="r">¥' + d.sales.toLocaleString() + '</td>' +
-    '<td class="r">' + d.apo + '</td>' +
-    '<td class="r c-red">' + d.cancel + '</td>' +
-    '<td class="r">' + d.valid + '</td>' +
-    '<td class="r">' + d.ops + '</td>' +
-    '<td class="r">' + (d.calls > 0 ? d.calls.toLocaleString() : '—') + '</td>' +
-    '<td class="r">' + (d.valid > 0 ? '¥' + Math.round(d.sales/d.valid).toLocaleString() : '—') + '</td>' +
-    '</tr>';
+  var DAILY = {
+    all:      [{day:'1営業日',date:'2026/05/01',sales:1023000,apo:61,cancel:8,valid:53,ops:34,calls:4057},
+               {day:'2営業日',date:'2026/05/07',sales:1183000,apo:88,cancel:12,valid:76,ops:32,calls:3843}],
+    shinjuku: [{day:'1営業日',date:'2026/05/01',sales:947000,apo:47,cancel:4,valid:43,ops:23,calls:0},
+               {day:'2営業日',date:'2026/05/07',sales:1044000,apo:63,cancel:6,valid:57,ops:20,calls:0}],
+    remote:   [{day:'1営業日',date:'2026/05/01',sales:76000,apo:9,cancel:4,valid:5,ops:10,calls:0},
+               {day:'2営業日',date:'2026/05/07',sales:139000,apo:14,cancel:6,valid:8,ops:12,calls:0}],
+    ai:       [{day:'1営業日',date:'2026/05/01',sales:0,apo:5,cancel:0,valid:5,ops:1,calls:0},
+               {day:'2営業日',date:'2026/05/07',sales:0,apo:11,cancel:0,valid:11,ops:2,calls:0}]
+  };
+  var rows = DAILY[site] || DAILY['all'];
+  tbody.innerHTML = rows.map(function(r) {
+    return '<tr>' +
+      '<td class="daily-date-col">' + r.day + '</td>' +
+      '<td>' + r.date + '</td>' +
+      '<td class="r">¥' + r.sales.toLocaleString() + '</td>' +
+      '<td class="r">' + r.apo + '</td>' +
+      '<td class="r c-red">' + r.cancel + '</td>' +
+      '<td class="r">' + r.valid + '</td>' +
+      '<td class="r">' + r.ops + '</td>' +
+      '<td class="r">' + (r.calls > 0 ? r.calls.toLocaleString() : '—') + '</td>' +
+      '<td class="r">' + (r.valid > 0 ? '¥' + Math.round(r.sales/r.valid).toLocaleString() : '—') + '</td>' +
+      '</tr>';
+  }).join('');
 }
 
 // ===== OP個人実績フィルター =====
@@ -871,8 +965,8 @@ if (ctx) {
       labels: ['5/1','5/2','5/7','5/8','5/9','5/12','5/13','5/14','5/15','5/16','5/19','5/20','5/21','5/22','5/23','5/26','5/27','5/28','5/29','5/30'],
       datasets: [{
         label: '売上（万円）',
-        data: [102.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        backgroundColor: ['#E8711A','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22'],
+        data: [102.3,118.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        backgroundColor: ['#E8711A','#E8711A','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22','#E8711A22'],
         borderColor: '#E8711A', borderWidth: 1, borderRadius: 3
       }]
     },
@@ -889,6 +983,10 @@ if (ctx) {
 
 // ===== 初期化 =====
 document.getElementById('siteTabs').style.display = 'flex';
+updateDashboardKPI('all');
+updateDailyPage('all');
+updateOperatorFilter('all');
+updateRankCostTable('all');
 </script>
 </body>
 </html>
