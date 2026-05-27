@@ -190,10 +190,10 @@ tr.data-row:hover td{background:#FFFBF8}
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">③ 勤務データ <span style="color:var(--red)">*必須</span></div>
             <label class="file-drop" id="drop-work" onclick="document.getElementById('file-work').click()">
-              <input type="file" id="file-work" accept=".csv" style="display:none" onchange="onFileSelect('work',this)">
+              <input type="file" id="file-work" accept=".csv,.zip" style="display:none" onchange="onFileSelect('work',this)">
               <div class="file-drop-icon">⏱️</div>
               <div class="file-drop-text" id="text-work">クリックまたはドロップ</div>
-              <div style="font-size:10px;color:var(--text-muted)">.csv</div>
+              <div style="font-size:10px;color:var(--text-muted)">.csv / .zip</div>
             </label>
           </div>
           <div>
@@ -207,9 +207,22 @@ tr.data-row:hover td{background:#FFFBF8}
           </div>
         </div>
 
-        <!-- インセンティブ（任意）-->
+        <!-- レポート・インセンティブ（任意）-->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑤ レポート <span style="color:var(--red)">*必須</span></div>
+            <label class="file-drop" id="drop-report" onclick="document.getElementById('file-report').click()">
+              <input type="file" id="file-report" accept=".csv" style="display:none" onchange="onFileSelect('report',this)">
+              <div class="file-drop-icon">📈</div>
+              <div class="file-drop-text" id="text-report">クリックまたはドロップ</div>
+              <div style="font-size:10px;color:var(--text-muted)">.csv</div>
+            </label>
+          </div>
+          <div></div>
+        </div>
+
         <div style="margin-bottom:20px">
-          <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑤ インセンティブ <span style="color:var(--text-muted)">任意・月1回</span></div>
+          <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑥ インセンティブ <span style="color:var(--text-muted)">任意・月1回</span></div>
           <label class="file-drop" id="drop-inc" onclick="document.getElementById('file-inc').click()" style="max-width:300px">
             <input type="file" id="file-inc" accept=".xlsx" style="display:none" onchange="onFileSelect('inc',this)">
             <div class="file-drop-icon">💰</div>
@@ -552,8 +565,8 @@ function onFileSelect(key, input) {
 }
 
 function runUpdate() {
-  var required = ['apo','prod','work'];
-  var labels = ['アポイントリスト','生産性レポート','勤務データ'];
+  var required = ['apo','prod','work','report'];
+  var labels = ['アポイントリスト','生産性レポート','勤務データ','レポート'];
   for (var i = 0; i < required.length; i++) {
     if (!selectedFiles[required[i]]) {
       alert('必須ファイルが選択されていません：' + labels[i]);
@@ -573,7 +586,8 @@ function runUpdate() {
   form.append('prod',   selectedFiles['prod']);
   form.append('work',   selectedFiles['work']);
   form.append('master', selectedFiles['master']);
-  if (selectedFiles['inc']) form.append('inc', selectedFiles['inc']);
+  if (selectedFiles['report']) form.append('report', selectedFiles['report']);
+  if (selectedFiles['inc'])    form.append('inc',    selectedFiles['inc']);
   var ptBlob = new Blob([JSON.stringify(PT_DATA)], {type:'application/json'});
   form.append('prev', ptBlob, 'pt_data.json');
 
