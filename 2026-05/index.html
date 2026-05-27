@@ -171,64 +171,64 @@ tr.data-row:hover td{background:#FFFBF8}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">① アポイントリスト <span style="color:var(--red)">*必須</span></div>
-            <label class="file-drop" id="drop-apo" onclick="document.getElementById('file-apo').click()">
+            <div class="file-drop" id="drop-apo" onclick="triggerFile('apo')">
               <input type="file" id="file-apo" accept=".xlsx" style="display:none" onchange="onFileSelect('apo',this)">
-              <div class="file-drop-icon">📋</div>
+              <div class="file-drop-icon" id="icon-apo">📋</div>
               <div class="file-drop-text" id="text-apo">クリックまたはドロップ</div>
               <div style="font-size:10px;color:var(--text-muted)">.xlsx</div>
-            </label>
+              <button id="clear-apo" onclick="clearFile(event,'apo')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">② 生産性レポート <span style="color:var(--red)">*必須</span></div>
-            <label class="file-drop" id="drop-prod" onclick="document.getElementById('file-prod').click()">
+            <div class="file-drop" id="drop-prod" onclick="triggerFile('prod')">
               <input type="file" id="file-prod" accept=".csv" style="display:none" onchange="onFileSelect('prod',this)">
-              <div class="file-drop-icon">📊</div>
+              <div class="file-drop-icon" id="icon-prod">📊</div>
               <div class="file-drop-text" id="text-prod">クリックまたはドロップ</div>
               <div style="font-size:10px;color:var(--text-muted)">.csv</div>
-            </label>
+              <button id="clear-prod" onclick="clearFile(event,'prod')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">③ 勤務データ <span style="color:var(--red)">*必須</span></div>
-            <label class="file-drop" id="drop-work" onclick="document.getElementById('file-work').click()">
+            <div class="file-drop" id="drop-work" onclick="triggerFile('work')">
               <input type="file" id="file-work" accept=".csv,.zip" style="display:none" onchange="onFileSelect('work',this)">
-              <div class="file-drop-icon">⏱️</div>
+              <div class="file-drop-icon" id="icon-work">⏱️</div>
               <div class="file-drop-text" id="text-work">クリックまたはドロップ</div>
               <div style="font-size:10px;color:var(--text-muted)">.csv / .zip</div>
-            </label>
+              <button id="clear-work" onclick="clearFile(event,'work')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">④ スタッフマスター <span style="color:var(--text-muted)">任意（変更時のみ）</span></div>
-            <label class="file-drop" id="drop-master" onclick="document.getElementById('file-master').click()">
+            <div class="file-drop" id="drop-master" onclick="triggerFile('master')">
               <input type="file" id="file-master" accept=".xlsx" style="display:none" onchange="onFileSelect('master',this)">
-              <div class="file-drop-icon">👥</div>
+              <div class="file-drop-icon" id="icon-master">👥</div>
               <div class="file-drop-text" id="text-master">クリックまたはドロップ</div>
               <div style="font-size:10px;color:var(--text-muted)">.xlsx</div>
-            </label>
+              <button id="clear-master" onclick="clearFile(event,'master')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
           </div>
-        </div>
-
-        <!-- レポート・インセンティブ（任意）-->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
           <div>
             <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑤ レポート <span style="color:var(--red)">*必須</span></div>
-            <label class="file-drop" id="drop-report" onclick="document.getElementById('file-report').click()">
+            <div class="file-drop" id="drop-report" onclick="triggerFile('report')">
               <input type="file" id="file-report" accept=".csv" style="display:none" onchange="onFileSelect('report',this)">
-              <div class="file-drop-icon">📈</div>
+              <div class="file-drop-icon" id="icon-report">📈</div>
               <div class="file-drop-text" id="text-report">クリックまたはドロップ</div>
               <div style="font-size:10px;color:var(--text-muted)">.csv</div>
-            </label>
+              <button id="clear-report" onclick="clearFile(event,'report')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
           </div>
-          <div></div>
-        </div>
-
-        <div style="margin-bottom:20px">
-          <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑥ インセンティブ <span style="color:var(--text-muted)">任意・月1回</span></div>
-          <label class="file-drop" id="drop-inc" onclick="document.getElementById('file-inc').click()" style="max-width:300px">
-            <input type="file" id="file-inc" accept=".xlsx" style="display:none" onchange="onFileSelect('inc',this)">
-            <div class="file-drop-icon">💰</div>
-            <div class="file-drop-text" id="text-inc">クリックまたはドロップ</div>
-            <div style="font-size:10px;color:var(--text-muted)">.xlsx（月1回）</div>
-          </label>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--gray);margin-bottom:6px">⑥ インセンティブ <span style="color:var(--text-muted)">任意・月1回</span></div>
+            <div class="file-drop" id="drop-inc" onclick="triggerFile('inc')">
+              <input type="file" id="file-inc" accept=".xlsx" style="display:none" onchange="onFileSelect('inc',this)">
+              <div class="file-drop-icon" id="icon-inc">💰</div>
+              <div class="file-drop-text" id="text-inc">クリックまたはドロップ</div>
+              <div style="font-size:10px;color:var(--text-muted)">.xlsx（月1回）</div>
+              <button id="clear-inc" onclick="clearFile(event,'inc')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button>
+            </div>
+          </div>
         </div>
 
         <!-- 更新ボタン -->
@@ -554,14 +554,35 @@ function cancelSettings(){initSettings();}
 var SERVER_URL = 'https://digross-server.onrender.com';
 var selectedFiles = {};
 
+function triggerFile(key) {
+  var input = document.getElementById('file-' + key);
+  if (input) input.click();
+}
+
 function onFileSelect(key, input) {
   if (!input.files || input.files.length === 0) return;
   var file = input.files[0];
   selectedFiles[key] = file;
-  var el = document.getElementById('text-' + key);
+  var el   = document.getElementById('text-' + key);
   var drop = document.getElementById('drop-' + key);
-  if (el) el.textContent = file.name;
+  var btn  = document.getElementById('clear-' + key);
+  if (el)   el.textContent = file.name;
   if (drop) drop.classList.add('selected');
+  if (btn)  btn.style.display = 'inline-block';
+}
+
+function clearFile(event, key) {
+  event.stopPropagation();
+  delete selectedFiles[key];
+  var el   = document.getElementById('text-' + key);
+  var drop = document.getElementById('drop-' + key);
+  var btn  = document.getElementById('clear-' + key);
+  var input= document.getElementById('file-' + key);
+  var icons= {'apo':'📋','prod':'📊','work':'⏱️','master':'👥','report':'📈','inc':'💰'};
+  if (el)    el.textContent = 'クリックまたはドロップ';
+  if (drop)  drop.classList.remove('selected');
+  if (btn)   btn.style.display = 'none';
+  if (input) input.value = '';
 }
 
 function runUpdate() {
