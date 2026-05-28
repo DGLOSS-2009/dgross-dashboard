@@ -780,23 +780,38 @@ function loadStaff() {
 function renderStaffTable(data) {
   document.getElementById('staff-count').textContent = data.length + '名';
   var siteLabel = {'新宿SC':'新宿SC','在宅G':'リモートSC','AI':'AI'};
-  var html = data.map(function(s) {
+  var rows = '';
+  for (var i = 0; i < data.length; i++) {
+    var s = data[i];
     var rc = rankCls(s.rank);
     var rate = s.salary_type === 'monthly' ? fc(s.hourly_rate) + '/月' : '¥' + s.hourly_rate.toLocaleString() + '/時';
-    return '<tr>' +
+    var activeLabel = s.is_active ? '在籍' : '退職';
+    var activeBg = s.is_active ? 'var(--green-light)' : 'var(--gray-light)';
+    var activeColor = s.is_active ? 'var(--green)' : 'var(--gray)';
+    rows += '<tr>' +
       '<td style="font-size:11px;color:var(--text3)">' + s.employee_id + '</td>' +
       '<td style="font-weight:500">' + s.name + '</td>' +
       '<td>' + (siteLabel[s.site] || s.site) + '</td>' +
       '<td><span class="rank-badge ' + rc + '">' + s.rank + '</span></td>' +
       '<td class="r">' + rate + '</td>' +
       '<td>' + (s.salary_type === 'monthly' ? '月給' : '時給') + '</td>' +
-      '<td><span style="font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;background:' + (s.is_active ? 'var(--green-light)' : 'var(--gray-light)') + ';color:' + (s.is_active ? 'var(--green)' : 'var(--gray)') + '">' + (s.is_active ? '在籍' : '退職') + '</span></td>' +
+      '<td><span style="font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;background:' + activeBg + ';color:' + activeColor + '">' + activeLabel + '</span></td>' +
       '<td style="white-space:nowrap">' +
-        '<button onclick="openEditStaff(' + s.id + ')" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;margin-right:4px">編集</button>' +
-        '<button onclick="deleteStaff(' + s.id + ','' + s.name + '')" style="font-size:11px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;background:#fff;color:var(--red);cursor:pointer">削除</button>' +
+        '<button data-id="' + s.id + '" data-action="edit" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;margin-right:4px">編集</button>' +
+        '<button data-id="' + s.id + '" data-action="delete" style="font-size:11px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;background:#fff;color:var(--red);cursor:pointer">削除</button>' +
       '</td></tr>';
-  }).join('');
-  document.getElementById('staff-tbody').innerHTML = html || '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">データなし</td></tr>';
+  }
+  var tbody = document.getElementById('staff-tbody');
+  tbody.innerHTML = rows || '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">データなし</td></tr>';
+  // イベントリスナーをtbodyに委譲
+  tbody.onclick = function(e) {
+    var btn = e.target.closest('button[data-id]');
+    if (!btn) return;
+    var id = parseInt(btn.getAttribute('data-id'));
+    var action = btn.getAttribute('data-action');
+    if (action === 'edit') openEditStaff(id);
+    else if (action === 'delete') confirmDelete(id);
+  };
 }
 
 function filterStaffTable() {
@@ -873,8 +888,13 @@ function saveStaff() {
     });
 }
 
-function deleteStaff(id, name) {
-  if (!confirm(name + ' を削除しますか？\nこの操作は取り消せません。')) return;
+function confirmDelete(id) {
+  var s = staffData.find(function(x){ return x.id === id; });
+  var name = s ? s.name : 'このスタッフ';
+  if (!confirm(name + ' を削除しますか？この操作は取り消せません。')) return;
+  deleteStaff(id);
+}
+function deleteStaff(id) {
   fetch(SERVER_URL + '/staff/' + id, {method: 'DELETE'})
     .then(function(r){ return r.json(); })
     .then(function(d) {
