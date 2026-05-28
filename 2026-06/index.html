@@ -96,6 +96,9 @@ tr.data-row:hover td{background:#FFFBF8}
   <div class="sidebar-logo"><div class="logo-mark"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg></div><div><div class="logo-text">PT事業部</div><div class="logo-sub">売上管理システム</div></div></div></div>
   <nav class="nav">
     <div class="nav-section">メイン</div>
+    <div class="nav-item" onclick="goTop()" style="color:var(--text-muted);font-size:12px">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>トップに戻る
+    </div>
     <div class="nav-item active" onclick="showPage('dashboard',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>ダッシュボード</div>
     <div class="nav-item" onclick="showPage('daily',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>日次明細</div>
     <div class="nav-item" onclick="showPage('operator',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>OP個人実績</div>
@@ -109,7 +112,13 @@ tr.data-row:hover td{background:#FFFBF8}
 <div class="main">
   <div class="header">
     <div style="display:flex;align-items:center;gap:16px"><div class="page-title" id="pageTitle">ダッシュボード</div><span class="update-time" id="updateTime"></span></div>
-    <div class="header-right"><span class="period-badge" id="periodBadge"></span>
+    <div class="header-right"><div style="position:relative">
+        <select id="monthSelect" onchange="goToMonth(this.value)" style="background:var(--orange-light);color:var(--orange);border:none;border-radius:20px;padding:4px 28px 4px 12px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none;outline:none">
+          <option value="2026-05">2026年5月</option>
+          <option value="2026-06">2026年6月</option>
+        </select>
+        <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:10px;color:var(--orange)">▼</span>
+      </div>
       <div class="site-tabs" id="siteTabs">
         <div class="site-tab active" onclick="switchSite('all',this)">全体</div>
         <div class="site-tab" onclick="switchSite('shinjuku',this)">新宿SC</div>
@@ -479,6 +488,19 @@ function saveSettings(){
   renderDashboard(currentSite);alert('保存しました');
 }
 function cancelSettings(){initSettings();}
+
+(function(){
+  var sel = document.getElementById('monthSelect');
+  if (sel) sel.value = '2026-06';
+})();
+
+function goTop() {
+  window.location.href = '../../';
+}
+
+function goToMonth(val) {
+  window.location.href = '../' + val + '/';
+}
 
 document.getElementById('updateTime').textContent='最終更新: '+PT_DATA.meta.lastUpdateLabel;
 document.getElementById('periodBadge').textContent=PT_DATA.meta.month;
