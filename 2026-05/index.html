@@ -1138,6 +1138,9 @@ function prepareNextMonth() {
     return;
   }
 
+  // PATを確実にlocalStorageに保存してからAPIコールに使う
+  localStorage.setItem('github_pat', pat);
+
   var btn = document.getElementById('btn-next-month');
   var status = document.getElementById('next-month-status');
   var result = document.getElementById('next-month-result');
@@ -1368,8 +1371,11 @@ function getGithubPat() {
 }
 
 function githubHeaders() {
+  var pat = getGithubPat();
+  // Fine-grained PAT（github_pat_で始まる）はBearer、Classic PAT（ghp_）はtoken
+  var authPrefix = pat.indexOf('github_pat_') === 0 ? 'Bearer' : 'token';
   return {
-    'Authorization': 'token ' + getGithubPat(),
+    'Authorization': authPrefix + ' ' + pat,
     'Content-Type': 'application/json',
     'Accept': 'application/vnd.github.v3+json'
   };
@@ -1407,6 +1413,9 @@ function githubGetFile(path) {
     headers: githubHeaders()
   })
   .then(function(r) {
+    if (r.status === 401) throw new Error('GitHub認証エラー（401）: PATが無効か期限切れです。設定画面でPATを再入力・保存してください。');
+    if (r.status === 403) throw new Error('GitHub権限エラー（403）: PATにcontentsの読み書き権限がありません。');
+    if (r.status === 404) throw new Error('ファイルが見つかりません（404）: ' + path + '。GitHubにまだ存在しないか、リポジトリ名・パスが違います。');
     if (!r.ok) throw new Error('ファイル取得失敗: ' + path + ' (' + r.status + ')');
     return r.json();
   })
@@ -1416,7 +1425,6 @@ function githubGetFile(path) {
     try {
       return decodeURIComponent(escape(atob(d.content.replace(/\n/g, ''))));
     } catch(e) {
-      // escape/unescapeが失敗する場合（UTF-8非対応ブラウザ対策）
       return atob(d.content.replace(/\n/g, ''));
     }
   });
