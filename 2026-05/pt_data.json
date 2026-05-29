@@ -12,17 +12,17 @@
   "targets": {
     "all": {
       "sales": 33000000,
-      "costRate": 50.0,
+      "costRate": 50,
       "unit": 35000
     },
     "shinjuku": {
       "sales": 24090000,
-      "costRate": 50.0,
+      "costRate": 50,
       "unit": 45000
     },
     "remote": {
       "sales": 8910000,
-      "costRate": 50.0,
+      "costRate": 50,
       "unit": 25000
     },
     "ai": {
@@ -33,14 +33,14 @@
   },
   "sites": {
     "all": {
-      "sales": 14067000,
+      "sales": 14545110,
       "apo": 1000,
       "cancel": 186,
       "valid": 814,
       "cancelRate": 18.6,
       "labor": 9713968,
-      "costRate": 69.1,
-      "gross": 4353032,
+      "costRate": 66.8,
+      "gross": 4831142,
       "ops": 35,
       "unit": 31457,
       "calls": 54303,
@@ -716,7 +716,7 @@
       "name": "スタンダードファクトリー",
       "valid": 20,
       "sales": 428000,
-      "pct": 3.0
+      "pct": 3
     },
     {
       "rank": 9,
@@ -770,7 +770,7 @@
       "labor_base": 261168,
       "incentive_daily": 52060,
       "costRate": 31.4,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 76846
     },
     {
@@ -789,7 +789,7 @@
       "labor_base": 240668,
       "incentive_daily": 0,
       "costRate": 26.7,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 69385
     },
     {
@@ -808,7 +808,7 @@
       "labor_base": 196417,
       "incentive_daily": 71099,
       "costRate": 34.5,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 77500
     },
     {
@@ -822,12 +822,12 @@
       "valid": 38,
       "calls": 1292,
       "apoRate": 3.4,
-      "workH": 96.0,
+      "workH": 96,
       "labor": 240000,
       "labor_base": 240000,
       "incentive_daily": 0,
       "costRate": 33.1,
-      "days": 12.0,
+      "days": 12,
       "unitPerDay": 60500
     },
     {
@@ -846,7 +846,7 @@
       "labor_base": 214375,
       "incentive_daily": 106703,
       "costRate": 47.6,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 51846
     },
     {
@@ -860,12 +860,12 @@
       "valid": 37,
       "calls": 1102,
       "apoRate": 3.5,
-      "workH": 104.0,
+      "workH": 104,
       "labor": 293540,
       "labor_base": 260000,
       "incentive_daily": 33540,
       "costRate": 43.9,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 51385
     },
     {
@@ -884,7 +884,7 @@
       "labor_base": 498333,
       "incentive_daily": 0,
       "costRate": 75.5,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 50769
     },
     {
@@ -898,7 +898,7 @@
       "valid": 26,
       "calls": 725,
       "apoRate": 4.1,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -916,13 +916,13 @@
       "cancel": 2,
       "valid": 23,
       "calls": 500,
-      "apoRate": 5.0,
+      "apoRate": 5,
       "workH": 79.8,
       "labor": 167475,
       "labor_base": 167475,
       "incentive_daily": 0,
-      "costRate": 28.0,
-      "days": 12.0,
+      "costRate": 28,
+      "days": 12,
       "unitPerDay": 49833
     },
     {
@@ -941,7 +941,7 @@
       "labor_base": 259668,
       "incentive_daily": 64635,
       "costRate": 58.3,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 42769
     },
     {
@@ -960,7 +960,7 @@
       "labor_base": 174000,
       "incentive_daily": 13184,
       "costRate": 34.2,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 54800
     },
     {
@@ -974,12 +974,12 @@
       "valid": 21,
       "calls": 848,
       "apoRate": 2.7,
-      "workH": 104.0,
+      "workH": 104,
       "labor": 208000,
       "labor_base": 208000,
       "incentive_daily": 0,
       "costRate": 40.1,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 39923
     },
     {
@@ -998,7 +998,7 @@
       "labor_base": 185325,
       "incentive_daily": 0,
       "costRate": 38.6,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 43636
     },
     {
@@ -1017,7 +1017,7 @@
       "labor_base": 498333,
       "incentive_daily": 0,
       "costRate": 117.5,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 32615
     },
     {
@@ -1036,7 +1036,7 @@
       "labor_base": 315611,
       "incentive_daily": 62321,
       "costRate": 91.1,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 31923
     },
     {
@@ -1050,12 +1050,12 @@
       "valid": 26,
       "calls": 790,
       "apoRate": 4.1,
-      "workH": 88.0,
+      "workH": 88,
       "labor": 255947,
       "labor_base": 220000,
       "incentive_daily": 35947,
       "costRate": 63.5,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 31000
     },
     {
@@ -1069,12 +1069,12 @@
       "valid": 15,
       "calls": 947,
       "apoRate": 2.2,
-      "workH": 80.0,
+      "workH": 80,
       "labor": 242189,
       "labor_base": 200000,
       "incentive_daily": 42189,
       "costRate": 69.8,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 34700
     },
     {
@@ -1088,12 +1088,12 @@
       "valid": 16,
       "calls": 678,
       "apoRate": 2.8,
-      "workH": 70.0,
+      "workH": 70,
       "labor": 236849,
       "labor_base": 175000,
       "incentive_daily": 61849,
       "costRate": 70.3,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 25923
     },
     {
@@ -1107,12 +1107,12 @@
       "valid": 18,
       "calls": 135,
       "apoRate": 14.8,
-      "workH": 72.0,
+      "workH": 72,
       "labor": 279568,
       "labor_base": 180000,
       "incentive_daily": 99568,
-      "costRate": 89.0,
-      "days": 12.0,
+      "costRate": 89,
+      "days": 12,
       "unitPerDay": 26167
     },
     {
@@ -1126,12 +1126,12 @@
       "valid": 11,
       "calls": 456,
       "apoRate": 3.1,
-      "workH": 80.0,
+      "workH": 80,
       "labor": 160000,
       "labor_base": 160000,
       "incentive_daily": 0,
-      "costRate": 53.0,
-      "days": 12.0,
+      "costRate": 53,
+      "days": 12,
       "unitPerDay": 25167
     },
     {
@@ -1150,7 +1150,7 @@
       "labor_base": 132961,
       "incentive_daily": 0,
       "costRate": 44.2,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 30100
     },
     {
@@ -1164,12 +1164,12 @@
       "valid": 35,
       "calls": 1206,
       "apoRate": 3.6,
-      "workH": 96.0,
+      "workH": 96,
       "labor": 205782,
       "labor_base": 201705,
       "incentive_daily": 4077,
       "costRate": 79.1,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 20000
     },
     {
@@ -1188,7 +1188,7 @@
       "labor_base": 173000,
       "incentive_daily": 0,
       "costRate": 68.1,
-      "days": 12.0,
+      "days": 12,
       "unitPerDay": 21167
     },
     {
@@ -1202,12 +1202,12 @@
       "valid": 13,
       "calls": 405,
       "apoRate": 4.2,
-      "workH": 88.0,
+      "workH": 88,
       "labor": 211200,
       "labor_base": 211200,
       "incentive_daily": 0,
       "costRate": 83.5,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 19462
     },
     {
@@ -1226,7 +1226,7 @@
       "labor_base": 150080,
       "incentive_daily": 0,
       "costRate": 68.2,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 16923
     },
     {
@@ -1240,12 +1240,12 @@
       "valid": 15,
       "calls": 524,
       "apoRate": 3.1,
-      "workH": 58.0,
+      "workH": 58,
       "labor": 145000,
       "labor_base": 145000,
       "incentive_daily": 0,
       "costRate": 70.4,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 18727
     },
     {
@@ -1264,7 +1264,7 @@
       "labor_base": 85150,
       "incentive_daily": 0,
       "costRate": 41.7,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 20400
     },
     {
@@ -1283,7 +1283,7 @@
       "labor_base": 194695,
       "incentive_daily": 12819,
       "costRate": 102.2,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 15615
     },
     {
@@ -1302,7 +1302,7 @@
       "labor_base": 76288,
       "incentive_daily": 0,
       "costRate": 40.8,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 17000
     },
     {
@@ -1321,7 +1321,7 @@
       "labor_base": 208125,
       "incentive_daily": 25125,
       "costRate": 127.5,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 16636
     },
     {
@@ -1340,7 +1340,7 @@
       "labor_base": 171166,
       "incentive_daily": 0,
       "costRate": 95.6,
-      "days": 12.0,
+      "days": 12,
       "unitPerDay": 14917
     },
     {
@@ -1373,12 +1373,12 @@
       "valid": 8,
       "calls": 333,
       "apoRate": 5.4,
-      "workH": 72.0,
+      "workH": 72,
       "labor": 108000,
       "labor_base": 108000,
       "incentive_daily": 0,
-      "costRate": 74.0,
-      "days": 10.0,
+      "costRate": 74,
+      "days": 10,
       "unitPerDay": 14600
     },
     {
@@ -1392,12 +1392,12 @@
       "valid": 6,
       "calls": 679,
       "apoRate": 1.8,
-      "workH": 63.0,
+      "workH": 63,
       "labor": 201527,
       "labor_base": 144976,
       "incentive_daily": 56551,
       "costRate": 151.5,
-      "days": 8.0,
+      "days": 8,
       "unitPerDay": 16625
     },
     {
@@ -1416,7 +1416,7 @@
       "labor_base": 123750,
       "incentive_daily": 0,
       "costRate": 101.4,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 11091
     },
     {
@@ -1430,12 +1430,12 @@
       "valid": 12,
       "calls": 1064,
       "apoRate": 1.4,
-      "workH": 96.0,
+      "workH": 96,
       "labor": 211200,
       "labor_base": 211200,
       "incentive_daily": 0,
-      "costRate": 176.0,
-      "days": 12.0,
+      "costRate": 176,
+      "days": 12,
       "unitPerDay": 10000
     },
     {
@@ -1454,7 +1454,7 @@
       "labor_base": 63700,
       "incentive_daily": 0,
       "costRate": 63.7,
-      "days": 9.0,
+      "days": 9,
       "unitPerDay": 11111
     },
     {
@@ -1468,7 +1468,7 @@
       "valid": 3,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1487,12 +1487,12 @@
       "valid": 2,
       "calls": 594,
       "apoRate": 0.5,
-      "workH": 75.0,
+      "workH": 75,
       "labor": 97457,
       "labor_base": 97457,
       "incentive_daily": 0,
       "costRate": 278.4,
-      "days": 10.0,
+      "days": 10,
       "unitPerDay": 3500
     },
     {
@@ -1505,13 +1505,13 @@
       "cancel": 6,
       "valid": 2,
       "calls": 815,
-      "apoRate": 1.0,
-      "workH": 104.0,
+      "apoRate": 1,
+      "workH": 104,
       "labor": 235959,
       "labor_base": 228800,
       "incentive_daily": 7159,
       "costRate": 786.5,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 2308
     },
     {
@@ -1525,7 +1525,7 @@
       "valid": 1,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1544,7 +1544,7 @@
       "valid": 1,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1563,7 +1563,7 @@
       "valid": 1,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1582,12 +1582,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 10574,
       "labor_base": 0,
       "incentive_daily": 10574,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1601,12 +1601,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1620,12 +1620,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1644,7 +1644,7 @@
       "labor_base": 115500,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 0
     },
     {
@@ -1658,7 +1658,7 @@
       "valid": 1,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1682,7 +1682,7 @@
       "labor_base": 97803,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 12.0,
+      "days": 12,
       "unitPerDay": 0
     },
     {
@@ -1696,12 +1696,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1720,7 +1720,7 @@
       "labor_base": 196350,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 0
     },
     {
@@ -1739,7 +1739,7 @@
       "labor_base": 215250,
       "incentive_daily": 57715,
       "costRate": null,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 0
     },
     {
@@ -1753,12 +1753,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1772,12 +1772,12 @@
       "valid": 10,
       "calls": 0,
       "apoRate": null,
-      "workH": 95.0,
+      "workH": 95,
       "labor": 171000,
       "labor_base": 171000,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 13.0,
+      "days": 13,
       "unitPerDay": 0
     },
     {
@@ -1791,12 +1791,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1810,12 +1810,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1834,7 +1834,7 @@
       "labor_base": 98350,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 0
     },
     {
@@ -1848,7 +1848,7 @@
       "valid": 12,
       "calls": 0,
       "apoRate": null,
-      "workH": 100.0,
+      "workH": 100,
       "labor": 239583,
       "labor_base": 239583,
       "incentive_daily": 0,
@@ -1867,12 +1867,12 @@
       "valid": 0,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 0.0,
+      "days": 0,
       "unitPerDay": 0
     },
     {
@@ -1886,7 +1886,7 @@
       "valid": 6,
       "calls": 0,
       "apoRate": null,
-      "workH": 0.0,
+      "workH": 0,
       "labor": 0,
       "labor_base": 0,
       "incentive_daily": 0,
@@ -1910,7 +1910,7 @@
       "labor_base": 108266,
       "incentive_daily": 0,
       "costRate": null,
-      "days": 11.0,
+      "days": 11,
       "unitPerDay": 0
     }
   ],
@@ -1959,5 +1959,40 @@
     "若松": 407,
     "佐藤誠0605": 407,
     "船崎凜0916": 0
-  }
+  },
+  "_baseSales": 14067000,
+  "_baseGross": 4353032,
+  "additionalRevenues": [
+    {
+      "type": "BPO通話料",
+      "name": "ユナイテッドウィル",
+      "amount": 54000
+    },
+    {
+      "type": "BPO通話料",
+      "name": "S-FIX",
+      "amount": 36000
+    },
+    {
+      "type": "BPO通話料",
+      "name": "コミクス",
+      "amount": 135000
+    },
+    {
+      "type": "BPO通話料",
+      "name": "TMC",
+      "amount": 41034
+    },
+    {
+      "type": "BPO通話料",
+      "name": "make power",
+      "amount": 96948
+    },
+    {
+      "type": "BPO通話料",
+      "name": "LOOV",
+      "amount": 115128
+    }
+  ],
+  "additionalTotal": 478110
 }
