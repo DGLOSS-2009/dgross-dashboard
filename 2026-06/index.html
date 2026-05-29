@@ -3,509 +3,1466 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PT事業部 売上管理ダッシュボード v28 - 2026年6月</title>
+<title>PT事業部 売上管理ダッシュボード</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root{--orange:#E8711A;--orange-light:#FFF4EC;--red:#C0392B;--red-light:#FFEBEE;--green:#2E7D32;--green-light:#EDF7ED;--gray:#888;--border:#EBEBEA;--bg:#F7F7F5;--white:#FFFFFF;--text:#1A1A1A;--text-secondary:#555;--text-muted:#AAA;--sidebar-w:220px;--header-h:56px}
+:root{--orange:#D85A30;--orange-light:#FAECE7;--red:#E24B4A;--red-light:#FCEBEB;--green:#3B6D11;--green-light:#EAF3DE;--blue:#185FA5;--blue-light:#E6F1FB;--amber:#854F0B;--amber-light:#FAEEDA;--gray:#5F5E5A;--gray-light:#F1EFE8;--border:rgba(0,0,0,0.12);--bg:#F5F4F0;--white:#FFFFFF;--text:#1A1A1A;--text2:#555;--text3:#888;--sidebar:220px;--header:52px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
 .layout{display:flex;min-height:100vh}
-.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
-.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
-.header{height:var(--header-h);background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
-.content{padding:24px;flex:1}
-.sidebar-logo{padding:18px 20px 16px;border-bottom:1px solid var(--border)}
+.sidebar{width:var(--sidebar);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.header{height:var(--header);background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.content{padding:16px;flex:1}
+.sidebar-logo{padding:16px 18px 14px;border-bottom:1px solid var(--border)}
+.logo-icon{width:30px;height:30px;background:var(--orange);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{width:16px;height:16px;fill:#fff}
 .logo-mark{display:flex;align-items:center;gap:8px}
-.logo-icon{width:32px;height:32px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.logo-icon svg{width:18px;height:18px;fill:#fff}
-.logo-text{font-size:14px;font-weight:700}
-.logo-sub{font-size:10px;color:var(--gray);margin-top:1px}
-.nav{padding:12px 0;flex:1}
-.nav-section{font-size:10px;font-weight:500;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;padding:10px 20px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:var(--text-secondary);transition:all .15s;border-left:2px solid transparent;font-size:13px}
+.logo-text{font-size:13px;font-weight:500}
+.logo-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.nav{padding:10px 0;flex:1}
+.nav-section{font-size:10px;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;padding:8px 18px 3px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;color:var(--text2);transition:all .15s;border-left:2px solid transparent;font-size:12px}
 .nav-item:hover{background:var(--bg);color:var(--text)}
 .nav-item.active{color:var(--orange);font-weight:500;border-left-color:var(--orange);background:var(--orange-light)}
-.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.7}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
 .nav-item.active svg{opacity:1}
-.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border)}
 .user-info{display:flex;align-items:center;gap:8px}
-.user-avatar{width:30px;height:30px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:500;flex-shrink:0}
+.user-avatar{width:28px;height:28px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:500;flex-shrink:0}
 .user-name{font-size:12px;font-weight:500}
-.user-role{font-size:10px;color:var(--gray)}
-.page-title{font-size:15px;font-weight:500}
-.header-right{display:flex;align-items:center;gap:12px}
-.period-badge{font-size:12px;background:var(--orange-light);color:var(--orange);padding:4px 12px;border-radius:20px;font-weight:500}
-.update-time{font-size:11px;color:var(--text-muted)}
-.site-tabs{display:flex;gap:2px;background:#F0F0EE;border-radius:7px;padding:3px}
-.site-tab{font-size:12px;padding:5px 14px;border-radius:5px;cursor:pointer;color:var(--text-secondary);transition:all .15s;white-space:nowrap}
+.user-role{font-size:10px;color:var(--text3)}
+.page-title{font-size:14px;font-weight:500}
+.header-right{display:flex;align-items:center;gap:10px}
+.update-badge{font-size:11px;color:var(--text3)}
+.site-tabs{display:flex;gap:2px;background:#EDEDEB;border-radius:7px;padding:3px}
+.site-tab{font-size:12px;padding:4px 14px;border-radius:5px;cursor:pointer;color:var(--text2);transition:all .15s;white-space:nowrap}
 .site-tab.active{background:var(--white);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .page{display:none}.page.active{display:block}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden}
-.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
-.kpi-card.orange::after{background:var(--orange)}.kpi-card.red::after{background:var(--red)}.kpi-card.green::after{background:var(--green)}.kpi-card.gray::after{background:#CCC}
-.kpi-label{font-size:11px;color:var(--gray);margin-bottom:6px;font-weight:500}
-.kpi-value{font-size:22px;font-weight:500;line-height:1.1;color:var(--text)}
-.kpi-sub{font-size:11px;color:var(--text-muted);margin-top:5px}
-.kpi-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;margin-top:4px}
-.badge-orange{background:var(--orange-light);color:var(--orange)}.badge-red{background:var(--red-light);color:var(--red)}.badge-green{background:var(--green-light);color:var(--green)}
-.prog{display:flex;align-items:center;gap:6px;margin-top:6px}
-.prog-bg{flex:1;height:3px;background:#F0F0EE;border-radius:2px;overflow:hidden}
+
+/* KPIグリッド */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 14px;border-top:2px solid transparent;position:relative}
+.kpi-card.c-orange{border-top-color:var(--orange)}
+.kpi-card.c-red{border-top-color:var(--red)}
+.kpi-card.c-green{border-top-color:var(--green)}
+.kpi-card.c-gray{border-top-color:var(--gray)}
+.kpi-label{font-size:10px;color:var(--text3);margin-bottom:4px;font-weight:500}
+.kpi-value{font-size:16px;font-weight:500;line-height:1.2;letter-spacing:-.01em}
+.kpi-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.kpi-diff{font-size:11px;font-weight:500;margin-top:2px}
+.c-neg{color:var(--red)}.c-pos{color:var(--green)}.c-warn{color:var(--amber)}
+
+/* ランク別テーブル */
+.section-row{display:grid;grid-template-columns:3fr 2fr;gap:10px;margin-bottom:12px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:14px 16px}
+.card-title{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:12px;letter-spacing:.04em}
+.data-table{width:100%;border-collapse:collapse;font-size:11px}
+.data-table th{text-align:left;padding:5px 8px;color:var(--text3);border-bottom:1px solid var(--border);font-weight:400;white-space:nowrap}
+.data-table th.r,.data-table td.r{text-align:right}
+.data-table td{padding:6px 8px;border-bottom:1px solid #F5F4F0;white-space:nowrap}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#FAFAF8}
+.rank-badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:4px;font-weight:500}
+.rb-top{background:var(--blue-light);color:var(--blue)}
+.rb-mid{background:var(--green-light);color:var(--green)}
+.rb-rookie{background:var(--gray-light);color:var(--gray)}
+.rb-mgr{background:var(--amber-light);color:var(--amber)}
+
+/* サブKPI */
+.sub-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sub-kpi{background:#F8F7F4;border-radius:7px;padding:10px 12px}
+.sub-kpi-label{font-size:10px;color:var(--text3);margin-bottom:3px}
+.sub-kpi-value{font-size:14px;font-weight:500}
+.sub-kpi-sub{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ボトムロウ */
+.bottom-row{display:grid;grid-template-columns:1.8fr 1fr;gap:10px;margin-bottom:12px}
+.chart-wrap{height:150px;position:relative}
+
+/* ヒートマップ */
+.hm-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #F5F4F0;font-size:11px}
+.hm-row:last-child{border-bottom:none}
+.hm-rank{font-weight:500;color:var(--text3);width:14px;text-align:center;font-size:10px;flex-shrink:0}
+.hm-name{flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hm-bar-bg{width:56px;height:4px;background:#EDEDEB;border-radius:2px;overflow:hidden;flex-shrink:0}
+.hm-bar-fill{height:100%;background:var(--orange);border-radius:2px}
+.hm-val{font-weight:500;min-width:72px;text-align:right;flex-shrink:0}
+
+/* OP個人実績 */
+.op-summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.search-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.search-input{border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:12px;width:200px;font-family:inherit}
+.search-input:focus{outline:none;border-color:var(--orange)}
+
+/* 日次明細 */
+.daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* 進捗バー */
+.prog-wrap{display:flex;align-items:center;gap:6px;margin-top:5px}
+.prog-bg{flex:1;height:3px;background:#EDEDEB;border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;border-radius:2px}
-.section-label{font-size:11px;font-weight:500;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
-.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:20px}
-.card-title{font-size:13px;font-weight:500;margin-bottom:16px;color:var(--text-secondary)}
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:8px 12px;font-size:11px;font-weight:500;color:var(--gray);border-bottom:1px solid var(--border);white-space:nowrap}
-th.r{text-align:right}
-td{padding:9px 12px;border-bottom:1px solid #F5F5F4;font-size:13px;white-space:nowrap}
-td.r{text-align:right}
-tr:last-child td{border-bottom:none}
-tr.sec-head td{background:#FAFAF8;font-size:10px;font-weight:500;color:var(--orange);padding:5px 12px;letter-spacing:.06em;border-bottom:1px solid var(--border)}
-tr.subtotal td{font-weight:500;background:#FFFAF7}
-tr.data-row:hover td{background:#FFFBF8}
-.rank-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
-.rank-top{background:#EBF3FB;color:#1A5FAD}.rank-mid{background:var(--green-light);color:var(--green)}.rank-rookie{background:#F4F4F2;color:#666}
-.c-orange{color:var(--orange)}.c-red{color:var(--red)}.c-amber{color:#C06010}.c-green{color:var(--green)}.c-muted{color:var(--text-muted)}
-.alert{background:#FEF8F0;border:1px solid #F0C88A;border-radius:8px;padding:10px 16px;font-size:12px;color:#7A4A10;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.alert-dot{width:7px;height:7px;border-radius:50%;background:#D4860A;flex-shrink:0}
-.daily-date-col{color:var(--text-secondary);font-size:12px}
-.hm-row{display:grid;grid-template-columns:20px 1fr 40px 60px 50px;gap:6px;padding:5px 4px;border-radius:4px;font-size:11px;align-items:center}
-.hm-rank{font-weight:700;color:var(--gray);text-align:center}.hm-id{color:var(--text-secondary);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hm-val,.hm-sales,.hm-pct{text-align:right}.hm-val{font-weight:500}.hm-sales{color:var(--text-secondary)}.hm-pct{font-weight:500}
-.popup-trigger{position:relative;cursor:pointer}
-.popup-trigger:hover .popup-content{display:block}
-.popup-content{display:none;position:absolute;z-index:200;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);padding:10px 14px;min-width:200px;left:0;top:100%;margin-top:4px;font-size:12px}
-.popup-content .popup-title{font-weight:500;margin-bottom:6px;color:var(--text-secondary)}
-.popup-content .popup-row{padding:3px 0;border-bottom:1px solid #f5f5f4}
-.popup-content .popup-row:last-child{border-bottom:none}
-.btn{padding:8px 20px;border-radius:7px;font-size:13px;cursor:pointer;font-weight:500}
-.btn-secondary{background:var(--white);border:1px solid var(--border);color:var(--text-secondary)}
-.btn-primary{background:var(--orange);border:1px solid var(--orange);color:#fff}
+
+/* アラート */
+.alert{background:#FEF8F0;border:1px solid #F0C88A;border-radius:7px;padding:8px 14px;font-size:11px;color:#7A4A10;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.alert-dot{width:6px;height:6px;border-radius:50%;background:#D4860A;flex-shrink:0}
+
+/* 設定 */
 .setting-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:13px;font-family:inherit}
 .setting-input:focus{outline:none;border-color:var(--orange)}
+.btn{padding:7px 18px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500}
+.btn-primary{background:var(--orange);border:none;color:#fff}
+.btn-secondary{background:var(--white);border:1px solid var(--border);color:var(--text2)}
+
+/* ファイルドロップ */
+.file-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px dashed var(--border);border-radius:9px;padding:16px;cursor:pointer;transition:all .15s;background:var(--white);min-height:80px}
+.file-drop:hover{border-color:var(--orange);background:var(--orange-light)}
+.file-drop.selected{border-color:var(--green);background:var(--green-light)}
+.file-drop-text{font-size:11px;color:var(--text2);text-align:center;word-break:break-all}
 </style>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-  <div class="sidebar-logo"><div class="logo-mark"><div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg></div><div><div class="logo-text">PT事業部</div><div class="logo-sub">売上管理システム</div></div></div></div>
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg></div>
+      <div><div class="logo-text">PT事業部</div><div class="logo-sub">売上管理システム</div></div>
+    </div>
+  </div>
   <nav class="nav">
     <div class="nav-section">メイン</div>
-    <div class="nav-item" onclick="goTop()" style="color:var(--text-muted);font-size:12px">
-      <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>トップに戻る
+    <div class="nav-item active" onclick="showPage('dashboard',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>ダッシュボード
     </div>
-    <div class="nav-item active" onclick="showPage('dashboard',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>ダッシュボード</div>
-    <div class="nav-item" onclick="showPage('daily',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>日次明細</div>
-    <div class="nav-item" onclick="showPage('operator',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>OP個人実績</div>
+    <div class="nav-item" onclick="showPage('daily',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>日次明細
+    </div>
+    <div class="nav-item" onclick="showPage('operator',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>OP個人実績
+    </div>
     <div class="nav-section">管理</div>
-    <div class="nav-item" onclick="showPage('import',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>データ取込</div>
+    <div class="nav-item" onclick="showPage('import',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>データ取込
+    </div>
+    <div class="nav-item" onclick="showPage('revenue',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>追加収益
+    </div>
     <div class="nav-section">設定</div>
-    <div class="nav-item" onclick="showPage('settings',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>設定</div>
+    <div class="nav-item" onclick="showPage('settings',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>設定
+    </div>
   </nav>
-  <div class="sidebar-footer"><div class="user-info"><div class="user-avatar">皆</div><div><div class="user-name">皆川 大輔</div><div class="user-role">管理者</div></div></div></div>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">皆</div>
+      <div><div class="user-name">皆川 大輔</div><div class="user-role">管理者</div></div>
+    </div>
+  </div>
 </div>
+
 <div class="main">
   <div class="header">
-    <div style="display:flex;align-items:center;gap:16px"><div class="page-title" id="pageTitle">ダッシュボード</div><span class="update-time" id="updateTime"></span></div>
-    <div class="header-right"><div style="position:relative">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="page-title" id="pageTitle">ダッシュボード</div>
+      <span class="update-badge" id="updateTime"></span>
+    </div>
+    <div class="header-right">
+      <div style="position:relative">
         <select id="monthSelect" onchange="goToMonth(this.value)" style="background:var(--orange-light);color:var(--orange);border:none;border-radius:20px;padding:4px 28px 4px 12px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none;outline:none">
           <option value="2026-05">2026年5月</option>
-          <option value="2026-06">2026年6月</option>
+          <option value="2026-06" selected>2026年6月</option>
         </select>
         <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:10px;color:var(--orange)">▼</span>
       </div>
       <div class="site-tabs" id="siteTabs">
         <div class="site-tab active" onclick="switchSite('all',this)">全体</div>
-        <div class="site-tab" onclick="switchSite('shinjuku',this)">新宿SC</div>
+        <div class="site-tab" onclick="switchSite('shinjuku',this)">六本木SC</div>
         <div class="site-tab" onclick="switchSite('remote',this)">リモートSC</div>
-        <div class="site-tab" onclick="switchSite('ai',this)">AI</div>
+        
       </div>
     </div>
   </div>
+
   <div class="content">
+
+    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="alert"><div class="alert-dot"></div><span id="alertText"></span></div>
-      <div class="section-label">SALES｜売上</div><div class="kpi-grid" id="kpi-sales-grid"></div>
-      <div class="section-label">COST｜原価</div><div class="kpi-grid" id="kpi-cost-grid"></div>
-      <div class="section-label">WORK &amp; APO｜稼働・アポイント</div><div class="kpi-grid" id="kpi-work-grid"></div>
-      <div class="row2">
-        <div class="card" style="margin-bottom:0"><div class="card-title">日次売上推移（万円）</div><div style="height:160px"><canvas id="dailyChart"></canvas></div></div>
-        <div class="card" style="margin-bottom:0"><div class="card-title">案件別ヒートマップ TOP10</div>
-          <div style="display:flex;flex-direction:column;gap:2px">
-            <div style="display:grid;grid-template-columns:20px 1fr 40px 60px 50px;gap:6px;font-size:10px;color:var(--gray);font-weight:500;padding:0 4px"><span>#</span><span>案件名</span><span style="text-align:right">有効</span><span style="text-align:right">売上</span><span style="text-align:right">構成比</span></div>
-            <div id="heatmap-container"></div>
+
+      <div class="kpi-grid" id="kpi-main"></div>
+
+      <div class="section-row">
+        <div class="card">
+          <div class="card-title">ランク別実績（累計<span id="elapsed-label">0</span>営業日）</div>
+          <table class="data-table" id="rank-table"><thead><tr><th>ランク</th><th class="r">売上</th><th class="r">原価率</th><th class="r">単価/日</th><th class="r">在籍</th><th class="r">稼働</th></tr></thead><tbody id="rank-tbody"></tbody></table>
+        </div>
+        <div class="card">
+          <div class="sub-kpi-grid" id="sub-kpi"></div>
+        </div>
+      </div>
+
+      <div class="bottom-row">
+        <div class="card">
+          <div class="card-title">日次売上推移　<span style="color:var(--red);font-size:10px">- - - 日割り目標</span></div>
+          <div class="chart-wrap"><canvas id="dailyChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">案件 TOP5（累計売上）</div>
+          <div id="heatmap-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY -->
+    <div class="page" id="page-daily">
+      <div class="daily-grid">
+        <div class="card">
+          <div class="card-title">日次売上推移</div>
+          <div class="chart-wrap"><canvas id="dailyChart2"></canvas></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:14px 16px 0"><div class="card-title">日次明細</div></div>
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead><tr><th>営業日</th><th>日付</th><th class="r">売上</th><th class="r">アポ</th><th class="r">CXL</th><th class="r">有効</th><th class="r">稼働</th><th class="r">コール</th><th class="r">単価/人</th></tr></thead>
+              <tbody id="daily-tbody"></tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div class="card" style="margin-top:20px"><div class="card-title">詳細データ</div><div class="tbl-wrap"><table><thead><tr><th>項目</th><th class="r">全体</th><th class="r">新宿SC</th><th class="r">リモートSC</th><th class="r">AI</th></tr></thead><tbody id="detail-tbody"></tbody></table></div></div>
-      <div class="card"><div class="card-title">ランク別原価率</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px"><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">全体</div><div id="rank-cost-all"></div></div><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">新宿SC</div><div id="rank-cost-shinjuku"></div></div><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">リモートSC</div><div id="rank-cost-remote"></div></div></div></div>
-      <div class="card"><div class="card-title">ランク別稼働単価（1出勤日あたり）</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px"><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">全体</div><div id="rank-unit-all"></div></div><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">新宿SC</div><div id="rank-unit-shinjuku"></div></div><div><div style="font-size:11px;color:var(--gray);margin-bottom:8px">リモートSC</div><div id="rank-unit-remote"></div></div></div></div>
     </div>
-    <div class="page" id="page-daily">
-      <div class="row2">
-        <div class="card" style="margin-bottom:0"><div class="card-title">日次売上推移（万円）</div><div style="height:180px"><canvas id="dailyChart2"></canvas></div></div>
-        <div class="card" style="margin-bottom:0"><div class="card-title">日次明細</div><div class="tbl-wrap"><table><thead><tr><th>営業日</th><th>日付</th><th class="r">売上</th><th class="r">アポ</th><th class="r">CXL</th><th class="r">有効</th><th class="r">稼働</th><th class="r">コール</th><th class="r">単価</th></tr></thead><tbody id="daily-tbody"></tbody></table></div></div>
-      </div>
-    </div>
+
+    <!-- OPERATOR -->
     <div class="page" id="page-operator">
-      <div class="row3" style="margin-bottom:16px">
-        <div class="card" style="margin-bottom:0"><div class="card-title">ランク別原価率 <span style="font-size:10px;color:var(--text-muted)">※ランクにカーソルを合わせるとスタッフ一覧</span></div><div id="op-rank-cost"></div></div>
-        <div class="card" style="margin-bottom:0"><div class="card-title">ランク別稼働単価</div><div id="op-rank-unit"></div></div>
-        <div class="card" style="margin-bottom:0"><div class="card-title">サイト別稼働人数</div><div id="op-site-ops"></div></div>
+      <div class="op-summary-grid" id="op-summary"></div>
+      <div class="search-bar">
+        <input type="text" class="search-input" id="op-search" placeholder="氏名で検索..." oninput="renderOpTable(currentSite)">
+        <span id="op-count" style="font-size:11px;color:var(--text3)"></span>
       </div>
-      <div class="card-title" style="margin-bottom:8px">OP個人実績一覧</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <input type="text" id="op-search" placeholder="氏名で検索..." oninput="renderOperatorTable(currentSite)" style="border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:13px;width:200px;font-family:inherit">
-        <span id="op-count" style="font-size:12px;color:var(--text-muted)"></span>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead><tr><th>氏名</th><th>ランク</th><th>サイト</th><th class="r">売上</th><th class="r">アポ</th><th class="r">CXL</th><th class="r">有効</th><th class="r">コール</th><th class="r">アポ率</th><th class="r">単価/日</th><th class="r">労働時間</th><th class="r">原価率</th></tr></thead>
+            <tbody id="op-tbody"></tbody>
+          </table>
+        </div>
       </div>
-      <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table><thead><tr><th>氏名</th><th>ランク</th><th>サイト</th><th class="r">売上</th><th class="r">アポ</th><th class="r">CXL</th><th class="r">有効</th><th class="r">コール</th><th class="r">アポ率</th><th class="r">稼働単価</th><th class="r">労働時間</th><th class="r">原価率</th></tr></thead><tbody id="op-tbody"></tbody></table></div></div>
     </div>
+
+    <!-- IMPORT -->
     <div class="page" id="page-import">
-      <div class="card"><div class="card-title">データ取込</div><div class="alert" style="margin-top:8px"><div class="alert-dot"></div>毎営業日、以下の4ファイルをチャットで共有してください。① アポイントリスト（xlsx）　② 生産性レポート（csv）　③ レポート（csv）　④ 勤務データ（csv）</div></div>
-    </div>
-    <div class="page" id="page-settings">
-      <div class="card"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between">目標設定<div style="display:flex;gap:8px"><button class="btn btn-secondary" style="font-size:12px;padding:5px 12px" onclick="cancelSettings()">キャンセル</button><button class="btn btn-primary" style="font-size:12px;padding:5px 12px" onclick="saveSettings()">保存する</button></div></div>
-        <table><thead><tr><th>項目</th><th>全体</th><th>新宿SC</th><th>リモートSC</th><th>備考</th></tr></thead><tbody>
-          <tr class="data-row"><td>月次売上目標</td>
-            <td><input type="number" id="s-sales-all" class="setting-input" oninput="allocateSales()" placeholder="全体目標を入力"></td>
-            <td><input type="number" id="s-sales-sj" class="setting-input"></td>
-            <td><input type="number" id="s-sales-rm" class="setting-input"></td>
-            <td style="color:var(--text-muted);font-size:11px">円<br><span style="font-size:10px">全体入力で自動按分<br>新宿82.8%/リモート17.2%</span></td></tr>
-          <tr class="data-row"><td>原価率目標</td><td><input type="number" id="s-cost-all" class="setting-input"></td><td><input type="number" id="s-cost-sj" class="setting-input"></td><td><input type="number" id="s-cost-rm" class="setting-input"></td><td style="color:var(--text-muted);font-size:11px">%</td></tr>
-          <tr class="data-row"><td>稼働単価目標</td><td><input type="number" id="s-unit-all" class="setting-input"></td><td><input type="number" id="s-unit-sj" class="setting-input"></td><td><input type="number" id="s-unit-rm" class="setting-input"></td><td style="color:var(--text-muted);font-size:11px">円</td></tr>
-          <tr class="data-row"><td>当月営業日数</td><td><input type="number" id="s-days" class="setting-input"></td><td colspan="3" style="color:var(--text-muted);font-size:11px">日（着地計算に使用）</td></tr>
-        </tbody></table>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">データ取込</div>
+        <div class="alert" style="margin-bottom:14px"><div class="alert-dot"></div>4ファイルを選択して「更新する」をクリックしてください。自動で集計・反映されます。</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">① アポイントリスト <span style="color:var(--red)">*必須</span></div>
+            <div class="file-drop" id="drop-apo" onclick="triggerFile('apo')"><input type="file" id="file-apo" accept=".xlsx" style="display:none" onchange="onFileSelect('apo',this)"><div style="font-size:22px">📋</div><div class="file-drop-text" id="text-apo">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx</div><button id="clear-apo" onclick="clearFile(event,'apo')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">② 生産性レポート <span style="color:var(--red)">*必須</span></div>
+            <div class="file-drop" id="drop-prod" onclick="triggerFile('prod')"><input type="file" id="file-prod" accept=".csv" style="display:none" onchange="onFileSelect('prod',this)"><div style="font-size:22px">📊</div><div class="file-drop-text" id="text-prod">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv</div><button id="clear-prod" onclick="clearFile(event,'prod')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">③ 勤務データ <span style="color:var(--red)">*必須</span></div>
+            <div class="file-drop" id="drop-work" onclick="triggerFile('work')"><input type="file" id="file-work" accept=".csv,.zip" style="display:none" onchange="onFileSelect('work',this)"><div style="font-size:22px">⏱️</div><div class="file-drop-text" id="text-work">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv / .zip</div><button id="clear-work" onclick="clearFile(event,'work')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">④ レポート <span style="color:var(--red)">*必須</span></div>
+            <div class="file-drop" id="drop-report" onclick="triggerFile('report')"><input type="file" id="file-report" accept=".csv" style="display:none" onchange="onFileSelect('report',this)"><div style="font-size:22px">📈</div><div class="file-drop-text" id="text-report">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv</div><button id="clear-report" onclick="clearFile(event,'report')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">⑤ スタッフマスター <span style="color:var(--text3)">任意（変更時のみ）</span></div>
+            <div class="file-drop" id="drop-master" onclick="triggerFile('master')"><input type="file" id="file-master" accept=".xlsx" style="display:none" onchange="onFileSelect('master',this)"><div style="font-size:22px">👥</div><div class="file-drop-text" id="text-master">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx</div><button id="clear-master" onclick="clearFile(event,'master')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">⑥ インセンティブ <span style="color:var(--text3)">任意・月1回</span></div>
+            <div class="file-drop" id="drop-inc" onclick="triggerFile('inc')"><input type="file" id="file-inc" accept=".xlsx" style="display:none" onchange="onFileSelect('inc',this)"><div style="font-size:22px">💰</div><div class="file-drop-text" id="text-inc">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx（月1回）</div><button id="clear-inc" onclick="clearFile(event,'inc')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <button class="btn btn-primary" onclick="runUpdate()" id="btn-update" style="padding:9px 28px;font-size:13px">更新する</button>
+          <span id="update-status" style="font-size:12px;color:var(--text3)"></span>
+        </div>
+        <div id="update-result" style="display:none;margin-top:12px"></div>
       </div>
     </div>
+
+    <!-- REVENUE -->
+    <div class="page" id="page-revenue">
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+          追加収益管理
+          <button class="btn btn-primary" onclick="openAddRevenue()">＋ 追加する</button>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:14px">全体売上・原価率・着地見込みに反映されます。個人・ランク別実績には反映されません。</div>
+
+        <!-- 登録済み一覧 -->
+        <div id="revenue-list-wrap">
+          <table class="data-table" id="revenue-table">
+            <thead><tr><th>種別</th><th>クライアント名</th><th class="r">金額</th><th>操作</th></tr></thead>
+            <tbody id="revenue-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">登録なし</td></tr></tbody>
+          </table>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:500">合計：<span id="revenue-total" style="color:var(--orange)">¥0</span></div>
+            <button class="btn btn-primary" onclick="saveRevenue()" id="btn-save-revenue">保存して反映する</button>
+          </div>
+        </div>
+        <div id="revenue-save-result" style="display:none;margin-top:10px"></div>
+      </div>
+
+      <!-- 追加・編集モーダル -->
+      <div id="revenue-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center">
+        <div style="background:var(--white);border-radius:12px;padding:24px;width:400px;max-width:90vw">
+          <div style="font-size:14px;font-weight:500;margin-bottom:16px" id="rev-modal-title">追加収益を追加</div>
+          <div style="display:grid;gap:10px">
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:4px">種別</div>
+              <select id="rev-type" class="setting-input">
+                <option value="BPO通話料">BPO通話料</option>
+                <option value="DP">DP</option>
+                <option value="BPO固定費">BPO固定費</option>
+                <option value="コール課金">コール課金</option>
+                <option value="リスト・レポート作成費用">リスト・レポート作成費用</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:4px">クライアント名</div>
+              <input type="text" id="rev-name" class="setting-input" placeholder="例）○○株式会社">
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:4px">金額（円）</div>
+              <input type="number" id="rev-amount" class="setting-input" placeholder="例）100000">
+            </div>
+          </div>
+          <input type="hidden" id="rev-edit-idx" value="-1">
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+            <button class="btn btn-secondary" onclick="closeRevenueModal()">キャンセル</button>
+            <button class="btn btn-primary" onclick="confirmRevenue()">追加する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <!-- 設定タブ -->
+      <div style="display:flex;gap:2px;background:#EDEDEB;border-radius:7px;padding:3px;margin-bottom:14px;width:fit-content">
+        <div class="site-tab active" id="stab-target" onclick="switchSettingTab('target',this)">目標設定</div>
+        <div class="site-tab" id="stab-staff" onclick="switchSettingTab('staff',this)">スタッフ管理</div>
+      </div>
+
+      <!-- 目標設定 -->
+      <div id="stab-panel-target">
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">目標設定<div style="display:flex;gap:8px"><button class="btn btn-secondary" onclick="cancelSettings()">キャンセル</button><button class="btn btn-primary" onclick="saveSettings()">保存する</button></div></div>
+          <table class="data-table">
+            <thead><tr><th>項目</th><th>全体</th><th>六本木SC</th><th>リモートSC</th><th>備考</th></tr></thead>
+            <tbody>
+              <tr><td>月次売上目標</td><td><input type="number" id="s-sales-all" class="setting-input" oninput="allocateSales()"></td><td><input type="number" id="s-sales-sj" class="setting-input"></td><td><input type="number" id="s-sales-rm" class="setting-input"></td><td style="font-size:11px;color:var(--text3)">円　全体入力で自動按分</td></tr>
+              <tr><td>原価率目標</td><td><input type="number" id="s-cost-all" class="setting-input"></td><td><input type="number" id="s-cost-sj" class="setting-input"></td><td><input type="number" id="s-cost-rm" class="setting-input"></td><td style="font-size:11px;color:var(--text3)">%</td></tr>
+              <tr><td>稼働単価目標</td><td><input type="number" id="s-unit-all" class="setting-input"></td><td><input type="number" id="s-unit-sj" class="setting-input"></td><td><input type="number" id="s-unit-rm" class="setting-input"></td><td style="font-size:11px;color:var(--text3)">円/日</td></tr>
+              <tr><td>当月営業日数</td><td><input type="number" id="s-days" class="setting-input"></td><td colspan="3" style="font-size:11px;color:var(--text3)">日（着地計算に使用）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:500;margin-bottom:10px">GitHub連携（翌月準備）</div>
+          <div style="display:grid;gap:8px;margin-bottom:12px">
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:4px">GitHub Personal Access Token</div>
+              <input type="password" id="s-github-pat" class="setting-input" placeholder="ghp_xxxxxxxxxxxx" style="font-family:monospace">
+              <div style="font-size:10px;color:var(--text3);margin-top:3px">入力したトークンはこのブラウザのみに保存されます</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="btn btn-primary" onclick="prepareNextMonth()" id="btn-next-month" style="background:#2563EB">📅 翌月を準備する</button>
+            <span id="next-month-status" style="font-size:12px;color:var(--text3)"></span>
+          </div>
+          <div id="next-month-result" style="display:none;margin-top:10px"></div>
+        </div>
+      </div>
+
+      <!-- スタッフ管理 -->
+      <div id="stab-panel-staff" style="display:none">
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            スタッフ管理
+            <button class="btn btn-primary" onclick="openAddStaff()">＋ スタッフ追加</button>
+          </div>
+          <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px">
+            <input type="text" id="staff-search" class="search-input" placeholder="氏名・IDで検索..." oninput="filterStaffTable()">
+            <span id="staff-count" style="font-size:11px;color:var(--text3)"></span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="data-table" id="staff-table">
+              <thead><tr>
+                <th>社員番号</th><th>氏名</th><th>サイト</th><th>ランク</th>
+                <th class="r">時給/月給</th><th>給与種別</th><th>状態</th><th>操作</th>
+              </tr></thead>
+              <tbody id="staff-tbody"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">読み込み中...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- スタッフ追加・編集モーダル -->
+      <div id="staff-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center">
+        <div style="background:var(--white);border-radius:12px;padding:24px;width:440px;max-width:90vw">
+          <div style="font-size:14px;font-weight:500;margin-bottom:16px" id="modal-title">スタッフ追加</div>
+          <div style="display:grid;gap:10px">
+            <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">社員番号</div><input type="text" id="m-empid" class="setting-input" placeholder="D0000001"></div>
+            <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">氏名</div><input type="text" id="m-name" class="setting-input" placeholder="氏名を入力"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">サイト</div>
+                <select id="m-site" class="setting-input">
+                  <option value="六本木SC">六本木SC</option>
+                  <option value="在宅G">リモートSC（在宅G）</option>
+                  
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">ランク</div>
+                <select id="m-rank" class="setting-input">
+                  <option value="トップ">トップ</option>
+                  <option value="ミドル">ミドル</option>
+                  <option value="ルーキープラス">ルーキープラス</option>
+                  <option value="ルーキー">ルーキー</option>
+                  <option value="管理者">管理者</option>
+                  <option value="社員">社員</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">時給 / 月給（円）</div><input type="number" id="m-rate" class="setting-input" placeholder="1500"></div>
+              <div><div style="font-size:11px;color:var(--text3);margin-bottom:4px">給与種別</div>
+                <select id="m-stype" class="setting-input">
+                  <option value="hourly">時給</option>
+                  <option value="monthly">月給</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="checkbox" id="m-active" checked>
+              <label for="m-active" style="font-size:12px">在籍中（アクティブ）</label>
+            </div>
+          </div>
+          <input type="hidden" id="m-id">
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+            <button class="btn btn-secondary" onclick="closeModal()">キャンセル</button>
+            <button class="btn btn-primary" onclick="saveStaff()">保存する</button>
+          </div>
+          <div id="modal-error" style="display:none;margin-top:10px;font-size:11px;color:var(--red)"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
 <script>
-var PT_DATA = {"meta": {"month": "2026年6月", "lastUpdate": "2026/05/26", "lastUpdateLabel": "—", "elapsedDays": 0, "workingDays": 22, "alertText": "6月度の管理表です。稼働開始後にデータを更新してください。"}, "targets": {"all": {"sales": 33000000, "costRate": 50.0, "unit": 35000}, "shinjuku": {"sales": 27192000, "costRate": 50.0, "unit": 45000}, "remote": {"sales": 5808000, "costRate": 50.0, "unit": 25000}, "ai": {"sales": 0, "costRate": 0, "unit": 0}}, "sites": {"all": {"sales": 0, "apo": 0, "cancel": 0, "valid": 0, "cancelRate": 0, "labor": 0, "costRate": 0, "gross": 0, "ops": 0, "unit": 0, "calls": 0, "apoRate": 0}, "shinjuku": {"sales": 0, "apo": 0, "cancel": 0, "valid": 0, "cancelRate": 0, "labor": 0, "costRate": 0, "gross": 0, "ops": 0, "unit": 0, "calls": 0, "apoRate": 0}, "remote": {"sales": 0, "apo": 0, "cancel": 0, "valid": 0, "cancelRate": 0, "labor": 0, "costRate": 0, "gross": 0, "ops": 0, "unit": 0, "calls": 0, "apoRate": 0}, "ai": {"sales": 0, "apo": 0, "cancel": 0, "valid": 0, "cancelRate": 0, "labor": 0, "costRate": 0, "gross": 0, "ops": 0, "unit": 0, "calls": 0, "apoRate": 0}}, "daily": {"all": [], "shinjuku": [], "remote": [], "ai": []}, "chart": {"labels": ["6/1", "6/2", "6/3", "6/4", "6/5", "6/8", "6/9", "6/10", "6/11", "6/12", "6/15", "6/16", "6/17", "6/18", "6/19", "6/22", "6/23", "6/24", "6/25", "6/26", "6/29", "6/30"], "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}, "heatmap": [], "incentive": {}, "operators": [], "prev_calls": {}};
+var PT_DATA = null;
 
-var currentSite='all';
-function fm(v){return v!=null&&v!==''?'¥'+Math.round(v).toLocaleString():'—';}
-function fp(v){return v!=null?v.toFixed(1)+'%':'—';}
-function costCls(v){if(v==null)return '';if(v<=50)return 'c-green';if(v<=80)return 'c-amber';return 'c-red';}
-
-function showPage(id,el){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');
-  if(el)el.classList.add('active');
-  var titles={dashboard:'ダッシュボード',daily:'日次明細',operator:'OP個人実績',import:'データ取込',settings:'設定'};
-  document.getElementById('pageTitle').textContent=titles[id]||id;
-  document.getElementById('siteTabs').style.display=['dashboard','daily','operator'].indexOf(id)>=0?'flex':'none';
-  if(id==='daily')renderDailyPage(currentSite);
-  if(id==='operator'){renderOperatorSummary(currentSite);renderOperatorTable(currentSite);}
-}
-
-function switchSite(site,el){
-  currentSite=site;
-  document.querySelectorAll('.site-tab').forEach(function(t){t.classList.remove('active');});
-  if(el)el.classList.add('active');
-  renderDashboard(site);renderDailyPage(site);renderOperatorSummary(site);renderOperatorTable(site);
-}
-
-function renderDashboard(site){
-  var d=PT_DATA.sites[site],t=PT_DATA.targets[site],m=PT_DATA.meta;
-  if(!d||!t)return;
-  var el=m.elapsedDays,wd=m.workingDays;
-  var salesPct=t.sales>0?d.sales/t.sales*100:0;
-  var landing=el>0?Math.round(d.sales/el*wd):0;
-  var landingPct=t.sales>0?landing/t.sales*100:0;
-  var avg=el>0?Math.round(d.sales/el):0;
-
-  document.getElementById('kpi-sales-grid').innerHTML=
-    kpiCard('orange','売上合計','<span class="c-orange">¥'+Math.round(d.sales/10000)+'万</span>',
-      '<div class="prog"><div class="prog-bg"><div class="prog-fill" style="width:'+Math.min(salesPct,100).toFixed(1)+'%;background:var(--orange)"></div></div><span style="font-size:11px;color:var(--orange)">'+salesPct.toFixed(1)+'%</span></div>',
-      '目標 ¥'+Math.round(t.sales/10000)+'万　進捗 '+salesPct.toFixed(1)+'%')+
-    kpiCard('red','残売上','<span class="c-red">−¥'+Math.round((t.sales-d.sales)/10000)+'万</span>','','残稼働 '+(wd-el)+'日')+
-    kpiCard('orange','1日あたり売上平均','<span class="c-orange">¥'+Math.round(avg/10000)+'万</span>','','目標日次 ¥'+Math.round(t.sales/wd/10000)+'万（'+el+'日時点）')+
-    kpiCard('orange','着地見込み','<span class="c-amber">¥'+Math.round(landing/10000)+'万</span>',
-      '<span class="kpi-badge '+(landingPct>=80?'badge-green':landingPct>=50?'badge-orange':'badge-red')+'">達成率 '+landingPct.toFixed(1)+'%</span>',
-      '¥'+Math.round(landing/10000)+'万 / ¥'+Math.round(t.sales/10000)+'万');
-
-  var crCls=d.costRate<=50?'c-green':d.costRate<=70?'c-amber':'c-red';
-  document.getElementById('kpi-cost-grid').innerHTML=
-    kpiCard('red','原価率','<span class="'+crCls+'">'+fp(d.costRate)+'</span>',
-      '<span class="kpi-badge '+(d.costRate<=50?'badge-green':'badge-red')+'">目標 '+fp(t.costRate)+'</span>','人件費 '+fm(d.labor))+
-    kpiCard('orange','粗利額','<span class="'+(d.gross>=0?'c-orange':'c-red')+'">'+fm(d.gross)+'</span>','','売上 - 人件費')+
-    kpiCard('orange','稼働単価','<span class="c-orange">'+(d.unit>0?'¥'+d.unit.toLocaleString():'—')+'</span>',
-      '<span class="kpi-badge '+(d.unit>=t.unit?'badge-green':'badge-red')+'">目標 ¥'+t.unit.toLocaleString()+'</span>','最新稼働日ベース')+
-    kpiCard('gray','稼働人数','<span>'+d.ops+'名</span>','',el+'営業日平均');
-
-  document.getElementById('kpi-work-grid').innerHTML=
-    kpiCard('gray','獲得アポ数','<span>'+d.apo+'件</span>','','再送除外済み（累計）※幸野除外')+
-    kpiCard('red','キャンセル数 / キャンセル率','<span class="c-red">'+d.cancel+'件</span>',
-      '<span class="kpi-badge badge-red">キャンセル率 '+fp(d.cancelRate)+'</span>','有効アポ '+d.valid+'件')+
-    kpiCard('gray','コール数 / アポ率','<span>'+(d.calls>0?d.calls.toLocaleString()+'件':'—')+'</span>',
-      d.apoRate>0?'<span class="kpi-badge badge-orange">アポ率 '+d.apoRate.toFixed(2)+'%</span>':'','アポイント（累計）※幸野除外')+
-    kpiCard('gray','単日MAX売上','<span class="c-green">'+getDailyMax(site).label+'</span>','',getDailyMax(site).date);
-
-  renderHeatmap();renderDetailTable();renderRankCost();
-}
-
-function kpiCard(color,label,valueHtml,badgeHtml,subText){
-  return '<div class="kpi-card '+color+'"><div class="kpi-label">'+label+'</div><div class="kpi-value">'+valueHtml+'</div>'+(badgeHtml||'')+'<div class="kpi-sub">'+subText+'</div></div>';
-}
-function getDailyMax(site){
-  var rows=PT_DATA.daily[site]||PT_DATA.daily['all'];
-  if(!rows||rows.length===0)return{label:'—',date:'—'};
-  var max=rows.reduce(function(a,b){return a.sales>b.sales?a:b;});
-  return{label:'¥'+Math.round(max.sales/10000)+'万',date:max.date};
-}
-
-function renderHeatmap(){
-  var bgs=['#FFF0E0','#FFF4E8','#FFF4E8','#FFF8F0','#FFF8F0','#FFFAF4','#FFFAF4','#FFFCF8','#FFFCF8','#FEFEFE'];
-  document.getElementById('heatmap-container').innerHTML=PT_DATA.heatmap.map(function(h,i){
-    var pc=i<3?'color:var(--orange)':'color:var(--text-secondary)';
-    return '<div class="hm-row" style="background:'+bgs[i]+'"><div class="hm-rank">'+h.rank+'</div><div class="hm-id">'+h.name+'</div><div class="hm-val">'+h.valid+'件</div><div class="hm-sales">¥'+h.sales.toLocaleString()+'</div><div class="hm-pct" style="'+pc+';font-weight:500">'+h.pct+'%</div></div>';
-  }).join('');
-}
-
-function renderDetailTable(){
-  var sites=['all','shinjuku','remote','ai'],m=PT_DATA.meta;
-  var rows=[
-    ['sec','SALES｜売上（累計'+m.elapsedDays+'営業日）'],
-    ['data','売上目標',sites.map(function(s){return fm(PT_DATA.targets[s].sales);})],
-    ['sub','売上合計',sites.map(function(s){return fm(PT_DATA.sites[s].sales);})],
-    ['data','売上進捗率',sites.map(function(s){var d=PT_DATA.sites[s],t=PT_DATA.targets[s];return t.sales>0?(d.sales/t.sales*100).toFixed(1)+'%':'—';})],
-    ['data','残売上',sites.map(function(s){var d=PT_DATA.sites[s],t=PT_DATA.targets[s];return t.sales>0?'−'+fm(t.sales-d.sales):'—';})],
-    ['data','着地見込み',sites.map(function(s){var d=PT_DATA.sites[s],t=PT_DATA.targets[s],l=m.elapsedDays>0?Math.round(d.sales/m.elapsedDays*m.workingDays):0;return '¥'+Math.round(l/10000)+'万'+(t.sales>0?' ('+(l/t.sales*100).toFixed(1)+'%)':'');})],
-    ['sec','COST｜原価・人件費'],
-    ['data','原価率目標',sites.map(function(s){return PT_DATA.targets[s].costRate+'%';})],
-    ['data','原価率（実績）',sites.map(function(s){return fp(PT_DATA.sites[s].costRate);})],
-    ['data','人件費',sites.map(function(s){return fm(PT_DATA.sites[s].labor);})],
-    ['data','粗利額',sites.map(function(s){return fm(PT_DATA.sites[s].gross);})],
-    ['sec','APO｜アポイント（累計'+m.elapsedDays+'営業日）'],
-    ['data','アポ数（獲得）',sites.map(function(s){return PT_DATA.sites[s].apo||'—';})],
-    ['data','キャンセル数',sites.map(function(s){return PT_DATA.sites[s].cancel||'—';})],
-    ['sub','請求ベース',sites.map(function(s){return PT_DATA.sites[s].valid||'—';})],
-    ['data','キャンセル率',sites.map(function(s){return fp(PT_DATA.sites[s].cancelRate);})],
-    ['sec','WORK｜稼働'],
-    ['data','稼働人数',sites.map(function(s){return PT_DATA.sites[s].ops+'名';})],
-    ['sec','UNIT｜稼働単価'],
-    ['data','単価目標',sites.map(function(s){return PT_DATA.targets[s].unit>0?'¥'+PT_DATA.targets[s].unit.toLocaleString():'—';})],
-    ['data','稼働単価（最新日）',sites.map(function(s){var d=PT_DATA.sites[s];return d.unit>0?'¥'+d.unit.toLocaleString():'—';})],
-    ['data','稼働単価（日割り平均）',sites.map(function(s){
-      var filter={'all':null,'shinjuku':'新宿SC','remote':'リモートSC','ai':'AI'}[s];
-      var ops=PT_DATA.operators.filter(function(op){return(!filter||op.site===filter)&&op.unitPerDay>0;});
-      if(ops.length===0)return '—';
-      var avg=Math.round(ops.reduce(function(a,b){return a+b.unitPerDay;},0)/ops.length);
-      return '¥'+avg.toLocaleString();
-    })],
-    ['sec','CALL｜コール（累計'+m.elapsedDays+'営業日）'],
-    ['data','コール数',sites.map(function(s){var d=PT_DATA.sites[s];return d.calls>0?d.calls.toLocaleString():'—';})],
-    ['data','アポ率',sites.map(function(s){var d=PT_DATA.sites[s];return d.apoRate>0?d.apoRate.toFixed(2)+'%':'—';})],
-  ];
-  document.getElementById('detail-tbody').innerHTML=rows.map(function(r){
-    if(r[0]==='sec')return '<tr class="sec-head"><td colspan="5">'+r[1]+'</td></tr>';
-    return '<tr class="'+(r[0]==='sub'?'subtotal ':'')+'data-row"><td class="label-td">'+r[1]+'</td>'+r[2].map(function(v){return '<td class="r">'+v+'</td>';}).join('')+'</tr>';
-  }).join('');
-}
-
-function renderRankCost(){
-  var rankOrder=['トップ','ミドル','ルーキープラス','ルーキー','管理者','社員'];
-  var rankClass={'トップ':'rank-top','ミドル':'rank-mid','ルーキープラス':'rank-rookie','ルーキー':'rank-rookie','管理者':'rank-mid','社員':'rank-mid'};
-  ['all','shinjuku','remote'].forEach(function(siteKey){
-    var filter={'all':null,'shinjuku':'新宿SC','remote':'リモートSC'}[siteKey];
-    var byRank={};
-    PT_DATA.operators.forEach(function(op){
-      if(filter&&op.site!==filter)return;
-      var r=op.rank||'—';
-      if(!byRank[r])byRank[r]={sales:0,labor:0,members:[]};
-      byRank[r].sales+=op.sales||0;byRank[r].labor+=op.labor||0;byRank[r].members.push(op.name);
-    });
-    var html='<table><thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead><tbody>';
-    rankOrder.forEach(function(rank){
-      var g=byRank[rank];if(!g||g.members.length===0)return;
-      var cr=g.sales>0?(g.labor/g.sales*100).toFixed(1)+'%':'—';
-      var crCls=g.sales>0?costCls(g.labor/g.sales*100):'';
-      var popup='<div class="popup-content"><div class="popup-title">'+rank+' '+g.members.length+'名</div>'+g.members.map(function(n){return '<div class="popup-row">'+n+'</div>';}).join('')+'</div>';
-      html+='<tr class="data-row"><td><div class="popup-trigger"><span class="rank-badge '+rankClass[rank]+'">'+rank+'</span>'+popup+'</div></td><td class="r">'+(g.sales>0?'¥'+g.sales.toLocaleString():g.sales<0?'−¥'+Math.abs(g.sales).toLocaleString():'—')+'</td><td class="r">¥'+g.labor.toLocaleString()+'</td><td class="r '+crCls+'">'+cr+'</td></tr>';
-    });
-    html+='</tbody></table>';
-    document.getElementById('rank-cost-'+siteKey).innerHTML=html;
+// pt_data.jsonを外部ファイルから読み込む
+fetch('./pt_data.json')
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    PT_DATA = data;
+    document.getElementById('updateTime').textContent = '最終更新: ' + PT_DATA.meta.lastUpdateLabel;
+    document.getElementById('alertText').textContent  = PT_DATA.meta.alertText;
+    // 保存済み追加収益を復元
+    if (PT_DATA.additionalRevenues && PT_DATA.additionalRevenues.length > 0) {
+      additionalRevenues = PT_DATA.additionalRevenues;
+    }
+    renderDashboard('all');
+    renderDaily('all');
+    renderChart2();
+    initSettings();
+  })
+  .catch(function(e){
+    console.error('データ読み込みエラー:', e);
+    document.getElementById('alertText').textContent = 'データ読み込みエラー: ' + e.message;
   });
 
-  // ダッシュボード用ランク別稼働単価（売上合計÷日数合計）
-  ['all','shinjuku','remote'].forEach(function(siteKey){
-    var filter={'all':null,'shinjuku':'新宿SC','remote':'リモートSC'}[siteKey];
-    var html='<table><thead><tr><th>ランク</th><th class="r">単価/日</th><th class="r">最高</th><th class="r">最低</th></tr></thead><tbody>';
-    rankOrder.forEach(function(rank){
-      var ops=PT_DATA.operators.filter(function(op){
-        return op.rank===rank&&op.unitPerDay>0&&(!filter||op.site===filter);
-      });
-      if(ops.length===0)return;
-      var ts=ops.reduce(function(a,b){return a+(b.sales||0);},0);
-      var td=ops.reduce(function(a,b){return a+(b.days||0);},0);
-      var avg=td>0?Math.round(ts/td):0;
-      var units=ops.map(function(op){return op.unitPerDay;});
-      var max=Math.max.apply(null,units);
-      var min=Math.min.apply(null,units);
-      var rc={'トップ':'rank-top','ミドル':'rank-mid','ルーキープラス':'rank-rookie','ルーキー':'rank-rookie','管理者':'rank-mid','社員':'rank-mid'}[rank]||'rank-mid';
-      html+='<tr class="data-row">'+
-        '<td><span class="rank-badge '+rc+'">'+rank+'</span></td>'+
-        '<td class="r c-orange">¥'+avg.toLocaleString()+'</td>'+
-        '<td class="r c-green">¥'+max.toLocaleString()+'</td>'+
-        '<td class="r c-muted">¥'+min.toLocaleString()+'</td>'+
-        '</tr>';
-    });
-    html+='</tbody></table>';
-    var el=document.getElementById('rank-unit-'+siteKey);
-    if(el)el.innerHTML=html;
-  });
-}
 
-function renderDailyPage(site){
-  var rows=PT_DATA.daily[site]||PT_DATA.daily['all'];
-  document.getElementById('daily-tbody').innerHTML=rows.map(function(r){
-    var unit=r.valid>0?'¥'+Math.round(r.sales/r.valid).toLocaleString():'—';
-    return '<tr class="data-row"><td class="daily-date-col">'+r.day+'</td><td>'+r.date+'</td><td class="r">'+fm(r.sales)+'</td><td class="r">'+r.apo+'</td><td class="r c-red">'+r.cancel+'</td><td class="r">'+r.valid+'</td><td class="r">'+r.ops+'</td><td class="r">'+(r.calls>0?r.calls.toLocaleString():'—')+'</td><td class="r">'+unit+'</td></tr>';
-  }).join('');
-}
-
-function renderOperatorSummary(site){
-  var filter={'all':null,'shinjuku':'新宿SC','remote':'リモートSC','ai':'AI'}[site];
-  var rankOrder=['トップ','ミドル','ルーキープラス','ルーキー','管理者','社員'];
-  var rankClass={'トップ':'rank-top','ミドル':'rank-mid','ルーキープラス':'rank-rookie','ルーキー':'rank-rookie','管理者':'rank-mid','社員':'rank-mid'};
-  var ops=PT_DATA.operators.filter(function(op){return !filter||op.site===filter;});
-  var byRank={};
-  ops.forEach(function(op){
-    var r=op.rank||'—';
-    if(!byRank[r])byRank[r]={sales:0,labor:0,members:[],unitSum:0,unitCnt:0};
-    byRank[r].sales+=op.sales||0;byRank[r].labor+=op.labor||0;byRank[r].members.push(op.name);
-    if(op.sales>0){byRank[r].unitSum+=op.sales;byRank[r].unitCnt++;}
-  });
-  var costHtml='<table><thead><tr><th>ランク</th><th class="r">売上</th><th class="r">人件費</th><th class="r">原価率</th></tr></thead><tbody>';
-  rankOrder.forEach(function(rank){
-    var g=byRank[rank];if(!g||g.members.length===0)return;
-    var cr=g.sales>0?(g.labor/g.sales*100).toFixed(1)+'%':'—';
-    var crCls=g.sales>0?costCls(g.labor/g.sales*100):'';
-    var popup='<div class="popup-content"><div class="popup-title">'+rank+' '+g.members.length+'名</div>'+g.members.map(function(n){return '<div class="popup-row">'+n+'</div>';}).join('')+'</div>';
-    costHtml+='<tr class="data-row"><td><div class="popup-trigger"><span class="rank-badge '+rankClass[rank]+'">'+rank+'</span>'+popup+'</div></td><td class="r">'+(g.sales>0?'¥'+g.sales.toLocaleString():g.sales<0?'−¥'+Math.abs(g.sales).toLocaleString():'—')+'</td><td class="r">¥'+g.labor.toLocaleString()+'</td><td class="r '+crCls+'">'+cr+'</td></tr>';
-  });
-  costHtml+='</tbody></table>';
-  var el1=document.getElementById('op-rank-cost');if(el1)el1.innerHTML=costHtml;
-  // ランク別稼働単価：全体行＋ルーキー系合算（売上合計÷日数合計の重み付き平均）
-  var unitRows=[
-    {label:'全体',    cls:'rank-mid',    filter:function(op){return op.unitPerDay>0;}},
-    {label:'トップ',  cls:'rank-top',    filter:function(op){return op.rank==='トップ'&&op.unitPerDay>0;}},
-    {label:'ミドル',  cls:'rank-mid',    filter:function(op){return op.rank==='ミドル'&&op.unitPerDay>0;}},
-    {label:'ルーキー',cls:'rank-rookie', filter:function(op){return (op.rank==='ルーキー'||op.rank==='ルーキープラス')&&op.unitPerDay>0;}},
-    {label:'管理者',  cls:'rank-mid',    filter:function(op){return op.rank==='管理者'&&op.unitPerDay>0;}},
-    {label:'社員',    cls:'rank-mid',    filter:function(op){return op.rank==='社員'&&op.unitPerDay>0;}}
-  ];
-  function weightedUnit(ops){
-    var ts=ops.reduce(function(a,b){return a+(b.sales||0);},0);
-    var td=ops.reduce(function(a,b){return a+(b.days||0);},0);
-    return td>0?Math.round(ts/td):0;
-  }
-  var unitHtml='<table><thead><tr><th>ランク</th><th class="r">全体</th><th class="r">新宿SC</th><th class="r">リモートSC</th></tr></thead><tbody>';
-  unitRows.forEach(function(row){
-    var all=PT_DATA.operators.filter(row.filter);
-    var sj =PT_DATA.operators.filter(function(op){return row.filter(op)&&op.site==='新宿SC';});
-    var rm =PT_DATA.operators.filter(function(op){return row.filter(op)&&op.site==='リモートSC';});
-    if(all.length===0)return;
-    var aA=weightedUnit(all),aS=weightedUnit(sj),aR=weightedUnit(rm);
-    unitHtml+='<tr class="data-row">'+
-      '<td><span class="rank-badge '+row.cls+'">'+row.label+'</span></td>'+
-      '<td class="r c-orange">'+(aA>0?'¥'+aA.toLocaleString():'—')+'</td>'+
-      '<td class="r">'+(aS>0?'¥'+aS.toLocaleString():'—')+'</td>'+
-      '<td class="r">'+(aR>0?'¥'+aR.toLocaleString():'—')+'</td>'+
-      '</tr>';
-  });
-  unitHtml+='</tbody></table>';
-  var el2=document.getElementById('op-rank-unit');if(el2)el2.innerHTML=unitHtml;
-  var siteDef=[['新宿SC','新宿SC'],['リモートSC','リモートSC'],['AI','AI']];
-  var sOpsHtml='<table><thead><tr><th>サイト</th><th class="r">稼働人数</th><th class="r">工数</th></tr></thead><tbody>';
-  siteDef.forEach(function(pair){
-    var cnt=PT_DATA.operators.filter(function(op){return op.site===pair[0]&&(op.workH>0||op.apo>0);}).length;
-    if(cnt===0)return;
-    sOpsHtml+='<tr class="data-row"><td>'+pair[0]+'</td><td class="r">'+cnt+'名</td><td class="r">'+cnt+'</td></tr>';
-  });
-  sOpsHtml+='</tbody></table>';
-  var el3=document.getElementById('op-site-ops');if(el3)el3.innerHTML=sOpsHtml;
-}
-
-function renderOperatorTable(site){
-  var q=((document.getElementById('op-search')||{}).value||'').toLowerCase();
-  var filter={'all':null,'shinjuku':'新宿SC','remote':'リモートSC','ai':'AI'}[site];
-  var rankClass={'トップ':'rank-top','ミドル':'rank-mid','ルーキープラス':'rank-rookie','ルーキー':'rank-rookie','管理者':'rank-mid','社員':'rank-mid'};
-  var data=PT_DATA.operators.filter(function(op){return(!filter||op.site===filter)&&(!q||op.name.toLowerCase().indexOf(q)>=0);});
-  var cntEl=document.getElementById('op-count');if(cntEl)cntEl.textContent=data.length+'名';
-  var el=document.getElementById('op-tbody');if(!el)return;
-  el.innerHTML=data.map(function(op){
-    var rc=rankClass[op.rank]||'rank-mid';
-    var cxlCls=op.cancel>0?' c-red':'';
-    return '<tr class="data-row"><td style="font-weight:500">'+op.name+'</td><td><span class="rank-badge '+rc+'">'+(op.rank||'—')+'</span></td><td style="color:var(--text-secondary)">'+(op.site||'—')+'</td><td class="r">'+(op.sales>0?'¥'+op.sales.toLocaleString():op.sales<0?'−¥'+Math.abs(op.sales).toLocaleString():'—')+'</td><td class="r">'+(op.apo>0?op.apo:'—')+'</td><td class="r'+cxlCls+'">'+op.cancel+'</td><td class="r">'+(op.valid>0?op.valid:'—')+'</td><td class="r">'+(op.calls>0?op.calls:'—')+'</td><td class="r">'+(op.apoRate!=null?op.apoRate.toFixed(1)+'%':'—')+'</td><td class="r c-orange">'+(op.unitPerDay>0?'¥'+op.unitPerDay.toLocaleString():'—')+'</td><td class="r">'+(op.workH>0?op.workH.toFixed(1)+'h':'—')+'</td><td class="r '+(op.costRate!=null?costCls(op.costRate):'')+'">'+(op.costRate!=null?op.costRate.toFixed(1)+'%':'—')+'</td></tr>';
-  }).join('');
-}
-
-var chartI1=null,chartI2=null;
-function renderCharts(){
-  var cd=PT_DATA.chart;
-  var bg=cd.data.map(function(v){return v>0?'#E8711A':'#E8711A22';});
-  var opts={type:'bar',data:{labels:cd.labels,datasets:[{label:'売上（万円）',data:cd.data,backgroundColor:bg,borderColor:'#E8711A',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(d){return '¥'+(d.raw*10000).toLocaleString();}}}},scales:{x:{ticks:{font:{size:10},color:'#AAA'},grid:{display:false},border:{display:false}},y:{ticks:{font:{size:10},color:'#AAA',callback:function(v){return v+'万';}},grid:{color:'rgba(0,0,0,.04)'},border:{display:false}}}}};
-  var c1=document.getElementById('dailyChart');if(c1){if(chartI1)chartI1.destroy();chartI1=new Chart(c1,JSON.parse(JSON.stringify(opts)));}
-  var c2=document.getElementById('dailyChart2');if(c2){if(chartI2)chartI2.destroy();chartI2=new Chart(c2,JSON.parse(JSON.stringify(opts)));}
-}
-
-function initSettings(){
-  var t=PT_DATA.targets,m=PT_DATA.meta;
-  document.getElementById('s-sales-all').value=t.all.sales;document.getElementById('s-sales-sj').value=t.shinjuku.sales;document.getElementById('s-sales-rm').value=t.remote.sales;
-  document.getElementById('s-cost-all').value=t.all.costRate;document.getElementById('s-cost-sj').value=t.shinjuku.costRate;document.getElementById('s-cost-rm').value=t.remote.costRate;
-  document.getElementById('s-unit-all').value=t.all.unit;document.getElementById('s-unit-sj').value=t.shinjuku.unit;document.getElementById('s-unit-rm').value=t.remote.unit;
-  document.getElementById('s-days').value=m.workingDays;
-}
-// 按分比率（前月実績ベース）
+var currentSite = 'all';
+var chartInst1 = null, chartInst2 = null;
+var SERVER_URL = 'https://digross-server.onrender.com';
+varFiles = {};
 var ALLOC_RATIO = {shinjuku: 0.828, remote: 0.172};
 
+function fc(v) { return v != null && v !== '' ? '¥' + Math.round(v).toLocaleString() : '—'; }
+function fp(v) { return v != null ? v.toFixed(1) + '%' : '—'; }
+function costCls(v) { if (v == null) return ''; if (v <= 50) return 'c-pos'; if (v <= 75) return 'c-warn'; return 'c-neg'; }
+function rankCls(r) { var m={'トップ':'rb-top','ミドル':'rb-mid','ルーキープラス':'rb-rookie','ルーキー':'rb-rookie','管理者':'rb-mgr','社員':'rb-mgr'}; return m[r]||'rb-rookie'; }
+function siteKey(s){return{all:null,roppongi:'六本木SC',remote:'リモートSC'}[s];}[s]; }
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  var titles = {dashboard:'ダッシュボード',daily:'日次明細',operator:'OP個人実績',import:'データ取込',revenue:'追加収益',settings:'設定'};
+  document.getElementById('pageTitle').textContent = titles[id] || id;
+  var showTabs = ['dashboard','daily','operator'].indexOf(id) >= 0;
+  if (id === 'revenue') { renderRevenueList(); }
+  document.getElementById('siteTabs').style.display = showTabs ? 'flex' : 'none';
+  if (id === 'daily')    { renderDaily(currentSite); renderChart2(); }
+  if (id === 'operator') { renderOpSummary(currentSite); renderOpTable(currentSite); }
+}
+
+function switchSite(site, el) {
+  if (!PT_DATA) return;
+  currentSite = site;
+  document.querySelectorAll('.site-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderDashboard(site);
+  renderDaily(site);
+  renderOpSummary(site);
+  renderOpTable(site);
+}
+
+function renderDashboard(site) {
+  var d = PT_DATA.sites[site], t = PT_DATA.targets[site], m = PT_DATA.meta;
+  if (!d || !t) return;
+  var el = m.elapsedDays, wd = m.workingDays;
+  var salesPct = t.sales > 0 ? d.sales / t.sales * 100 : 0;
+  var landing  = el > 0 ? Math.round(d.sales / el * wd) : 0;
+  var landPct  = t.sales > 0 ? landing / t.sales * 100 : 0;
+  var remain   = t.sales - d.sales;
+  var avgDaily = el > 0 ? Math.round(d.sales / el) : 0;
+  var tgtDaily = wd > 0 ? Math.round(t.sales / wd) : 0;
+  var diffDaily = avgDaily - tgtDaily;
+
+  document.getElementById('elapsed-label').textContent = el;
+
+  var kpiHtml =
+    kpiCard('c-orange','売上合計',fc(d.sales),
+      '<div class="prog-wrap"><div class="prog-bg"><div class="prog-fill" style="width:'+Math.min(salesPct,100).toFixed(1)+'%;background:var(--orange)"></div></div><span style="font-size:10px;color:var(--orange)">'+salesPct.toFixed(1)+'%</span></div>',
+      '目標 '+fc(t.sales)+'　進捗 '+salesPct.toFixed(1)+'%') +
+    kpiCard('c-orange','着地見込み',fc(landing),
+      '<span style="font-size:10px;font-weight:500;'+(landPct>=80?'color:var(--green)':landPct>=60?'color:var(--amber)':'color:var(--red)')+'">達成率 '+landPct.toFixed(1)+'%</span>',
+      '残 '+fc(remain)) +
+    kpiCard('c-red','原価率','<span class="'+costCls(d.costRate)+'">'+fp(d.costRate)+'</span>',
+      '<span style="font-size:10px;font-weight:500;'+(d.costRate<=t.costRate?'color:var(--green)':'color:var(--red)')+'">目標 '+fp(t.costRate)+'</span>',
+      '人件費 '+fc(d.labor)) +
+    kpiCard('c-green','粗利額','<span class="'+(d.gross>=0?'c-pos':'c-neg')+'">'+fc(d.gross)+'</span>',
+      '<span style="font-size:10px;color:var(--text3)">粗利率 '+(d.sales>0?(d.gross/d.sales*100).toFixed(1)+'%':'—')+'</span>','') +
+    kpiCard('c-gray','在籍 / アクティブ',
+      '<span>'+(m.enrollCount||'—')+'名 / '+(m.activeCount||'—')+'名</span>',
+      '<span style="font-size:10px;color:var(--text3)">稼働率 '+(m.enrollCount>0?(m.activeCount/m.enrollCount*100).toFixed(1)+'%':'—')+'</span>','');
+
+  document.getElementById('kpi-main').innerHTML = kpiHtml;
+
+  var subHtml =
+    subKpi('アポ数', d.apo + '件', '有効 ' + d.valid + '件') +
+    subKpi('キャンセル数', '<span class="'+(d.cancel>0?'c-neg':'')+'">'+ d.cancel + '件</span>', 'CXL率 ' + fp(d.cancelRate)) +
+    subKpi('コール数', (d.calls > 0 ? d.calls.toLocaleString() : '—') + '件', 'アポ率 ' + (d.apoRate > 0 ? d.apoRate.toFixed(2) + '%' : '—')) +
+    subKpi('日割り目標差', '<span class="'+(diffDaily >= 0 ? 'c-pos' : 'c-neg')+'">'+(diffDaily >= 0 ? '+' : '') + fc(diffDaily)+'</span>', '本日平均 ' + fc(avgDaily));
+  document.getElementById('sub-kpi').innerHTML = subHtml;
+
+  renderRankTable(site);
+  renderHeatmap();
+  renderChart1();
+}
+
+function kpiCard(cls, label, valHtml, badgeHtml, subText) {
+  return '<div class="kpi-card ' + cls + '"><div class="kpi-label">' + label + '</div><div class="kpi-value">' + valHtml + '</div>' + (badgeHtml || '') + (subText ? '<div class="kpi-sub">' + subText + '</div>' : '') + '</div>';
+}
+
+function subKpi(label, valHtml, sub) {
+  return '<div class="sub-kpi"><div class="sub-kpi-label">' + label + '</div><div class="sub-kpi-value">' + valHtml + '</div><div class="sub-kpi-sub">' + sub + '</div></div>';
+}
+
+function renderRankTable(site) {
+  var filter = siteKey(site);
+  var rankOrder = ['トップ','ミドル','ルーキープラス','ルーキー','管理者','社員'];
+  var displayRank = function(r) { return (r === 'ルーキープラス') ? 'ルーキー' : r; };
+  var byRank = {};
+  PT_DATA.operators.forEach(function(op) {
+    if (filter && op.site !== filter) return;
+    var r = op.rank || '—';
+    if (!byRank[r]) byRank[r] = {sales:0,labor:0,days:0,names:[],active:0};
+    byRank[r].sales += op.sales || 0;
+    byRank[r].labor += op.labor || 0;
+    byRank[r].days  += op.days  || 0;
+    byRank[r].names.push(op.name);
+    if ((op.workH || 0) > 0) byRank[r].active++;
+  });
+  var masterRankCount = {};
+  PT_DATA.operators.forEach(function(op) {
+    if (filter && op.site !== filter) return;
+    var r = op.rank || '—';
+    if (!masterRankCount[r]) masterRankCount[r] = 0;
+    masterRankCount[r]++;
+  });
+
+  var mergedRanks = [];
+  rankOrder.forEach(function(rank) {
+    var g = byRank[rank];
+    if (!g) return;
+    var displayKey = displayRank(rank);
+    var existing = mergedRanks.find(function(x){ return x.display === displayKey; });
+    if (existing) {
+      existing.sales += g.sales; existing.labor += g.labor; existing.days += g.days;
+      existing.names = existing.names.concat(g.names); existing.active += g.active;
+    } else {
+      mergedRanks.push({display:displayKey,rank:rank,sales:g.sales,labor:g.labor,days:g.days,names:g.names,active:g.active});
+    }
+  });
+
+  var html = '';
+  mergedRanks.forEach(function(g) {
+    if (g.names.length === 0) return;
+    var cr  = g.sales > 0 ? (g.labor / g.sales * 100).toFixed(1) + '%' : '—';
+    var crCls = g.sales > 0 ? costCls(g.labor / g.sales * 100) : '';
+    var unit = g.days > 0 ? fc(Math.round(g.sales / g.days)) : '—';
+    html += '<tr><td><span class="rank-badge ' + rankCls(g.rank) + '">' + g.display + '</span></td>' +
+      '<td class="r">' + fc(g.sales) + '</td>' +
+      '<td class="r ' + crCls + '">' + cr + '</td>' +
+      '<td class="r">' + unit + '</td>' +
+      '<td class="r">' + g.names.length + '名</td>' +
+      '<td class="r">' + g.active + '名</td></tr>';
+  });
+  document.getElementById('rank-tbody').innerHTML = html;
+}
+
+function renderHeatmap() {
+  var top5 = PT_DATA.heatmap.slice(0, 5);
+  var maxSales = top5.length > 0 ? top5[0].sales : 1;
+  var html = top5.map(function(h) {
+    var pct = Math.round(h.sales / maxSales * 100);
+    return '<div class="hm-row"><div class="hm-rank">' + h.rank + '</div>' +
+      '<div class="hm-name">' + h.name + '</div>' +
+      '<div class="hm-bar-bg"><div class="hm-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="hm-val">' + fc(h.sales) + '</div></div>';
+  }).join('');
+  document.getElementById('heatmap-list').innerHTML = html;
+}
+
+function renderChart1() {
+  var cd = PT_DATA.chart;
+  var tgt = PT_DATA.targets[currentSite];
+  var wd  = PT_DATA.meta.workingDays;
+  var dailyTgt = tgt && tgt.sales > 0 && wd > 0 ? tgt.sales / wd / 10000 : null;
+  var bg = cd.data.map(function(v){ return v > 0 ? '#D85A30' : 'rgba(216,90,48,0.15)'; });
+  var datasets = [{label:'売上',data:cd.data,backgroundColor:bg,borderRadius:3,barPercentage:0.7}];
+  if (dailyTgt) {
+    datasets.push({type:'line',label:'日割り目標',data:cd.labels.map(function(){return dailyTgt;}),borderColor:'#E24B4A',borderWidth:1.5,borderDash:[4,4],pointRadius:0,fill:false});
+  }
+  var ctx = document.getElementById('dailyChart');
+  if (!ctx) return;
+  if (chartInst1) chartInst1.destroy();
+  chartInst1 = new Chart(ctx, {
+    type:'bar',data:{labels:cd.labels,datasets:datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(d){return '¥'+(d.raw*10000).toLocaleString();}}}},
+      scales:{x:{ticks:{font:{size:9},color:'#888'},grid:{display:false},border:{display:false}},y:{ticks:{font:{size:9},color:'#888',callback:function(v){return'¥'+v.toFixed(0)+'万';}},grid:{color:'rgba(0,0,0,.04)'},border:{display:false}}}}
+  });
+}
+
+function renderChart2() {
+  var cd = PT_DATA.chart;
+  var ctx = document.getElementById('dailyChart2');
+  if (!ctx) return;
+  if (chartInst2) chartInst2.destroy();
+  var bg = cd.data.map(function(v){ return v > 0 ? '#D85A30' : 'rgba(216,90,48,0.15)'; });
+  chartInst2 = new Chart(ctx, {
+    type:'bar',data:{labels:cd.labels,datasets:[{label:'売上',data:cd.data,backgroundColor:bg,borderRadius:3,barPercentage:0.7}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(d){return '¥'+(d.raw*10000).toLocaleString();}}}},
+      scales:{x:{ticks:{font:{size:9},color:'#888'},grid:{display:false},border:{display:false}},y:{ticks:{font:{size:9},color:'#888',callback:function(v){return'¥'+v.toFixed(0)+'万';}},grid:{color:'rgba(0,0,0,.04)'},border:{display:false}}}}
+  });
+}
+
+function renderDaily(site) {
+  var rows = PT_DATA.daily[site] || PT_DATA.daily['all'];
+  var html = rows.map(function(r) {
+    var unit = r.valid > 0 ? fc(Math.round(r.sales / r.valid)) : '—';
+    return '<tr><td style="color:var(--text3);font-size:11px">' + r.day + '</td><td>' + r.date + '</td>' +
+      '<td class="r">' + fc(r.sales) + '</td><td class="r">' + r.apo + '</td>' +
+      '<td class="r" style="color:var(--red)">' + r.cancel + '</td><td class="r">' + r.valid + '</td>' +
+      '<td class="r">' + r.ops + '</td><td class="r">' + (r.calls > 0 ? r.calls.toLocaleString() : '—') + '</td>' +
+      '<td class="r">' + unit + '</td></tr>';
+  }).join('');
+  var el = document.getElementById('daily-tbody');
+  if (el) el.innerHTML = html;
+}
+
+function renderOpSummary(site) {
+  var filter = siteKey(site);
+  var rankOrder = ['トップ','ミドル','ルーキープラス','ルーキー','管理者','社員'];
+  var byRank = {};
+  PT_DATA.operators.forEach(function(op) {
+    if (filter && op.site !== filter) return;
+    var r = op.rank || '—';
+    if (!byRank[r]) byRank[r] = {sales:0,labor:0,days:0,members:[]};
+    byRank[r].sales += op.sales || 0;
+    byRank[r].labor += op.labor || 0;
+    byRank[r].days  += op.days  || 0;
+    byRank[r].members.push(op.name);
+  });
+  var mergedRanks = [];
+  rankOrder.forEach(function(rank) {
+    var g = byRank[rank]; if (!g) return;
+    var dk = rank === 'ルーキープラス' ? 'ルーキー' : rank;
+    var ex = mergedRanks.find(function(x){return x.display===dk;});
+    if (ex) { ex.sales+=g.sales;ex.labor+=g.labor;ex.days+=g.days;ex.members=ex.members.concat(g.members); }
+    else mergedRanks.push({display:dk,rank:rank,sales:g.sales,labor:g.labor,days:g.days,members:g.members});
+  });
+  var html = mergedRanks.filter(function(g){return g.members.length>0;}).map(function(g) {
+    var cr = g.sales>0?(g.labor/g.sales*100).toFixed(1)+'%':'—';
+    var unit = g.days>0?fc(Math.round(g.sales/g.days)):'—';
+    return '<div class="card"><div class="card-title" style="margin-bottom:8px"><span class="rank-badge '+rankCls(g.rank)+'">'+g.display+'</span> '+g.members.length+'名</div>'+
+      '<div style="font-size:14px;font-weight:500">'+fc(g.sales)+'</div>'+
+      '<div style="font-size:11px;color:var(--text3);margin-top:4px">原価率 <span class="'+costCls(g.sales>0?g.labor/g.sales*100:null)+'">'+cr+'</span>　単価/日 '+unit+'</div></div>';
+  }).join('');
+  var el = document.getElementById('op-summary');
+  if (el) el.innerHTML = html;
+}
+
+function renderOpTable(site) {
+  var q = ((document.getElementById('op-search')||{}).value||'').toLowerCase();
+  var filter = siteKey(site);
+  var data = PT_DATA.operators.filter(function(op){
+    return (!filter || op.site === filter) && (!q || op.name.toLowerCase().indexOf(q) >= 0);
+  });
+  var cntEl = document.getElementById('op-count');
+  if (cntEl) cntEl.textContent = data.length + '名';
+  var el = document.getElementById('op-tbody');
+  if (!el) return;
+  el.innerHTML = data.map(function(op) {
+    var rc = rankCls(op.rank);
+    return '<tr><td style="font-weight:500">' + op.name + '</td>' +
+      '<td><span class="rank-badge ' + rc + '">' + (op.rank || '—') + '</span></td>' +
+      '<td style="color:var(--text2)">' + (op.site || '—') + '</td>' +
+      '<td class="r">' + (op.sales > 0 ? fc(op.sales) : op.sales < 0 ? '−' + fc(Math.abs(op.sales)) : '—') + '</td>' +
+      '<td class="r">' + (op.apo > 0 ? op.apo : '—') + '</td>' +
+      '<td class="r" style="' + (op.cancel > 0 ? 'color:var(--red)' : '') + '">' + op.cancel + '</td>' +
+      '<td class="r">' + (op.valid > 0 ? op.valid : '—') + '</td>' +
+      '<td class="r">' + (op.calls > 0 ? op.calls.toLocaleString() : '—') + '</td>' +
+      '<td class="r">' + (op.apoRate != null ? op.apoRate.toFixed(1) + '%' : '—') + '</td>' +
+      '<td class="r">' + (op.unitPerDay > 0 ? fc(op.unitPerDay) : '—') + '</td>' +
+      '<td class="r">' + (op.workH > 0 ? op.workH.toFixed(1) + 'h' : '—') + '</td>' +
+      '<td class="r ' + (op.costRate != null ? costCls(op.costRate) : '') + '">' + (op.costRate != null ? op.costRate.toFixed(1) + '%' : '—') + '</td></tr>';
+  }).join('');
+}
+
+function initSettings() {
+  var t = PT_DATA.targets, m = PT_DATA.meta;
+  // PATをlocalStorageから復元
+  var savedPat = localStorage.getItem('github_pat') || '';
+  var patEl = document.getElementById('s-github-pat');
+  if (patEl && savedPat) patEl.value = savedPat;
+  document.getElementById('s-sales-all').value = t.all.sales;
+  document.getElementById('s-sales-sj').value  = t.shinjuku.sales;
+  document.getElementById('s-sales-rm').value  = t.remote.sales;
+  document.getElementById('s-cost-all').value  = t.all.costRate;
+  document.getElementById('s-cost-sj').value   = t.shinjuku.costRate;
+  document.getElementById('s-cost-rm').value   = t.remote.costRate;
+  document.getElementById('s-unit-all').value  = t.all.unit;
+  document.getElementById('s-unit-sj').value   = t.shinjuku.unit;
+  document.getElementById('s-unit-rm').value   = t.remote.unit;
+  document.getElementById('s-days').value      = m.workingDays;
+}
 function allocateSales() {
   var total = parseInt(document.getElementById('s-sales-all').value) || 0;
   if (total <= 0) return;
   document.getElementById('s-sales-sj').value = Math.round(total * ALLOC_RATIO.shinjuku);
   document.getElementById('s-sales-rm').value = Math.round(total * ALLOC_RATIO.remote);
 }
-
-function saveSettings(){
-  PT_DATA.targets.all.sales=parseInt(document.getElementById('s-sales-all').value)||0;
-  PT_DATA.targets.shinjuku.sales=parseInt(document.getElementById('s-sales-sj').value)||0;
-  PT_DATA.targets.remote.sales=parseInt(document.getElementById('s-sales-rm').value)||0;
-  PT_DATA.targets.all.costRate=parseFloat(document.getElementById('s-cost-all').value)||0;
-  PT_DATA.targets.shinjuku.costRate=parseFloat(document.getElementById('s-cost-sj').value)||0;
-  PT_DATA.targets.remote.costRate=parseFloat(document.getElementById('s-cost-rm').value)||0;
-  PT_DATA.targets.all.unit=parseInt(document.getElementById('s-unit-all').value)||0;
-  PT_DATA.targets.shinjuku.unit=parseInt(document.getElementById('s-unit-sj').value)||0;
-  PT_DATA.targets.remote.unit=parseInt(document.getElementById('s-unit-rm').value)||0;
-  PT_DATA.meta.workingDays=parseInt(document.getElementById('s-days').value)||22;
-  renderDashboard(currentSite);alert('保存しました');
+function saveSettings() {
+  // PATをlocalStorageに保存
+  var pat = document.getElementById('s-github-pat').value.trim();
+  if (pat) localStorage.setItem('github_pat', pat);
+  PT_DATA.targets.all.sales      = parseInt(document.getElementById('s-sales-all').value)||0;
+  PT_DATA.targets.shinjuku.sales = parseInt(document.getElementById('s-sales-sj').value)||0;
+  PT_DATA.targets.remote.sales   = parseInt(document.getElementById('s-sales-rm').value)||0;
+  PT_DATA.targets.all.costRate      = parseFloat(document.getElementById('s-cost-all').value)||0;
+  PT_DATA.targets.shinjuku.costRate = parseFloat(document.getElementById('s-cost-sj').value)||0;
+  PT_DATA.targets.remote.costRate   = parseFloat(document.getElementById('s-cost-rm').value)||0;
+  PT_DATA.targets.all.unit      = parseInt(document.getElementById('s-unit-all').value)||0;
+  PT_DATA.targets.shinjuku.unit = parseInt(document.getElementById('s-unit-sj').value)||0;
+  PT_DATA.targets.remote.unit   = parseInt(document.getElementById('s-unit-rm').value)||0;
+  PT_DATA.meta.workingDays = parseInt(document.getElementById('s-days').value)||18;
+  renderDashboard(currentSite);
+  alert('保存しました');
 }
-function cancelSettings(){initSettings();}
+function cancelSettings() { initSettings(); }
+
+function triggerFile(key) { var i=document.getElementById('file-'+key); if(i) i.click(); }
+function onFileSelect(key, input) {
+  if (!input.files || !input.files.length) return;
+  var file = input.files[0];
+ Files[key] = file;
+  var el=document.getElementById('text-'+key), drop=document.getElementById('drop-'+key), btn=document.getElementById('clear-'+key);
+  if (el) el.textContent = file.name;
+  if (drop) drop.classList.add('selected');
+  if (btn) btn.style.display = 'inline-block';
+}
+function clearFile(event, key) {
+  event.stopPropagation();
+  deleteFiles[key];
+  var el=document.getElementById('text-'+key),drop=document.getElementById('drop-'+key),btn=document.getElementById('clear-'+key),input=document.getElementById('file-'+key);
+  if (el) el.textContent = 'クリックまたはドロップ';
+  if (drop) drop.classList.remove('selected');
+  if (btn) btn.style.display = 'none';
+  if (input) input.value = '';
+}
+function runUpdate() {
+  if (!PT_DATA) { alert('データが読み込まれていません。ページを再読み込みしてください。'); return; }
+  var required = ['apo','prod','work','report'];
+  var labels = ['アポイントリスト','生産性レポート','勤務データ','レポート'];
+  for (var i = 0; i < required.length; i++) {
+    if (!selectedFiles[required[i]]) { alert('必須ファイルが選択されていません：'+labels[i]); return; }
+  }
+  var btn=document.getElementById('btn-update'), status=document.getElementById('update-status'), result=document.getElementById('update-result');
+  btn.disabled=true; btn.textContent='処理中...';
+  status.textContent='サーバーに送信中（初回は50秒程度かかる場合があります）...';
+  result.style.display='none';
+  var form = new FormData();
+  form.append('apo',   Files['apo']);
+  form.append('prod',  Files['prod']);
+  form.append('work',  Files['work']);
+  form.append('report',Files['report']);
+  if (selectedFiles['master']) form.append('master',Files['master']);
+  if (selectedFiles['inc'])    form.append('inc',   Files['inc']);
+  var ptBlob = new Blob([JSON.stringify(PT_DATA)], {type:'application/json'});
+  form.append('prev', ptBlob, 'pt_data.json');
+  fetch(SERVER_URL+'/update', {method:'POST', body:form})
+    .then(function(res){ return res.json(); })
+    .then(function(data) {
+      btn.disabled=false; btn.textContent='更新する';
+      if (data.error) {
+        status.textContent='❌ エラーが発生しました';
+        result.style.display='block';
+        result.innerHTML='<div class="alert" style="border-color:var(--red);background:var(--red-light);color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>'+data.error+'</div>';
+        return;
+      }
+      PT_DATA = data.data;
+      // 追加収益を引き継ぐ
+      if (additionalRevenues.length > 0) {
+        PT_DATA.additionalRevenues = additionalRevenues;
+      }
+      renderDashboard(currentSite); renderDaily(currentSite); renderOpSummary(currentSite); renderOpTable(currentSite); renderChart2();
+      document.getElementById('updateTime').textContent = '最終更新: '+PT_DATA.meta.lastUpdateLabel;
+      document.getElementById('alertText').textContent  = PT_DATA.meta.alertText;
+      status.textContent='✅ 更新完了！';
+      result.style.display='block';
+      result.innerHTML='<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>更新完了。累計'+PT_DATA.meta.elapsedDays+'営業日 / 売上'+fc(PT_DATA.sites.all.sales)+' / 原価率'+PT_DATA.sites.all.costRate+'%</div>';
+    })
+    .catch(function(err) {
+      btn.disabled=false; btn.textContent='更新する';
+      status.textContent='❌ 通信エラー（サーバーが起動中の場合は1分後に再試行してください）';
+    });
+}
+
+// ===== スタッフ管理 =====
+var staffData = [];
+
+function switchSettingTab(tab, el) {
+  document.querySelectorAll('#page-settings .site-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  document.getElementById('stab-panel-target').style.display = tab === 'target' ? 'block' : 'none';
+  document.getElementById('stab-panel-staff').style.display  = tab === 'staff'  ? 'block' : 'none';
+  if (tab === 'staff') loadStaff();
+}
+
+function loadStaff() {
+  fetch(SERVER_URL + '/staff')
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      staffData = d.data || [];
+      renderStaffTable(staffData);
+    })
+    .catch(function(e) {
+      document.getElementById('staff-tbody').innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--red);padding:20px">読み込みエラー</td></tr>';
+    });
+}
+
+function renderStaffTable(data) {
+  document.getElementById('staff-count').textContent = data.length + '名';
+  var siteLabel = {'六本木SC':'六本木SC','在宅G':'リモートSC','AI':'AI'};
+  var rows = '';
+  for (var i = 0; i < data.length; i++) {
+    var s = data[i];
+    var rc = rankCls(s.rank);
+    var rate = s.salary_type === 'monthly' ? fc(s.hourly_rate) + '/月' : '¥' + s.hourly_rate.toLocaleString() + '/時';
+    var activeLabel = s.is_active ? '在籍' : '退職';
+    var activeBg = s.is_active ? 'var(--green-light)' : 'var(--gray-light)';
+    var activeColor = s.is_active ? 'var(--green)' : 'var(--gray)';
+    rows += '<tr>' +
+      '<td style="font-size:11px;color:var(--text3)">' + s.employee_id + '</td>' +
+      '<td style="font-weight:500">' + s.name + '</td>' +
+      '<td>' + (siteLabel[s.site] || s.site) + '</td>' +
+      '<td><span class="rank-badge ' + rc + '">' + s.rank + '</span></td>' +
+      '<td class="r">' + rate + '</td>' +
+      '<td>' + (s.salary_type === 'monthly' ? '月給' : '時給') + '</td>' +
+      '<td><span style="font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;background:' + activeBg + ';color:' + activeColor + '">' + activeLabel + '</span></td>' +
+      '<td style="white-space:nowrap">' +
+        '<button data-id="' + s.id + '" data-action="edit" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;margin-right:4px">編集</button>' +
+        '<button data-id="' + s.id + '" data-action="delete" style="font-size:11px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;background:#fff;color:var(--red);cursor:pointer">削除</button>' +
+      '</td></tr>';
+  }
+  var tbody = document.getElementById('staff-tbody');
+  tbody.innerHTML = rows || '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">データなし</td></tr>';
+  // イベントリスナーをtbodyに委譲
+  tbody.onclick = function(e) {
+    var btn = e.target.closest('button[data-id]');
+    if (!btn) return;
+    var id = parseInt(btn.getAttribute('data-id'));
+    var action = btn.getAttribute('data-action');
+    if (action === 'edit') openEditStaff(id);
+    else if (action === 'delete') confirmDelete(id);
+  };
+}
+
+function filterStaffTable() {
+  var q = (document.getElementById('staff-search').value || '').toLowerCase();
+  var filtered = staffData.filter(function(s){ return !q || s.name.toLowerCase().indexOf(q) >= 0 || s.employee_id.toLowerCase().indexOf(q) >= 0; });
+  renderStaffTable(filtered);
+}
+
+function openAddStaff() {
+  document.getElementById('modal-title').textContent = 'スタッフ追加';
+  document.getElementById('m-id').value = '';
+  document.getElementById('m-empid').value = '';
+  document.getElementById('m-name').value = '';
+  document.getElementById('m-site').value = '六本木SC';
+  document.getElementById('m-rank').value = 'ルーキー';
+  document.getElementById('m-rate').value = '';
+  document.getElementById('m-stype').value = 'hourly';
+  document.getElementById('m-active').checked = true;
+  document.getElementById('modal-error').style.display = 'none';
+  document.getElementById('staff-modal').style.display = 'flex';
+}
+
+function openEditStaff(id) {
+  var s = staffData.find(function(x){ return x.id === id; });
+  if (!s) return;
+  document.getElementById('modal-title').textContent = 'スタッフ編集：' + s.name;
+  document.getElementById('m-id').value = s.id;
+  document.getElementById('m-empid').value = s.employee_id;
+  document.getElementById('m-name').value = s.name;
+  document.getElementById('m-site').value = s.site;
+  document.getElementById('m-rank').value = s.rank;
+  document.getElementById('m-rate').value = s.hourly_rate;
+  document.getElementById('m-stype').value = s.salary_type;
+  document.getElementById('m-active').checked = s.is_active;
+  document.getElementById('modal-error').style.display = 'none';
+  document.getElementById('staff-modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('staff-modal').style.display = 'none';
+}
+
+function saveStaff() {
+  var id    = document.getElementById('m-id').value;
+  var empid = document.getElementById('m-empid').value.trim();
+  var name  = document.getElementById('m-name').value.trim();
+  var site  = document.getElementById('m-site').value;
+  var rank  = document.getElementById('m-rank').value;
+  var rate  = parseInt(document.getElementById('m-rate').value) || 0;
+  var stype = document.getElementById('m-stype').value;
+  var active= document.getElementById('m-active').checked;
+  var errEl = document.getElementById('modal-error');
+
+  if (!empid || !name) {
+    errEl.textContent = '社員番号と氏名は必須です';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  var body = {employee_id: empid, name: name, site: site, rank: rank, hourly_rate: rate, salary_type: stype, is_active: active};
+  var url    = SERVER_URL + '/staff' + (id ? '/' + id : '');
+  var method = id ? 'PUT' : 'POST';
+
+  fetch(url, {method: method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.error) { errEl.textContent = d.error; errEl.style.display = 'block'; return; }
+      closeModal();
+      loadStaff();
+    })
+    .catch(function(e) {
+      errEl.textContent = '通信エラーが発生しました';
+      errEl.style.display = 'block';
+    });
+}
+
+function confirmDelete(id) {
+  var s = staffData.find(function(x){ return x.id === id; });
+  var name = s ? s.name : 'このスタッフ';
+  if (!confirm(name + ' を削除しますか？この操作は取り消せません。')) return;
+  deleteStaff(id);
+}
+function deleteStaff(id) {
+  fetch(SERVER_URL + '/staff/' + id, {method: 'DELETE'})
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.error) { alert('削除エラー: ' + d.error); return; }
+      loadStaff();
+    });
+}
+
+// ===== 追加収益管理 =====
+var additionalRevenues = [];
+
+function renderRevenueList() {
+  var tbody = document.getElementById('revenue-tbody');
+  var totalEl = document.getElementById('revenue-total');
+  if (!tbody) return;
+  if (additionalRevenues.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">登録なし</td></tr>';
+    if (totalEl) totalEl.textContent = '¥0';
+    return;
+  }
+  var total = 0;
+  var html = '';
+  for (var i = 0; i < additionalRevenues.length; i++) {
+    var r = additionalRevenues[i];
+    total += r.amount || 0;
+    html += '<tr>' +
+      '<td>' + r.type + '</td>' +
+      '<td>' + (r.name || '—') + '</td>' +
+      '<td class="r">' + fc(r.amount) + '</td>' +
+      '<td style="white-space:nowrap">' +
+        '<button data-idx="' + i + '" onclick="openEditRevenue(this)" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;margin-right:4px">編集</button>' +
+        '<button data-idx="' + i + '" onclick="deleteRevenue(this)" style="font-size:11px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;background:#fff;color:var(--red);cursor:pointer">削除</button>' +
+      '</td></tr>';
+  }
+  tbody.innerHTML = html;
+  if (totalEl) totalEl.textContent = fc(total);
+}
+
+function openAddRevenue() {
+  document.getElementById('rev-modal-title').textContent = '追加収益を追加';
+  document.getElementById('rev-type').value = 'BPO通話料';
+  document.getElementById('rev-name').value = '';
+  document.getElementById('rev-amount').value = '';
+  document.getElementById('rev-edit-idx').value = '-1';
+  document.getElementById('revenue-modal').style.display = 'flex';
+}
+
+function openEditRevenue(btn) {
+  var idx = parseInt(btn.getAttribute('data-idx'));
+  var r = additionalRevenues[idx];
+  document.getElementById('rev-modal-title').textContent = '追加収益を編集';
+  document.getElementById('rev-type').value = r.type;
+  document.getElementById('rev-name').value = r.name || '';
+  document.getElementById('rev-amount').value = r.amount || '';
+  document.getElementById('rev-edit-idx').value = idx;
+  document.getElementById('revenue-modal').style.display = 'flex';
+}
+
+function deleteRevenue(btn) {
+  var idx = parseInt(btn.getAttribute('data-idx'));
+  additionalRevenues.splice(idx, 1);
+  renderRevenueList();
+}
+
+function closeRevenueModal() {
+  document.getElementById('revenue-modal').style.display = 'none';
+}
+
+function confirmRevenue() {
+  var type   = document.getElementById('rev-type').value;
+  var name   = document.getElementById('rev-name').value.trim();
+  var amount = parseInt(document.getElementById('rev-amount').value) || 0;
+  var idx    = parseInt(document.getElementById('rev-edit-idx').value);
+  if (!name)    { alert('クライアント名を入力してください'); return; }
+  if (amount <= 0) { alert('金額を入力してください'); return; }
+  if (idx >= 0) {
+    additionalRevenues[idx] = {type: type, name: name, amount: amount};
+  } else {
+    additionalRevenues.push({type: type, name: name, amount: amount});
+  }
+  closeRevenueModal();
+  renderRevenueList();
+}
+
+function getExtraTotal() {
+  return additionalRevenues.reduce(function(sum, r) { return sum + (r.amount || 0); }, 0);
+}
+
+function saveRevenue() {
+  if (!PT_DATA) { alert('データが読み込まれていません'); return; }
+  var btn = document.getElementById('btn-save-revenue');
+  var resultEl = document.getElementById('revenue-save-result');
+  btn.disabled = true;
+  btn.textContent = '保存中...';
+  var baseSales = PT_DATA._baseSales !== undefined ? PT_DATA._baseSales : PT_DATA.sites.all.sales;
+  var baseGross = PT_DATA._baseGross !== undefined ? PT_DATA._baseGross : PT_DATA.sites.all.gross;
+  var extraTotal = getExtraTotal();
+  PT_DATA._baseSales = baseSales;
+  PT_DATA._baseGross = baseGross;
+  PT_DATA.additionalRevenues = additionalRevenues;
+  PT_DATA.additionalTotal    = extraTotal;
+  PT_DATA.sites.all.sales    = baseSales + extraTotal;
+  PT_DATA.sites.all.gross    = baseGross + extraTotal;
+  PT_DATA.sites.all.costRate = PT_DATA.sites.all.sales > 0
+    ? Math.round(PT_DATA.sites.all.labor / PT_DATA.sites.all.sales * 1000) / 10 : 0;
+  renderDashboard(currentSite);
+  var blob = new Blob([JSON.stringify(PT_DATA, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'pt_data.json'; a.click();
+  URL.revokeObjectURL(url);
+  btn.disabled = false;
+  btn.textContent = '保存して反映する';
+  var pat = getGithubPat();
+  if (pat) {
+    autoSavePtData('追加収益更新').then(function(r) {
+      if (resultEl) {
+        resultEl.style.display = 'block';
+        var ghMsg = r && r.success ? '✅ GitHubに自動保存しました' : '⚠️ GitHub保存失敗（手動ダウンロードしてください）';
+        resultEl.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>保存・反映しました。<br><span style="font-size:11px">'+ghMsg+'</span></div>';
+      }
+    });
+  } else {
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>保存しました。ダウンロードされたpt_data.jsonをGitHubに上書きしてください。</div>';
+    }
+  }
+}
+
+function downloadPtData() {
+  if (!PT_DATA) return;
+  var blob = new Blob([JSON.stringify(PT_DATA, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'pt_data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ===== 翌月準備（GitHub API自動化）=====
+function prepareNextMonth() {
+  var pat = (localStorage.getItem('github_pat') || '').trim();
+  if (!pat) {
+    var input = document.getElementById('s-github-pat');
+    pat = input ? input.value.trim() : '';
+  }
+  if (!pat) {
+    alert('GitHub Personal Access Tokenを入力してください。\n設定画面の「GitHub連携」欄に入力後、保存してください。');
+    return;
+  }
+
+  // PATを確実にlocalStorageに保存してからAPIコールに使う
+  localStorage.setItem('github_pat', pat);
+
+  var btn = document.getElementById('btn-next-month');
+  var status = document.getElementById('next-month-status');
+  var result = document.getElementById('next-month-result');
+  btn.disabled = true;
+  btn.textContent = '準備中...';
+  status.textContent = 'GitHubにアクセスしています...';
+  result.style.display = 'none';
+
+  // 現在の月から翌月を計算
+  var m = PT_DATA.meta;
+  var monthMatch = m.month.match(/(\d{4})年(\d+)月/);
+  var year  = parseInt(monthMatch[1]);
+  var month = parseInt(monthMatch[2]);
+  var nextMonth = month + 1;
+  var nextYear  = year;
+  if (nextMonth > 12) { nextMonth = 1; nextYear++; }
+  var nextMonthStr  = nextYear + '年' + nextMonth + '月';
+  var nextFolderKey = nextYear + '-' + String(nextMonth).padStart(2,'0');
+  var currentFolderKey = year + '-' + String(month).padStart(2,'0');
+
+  var isJuneOrLater = (nextMonth >= 6);
+  var nextWorkingDays = calcWorkingDays(nextYear, nextMonth);
+  var nextChartLabels = buildChartLabels(nextYear, nextMonth);
+
+  // 翌月pt_data.jsonを生成
+  var sitesInit = {
+    all:    {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+    remote: {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0}
+  };
+  if (isJuneOrLater) {
+    sitesInit.roppongi = {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0};
+  } else {
+    sitesInit.shinjuku = {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0};
+    sitesInit.ai       = {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0};
+  }
+  var dailyInit = {all:[], remote:[]};
+  if (isJuneOrLater) { dailyInit.roppongi = []; } else { dailyInit.shinjuku = []; dailyInit.ai = []; }
+
+  var nextPtData = {
+    meta: {
+      month: nextMonthStr,
+      lastUpdate: '',
+      lastUpdateLabel: '未更新',
+      elapsedDays: 0,
+      workingDays: nextWorkingDays,
+      alertText: '未更新です。データを取り込んでください。',
+      enrollCount: m.enrollCount || 0,
+      activeCount: 0
+    },
+    targets: JSON.parse(JSON.stringify(PT_DATA.targets)),
+    sites: sitesInit,
+    daily: dailyInit,
+    chart: {labels: nextChartLabels, data: nextChartLabels.map(function(){return 0;})},
+    heatmap: [],
+    operators: [],
+    incentive: {},
+    prev_calls: {}
+  };
+
+  status.textContent = '現在のHTMLをGitHubから取得中...';
+
+  // Step1: 現在月のindex.htmlをGitHubから取得してベースにする
+  var baseHtmlPath = currentFolderKey + '/index.html';
+  githubGetFile(baseHtmlPath)
+  .then(function(baseHtml) {
+    status.textContent = 'HTMLを翌月仕様に変換中...';
+
+    // 翌月用にpatch適用
+    var nextHtml = applyNextMonthPatches(baseHtml, nextMonthStr, nextFolderKey, nextMonth, isJuneOrLater);
+
+    status.textContent = 'トップページをGitHubから取得中...';
+    // Step2: トップページ取得
+    return githubGetFile('index.html').then(function(topHtml) {
+      return {nextHtml: nextHtml, topHtml: topHtml};
+    }).catch(function() {
+      // トップページ取得失敗はスキップ（致命的でない）
+      return {nextHtml: nextHtml, topHtml: null};
+    });
+  })
+  .then(function(obj) {
+    var nextHtml = obj.nextHtml;
+    var topHtml  = obj.topHtml;
+
+    status.textContent = 'pt_data.jsonを作成中...';
+    return githubPutFile(nextFolderKey + '/pt_data.json', JSON.stringify(nextPtData, null, 2), nextMonthStr + ' 初期データ')
+    .then(function() {
+      status.textContent = 'index.htmlを作成中...';
+      return githubPutFile(nextFolderKey + '/index.html', nextHtml, nextMonthStr + ' ダッシュボード');
+    })
+    .then(function() {
+      if (!topHtml) return Promise.resolve();
+      status.textContent = 'トップページを更新中...';
+      var updatedTop = buildTopPageHtml_fromExisting(topHtml, nextFolderKey, nextMonthStr, nextWorkingDays);
+      return githubPutFile('index.html', updatedTop, 'トップページに' + nextMonthStr + 'を追加');
+    });
+  })
+  .then(function() {
+    btn.disabled = false;
+    btn.textContent = '📅 翌月を準備する';
+    status.textContent = '✅ 完了！';
+    result.style.display = 'block';
+    result.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>' +
+      nextMonthStr + 'のダッシュボードを自動作成しました。<br>' +
+      '<a href="https://minakawa-star.github.io/digross-dashboard/" target="_blank" style="color:var(--green);text-decoration:underline">トップページを確認する</a></div>';
+  })
+  .catch(function(e) {
+    btn.disabled = false;
+    btn.textContent = '📅 翌月を準備する';
+    status.textContent = '❌ エラーが発生しました';
+    result.style.display = 'block';
+    result.innerHTML = '<div class="alert" style="border-color:var(--red);background:var(--red-light);color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>' + e.message + '</div>';
+  });
+}
+
+// ===== 翌月仕様へのpatch適用（GitHub取得後のHTML文字列に対して行う）=====
+function applyNextMonthPatches(html, nextMonthStr, nextFolderKey, nextMonth, isJuneOrLater) {
+  // 1. monthSelect: 現在月の を外し、翌月を に
+  html = html.replace(//g, '');
+  html = html.replace(
+    'value="' + nextFolderKey + '">' + nextMonthStr,
+    'value="' + nextFolderKey + '">' + nextMonthStr
+  );
+  // 翌月のoption自体がない場合は追記（現在月optionの直後）
+  if (html.indexOf('value="' + nextFolderKey + '"') < 0) {
+    var currentFolderKey = (nextMonth <= 1)
+      ? (parseInt(nextFolderKey.split('-')[0])-1) + '-12'
+      : nextFolderKey.split('-')[0] + '-' + String(nextMonth-1).padStart(2,'0');
+    var insertAfter = 'value="' + currentFolderKey + '">';
+    var pos = html.indexOf(insertAfter);
+    if (pos >= 0) {
+      var endPos = html.indexOf('</option>', pos) + '</option>'.length;
+      html = html.slice(0,endPos) + '\n          <option value="' + nextFolderKey + '">' + nextMonthStr + '</option>' + html.slice(endPos);
+    }
+  }
+
+  // 2. goToMonth の初期値をfolderkeyで書き換え
+  html = html.replace(/if \(sel\) sel\.value = '[^']+';/, "if (sel) sel.value = '2026-06';");
+
+  // 3. 6月以降：六本木SC→六本木SC・AIタブ削除・siteKey変更
+  if (isJuneOrLater) {
+    html = html.replace(/六本木SC/g, '六本木SC');
+    // AIサイトタブを削除
+    html = html.replace(/<div class="site-tab"[^>]*onclick="switchSite\('ai'[^"]*"[^>]*>AI<\/div>/g, '');
+    // siteKey関数を更新
+    html = html.replace(
+      /function siteKey\(s\)\s*\{[^}]+\}/,
+      "function siteKey(s){return{all:null,roppongi:'六本木SC',remote:'リモートSC'}[s];}"
+    );
+    // スタッフモーダルのAI選択肢を削除
+    html = html.replace(/<option value="AI">AI<\/option>/g, '');
+    // 目標設定テーブルにAI列がある場合は削除（AIサイトタブ除外に合わせる）
+  }
+
+  return html;
+}
+
+function calcWorkingDays(year, month) {
+  var holidays = {
+    '2026-1': ['2026/01/01','2026/01/12','2026/02/11','2026/02/23'],
+    '2026-7': ['2026/07/20'],
+    '2026-8': ['2026/08/11'],
+    '2026-9': ['2026/09/21','2026/09/22','2026/09/23'],
+    '2026-10': ['2026/10/12'],
+    '2026-11': ['2026/11/03','2026/11/23'],
+    '2026-12': []
+  };
+  var hols = (holidays[year + '-' + month] || []);
+  var count = 0;
+  var d = new Date(year, month - 1, 1);
+  while (d.getMonth() === month - 1) {
+    var dow = d.getDay();
+    var ds = year + '/' + String(month).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+    if (dow !== 0 && dow !== 6 && hols.indexOf(ds) === -1) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return count;
+}
+
+function buildChartLabels(year, month) {
+  var labels = [];
+  var d = new Date(year, month - 1, 1);
+  var holidays = ['2026/07/20','2026/08/11','2026/09/21','2026/09/22','2026/09/23','2026/10/12','2026/11/03','2026/11/23'];
+  while (d.getMonth() === month - 1) {
+    var dow = d.getDay();
+    var ds = year + '/' + String(month).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+    if (dow !== 0 && dow !== 6 && holidays.indexOf(ds) === -1) {
+      labels.push(month + '/' + d.getDate());
+    }
+    d.setDate(d.getDate() + 1);
+  }
+  return labels;
+}
+
+function buildTopPageHtml_fromExisting(existingHtml, nextFolderKey, nextMonthStr, nextWorkingDays) {
+  // 既存のトップページHTMLに翌月カードを追記する
+  // カードリストの末尾を探して挿入
+  var year  = parseInt(nextFolderKey.split('-')[0]);
+  var month = parseInt(nextFolderKey.split('-')[1]);
+  var newCard = '<a class="month-card" href="./' + nextFolderKey + '/">' +
+    '<div class="card-year">' + year + '年</div>' +
+    '<div class="card-month">' + month + '月</div>' +
+    '<div class="card-status">稼働中</div>' +
+    '<div class="card-days">営業日数 ' + nextWorkingDays + '日</div>' +
+    '</a>';
+  // 既存のトップHTMLに同じfolderkeyのカードがなければ追記
+  if (existingHtml.indexOf('href="./' + nextFolderKey + '/"') >= 0) {
+    // 既に存在する場合は更新しない
+    return existingHtml;
+  }
+  // </main> か </body> の直前に挿入（トップページの構造に依存）
+  if (existingHtml.indexOf('</main>') >= 0) {
+    return existingHtml.replace('</main>', newCard + '\n</main>');
+  } else if (existingHtml.indexOf('<!-- months-end -->') >= 0) {
+    return existingHtml.replace('<!-- months-end -->', newCard + '\n<!-- months-end -->');
+  } else {
+    // フォールバック：</body>直前
+    return existingHtml.replace('</body>', newCard + '\n</body>');
+  }
+}
+
+// ===== GitHub API共通関数 =====
+var GITHUB_OWNER = 'minakawa-star';
+var GITHUB_REPO  = 'digross-dashboard';
+var GITHUB_BRANCH = 'main';
+
+function getGithubPat() {
+  return localStorage.getItem('github_pat') || '';
+}
+
+function githubHeaders() {
+  var pat = getGithubPat();
+  // Fine-grained PAT（github_pat_で始まる）はBearer、Classic PAT（ghp_）はtoken
+  var authPrefix = pat.indexOf('github_pat_') === 0 ? 'Bearer' : 'token';
+  return {
+    'Authorization': authPrefix + ' ' + pat,
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github.v3+json'
+  };
+}
+
+function githubPutFile(path, content, message) {
+  // まず既存ファイルのSHAを取得
+  return fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path, {
+    headers: githubHeaders()
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    var body = {
+      message: message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch: GITHUB_BRANCH
+    };
+    if (d.sha) body.sha = d.sha;
+    return fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path, {
+      method: 'PUT',
+      headers: githubHeaders(),
+      body: JSON.stringify(body)
+    });
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.content) return d;
+    throw new Error(d.message || 'GitHub書き込みエラー: ' + path);
+  });
+}
+
+function githubGetFile(path) {
+  // GitHubからファイルの内容をテキストで取得する
+  return fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path, {
+    headers: githubHeaders()
+  })
+  .then(function(r) {
+    if (r.status === 401) throw new Error('GitHub認証エラー（401）: PATが無効か期限切れです。設定画面でPATを再入力・保存してください。');
+    if (r.status === 403) throw new Error('GitHub権限エラー（403）: PATにcontentsの読み書き権限がありません。');
+    if (r.status === 404) throw new Error('ファイルが見つかりません（404）: ' + path + '。GitHubにまだ存在しないか、リポジトリ名・パスが違います。');
+    if (!r.ok) throw new Error('ファイル取得失敗: ' + path + ' (' + r.status + ')');
+    return r.json();
+  })
+  .then(function(d) {
+    if (!d.content) throw new Error('ファイル内容が空です: ' + path);
+    // Base64デコード（GitHub APIはBase64でcontentを返す）
+    try {
+      return decodeURIComponent(escape(atob(d.content.replace(/\n/g, ''))));
+    } catch(e) {
+      return atob(d.content.replace(/\n/g, ''));
+    }
+  });
+}
+
+function getCurrentFolder() {
+  // 現在のURLから月フォルダを取得
+  var path = window.location.pathname;
+  var m = path.match(/(\d{4}-\d{2})/);
+  return m ? m[1] : null;
+}
+
+function autoSavePtData(successMsg) {
+  var pat = getGithubPat();
+  if (!pat) return Promise.resolve(null); // PAT未設定なら手動ダウンロードのみ
+  var folder = getCurrentFolder();
+  if (!folder) return Promise.resolve(null);
+  var path = folder + '/pt_data.json';
+  return githubPutFile(path, JSON.stringify(PT_DATA, null, 2), 'データ更新: ' + (PT_DATA.meta.lastUpdateLabel || ''))
+    .then(function() {
+      console.log('GitHub自動保存完了: ' + path);
+      return {success: true, msg: successMsg || 'GitHubに自動保存しました'};
+    })
+    .catch(function(e) {
+      console.error('GitHub自動保存エラー:', e);
+      return {success: false, msg: e.message};
+    });
+}
+
+function goTop() { window.location.href = '../../'; }
+function goToMonth(val) { window.location.href = '../' + val + '/'; }
 
 (function(){
   var sel = document.getElementById('monthSelect');
-  if (sel) sel.value = '2026-06';
+  if (sel) sel.value = '2026-05';
 })();
 
-function goTop() {
-  window.location.href = '../../';
-}
 
-function goToMonth(val) {
-  window.location.href = '../' + val + '/';
-}
-
-document.getElementById('updateTime').textContent='最終更新: '+PT_DATA.meta.lastUpdateLabel;
-document.getElementById('periodBadge').textContent=PT_DATA.meta.month;
-document.getElementById('alertText').textContent=PT_DATA.meta.alertText;
-renderDashboard('all');renderDailyPage('all');renderOperatorSummary('all');renderOperatorTable('all');renderCharts();initSettings();
 </script>
 </body>
 </html>
