@@ -1470,8 +1470,19 @@ function autoSavePtData(successMsg) {
     });
 }
 
-function goTop() { window.location.href = '../../'; }
-function goToMonth(val) { window.location.href = '../' + val + '/'; }
+function goTop() {
+  // GitHub Pagesのトップページへ（ローカル確認用でも同様）
+  window.open('https://minakawa-star.github.io/digross-dashboard/', '_blank');
+}
+function goToMonth(val) {
+  // GitHub Pages上では相対パスで遷移
+  if (window.location.href.indexOf('github.io') >= 0) {
+    window.location.href = '../' + val + '/';
+    return;
+  }
+  // ローカルの場合：GitHub Pagesの該当月を新タブで開く
+  window.open('https://minakawa-star.github.io/digross-dashboard/' + val + '/', '_blank');
+}
 
 </script>
 <script>
