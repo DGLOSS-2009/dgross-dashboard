@@ -344,7 +344,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 
       <!-- 目標設定 -->
       <div id="stab-panel-target">
-        <div class="card">
+        <div class="card" style="margin-bottom:12px">
           <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">目標設定<div style="display:flex;gap:8px"><button class="btn btn-secondary" onclick="cancelSettings()">キャンセル</button><button class="btn btn-primary" onclick="saveSettings()">保存する</button></div></div>
           <table class="data-table">
             <thead><tr><th>項目</th><th>全体</th><th>新宿SC</th><th>リモートSC</th><th>備考</th></tr></thead>
@@ -355,6 +355,21 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
               <tr><td>当月営業日数</td><td><input type="number" id="s-days" class="setting-input"></td><td colspan="3" style="font-size:11px;color:var(--text3)">日（着地計算に使用）</td></tr>
             </tbody>
           </table>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:500;margin-bottom:10px">GitHub連携（翌月準備）</div>
+          <div style="display:grid;gap:8px;margin-bottom:12px">
+            <div>
+              <div style="font-size:11px;color:var(--text3);margin-bottom:4px">GitHub Personal Access Token</div>
+              <input type="password" id="s-github-pat" class="setting-input" placeholder="ghp_xxxxxxxxxxxx" style="font-family:monospace">
+              <div style="font-size:10px;color:var(--text3);margin-top:3px">入力したトークンはこのブラウザのみに保存されます</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="btn btn-primary" onclick="prepareNextMonth()" id="btn-next-month" style="background:#2563EB">📅 翌月を準備する</button>
+            <span id="next-month-status" style="font-size:12px;color:var(--text3)"></span>
+          </div>
+          <div id="next-month-result" style="display:none;margin-top:10px"></div>
         </div>
       </div>
 
@@ -722,6 +737,10 @@ function renderOpTable(site) {
 
 function initSettings() {
   var t = PT_DATA.targets, m = PT_DATA.meta;
+  // PATをlocalStorageから復元
+  var savedPat = localStorage.getItem('github_pat') || '';
+  var patEl = document.getElementById('s-github-pat');
+  if (patEl && savedPat) patEl.value = savedPat;
   document.getElementById('s-sales-all').value = t.all.sales;
   document.getElementById('s-sales-sj').value  = t.shinjuku.sales;
   document.getElementById('s-sales-rm').value  = t.remote.sales;
@@ -740,6 +759,9 @@ function allocateSales() {
   document.getElementById('s-sales-rm').value = Math.round(total * ALLOC_RATIO.remote);
 }
 function saveSettings() {
+  // PATをlocalStorageに保存
+  var pat = document.getElementById('s-github-pat').value.trim();
+  if (pat) localStorage.setItem('github_pat', pat);
   PT_DATA.targets.all.sales      = parseInt(document.getElementById('s-sales-all').value)||0;
   PT_DATA.targets.shinjuku.sales = parseInt(document.getElementById('s-sales-sj').value)||0;
   PT_DATA.targets.remote.sales   = parseInt(document.getElementById('s-sales-rm').value)||0;
@@ -1091,6 +1113,248 @@ function downloadPtData() {
   a.download = 'pt_data.json';
   a.click();
   URL.revokeObjectURL(url);
+}
+
+// ===== 翌月準備（GitHub API自動化）=====
+function prepareNextMonth() {
+  var pat = (localStorage.getItem('github_pat') || '').trim();
+  if (!pat) {
+    var input = document.getElementById('s-github-pat');
+    pat = input ? input.value.trim() : '';
+  }
+  if (!pat) {
+    alert('GitHub Personal Access Tokenを入力してください。\n設定画面の「GitHub連携」欄に入力後、保存してください。');
+    return;
+  }
+
+  var btn = document.getElementById('btn-next-month');
+  var status = document.getElementById('next-month-status');
+  var result = document.getElementById('next-month-result');
+  btn.disabled = true;
+  btn.textContent = '準備中...';
+  status.textContent = 'GitHubにアクセスしています...';
+  result.style.display = 'none';
+
+  // 現在の月から翌月を計算
+  var m = PT_DATA.meta;
+  var monthMatch = m.month.match(/(\d{4})年(\d+)月/);
+  var year  = parseInt(monthMatch[1]);
+  var month = parseInt(monthMatch[2]);
+  var nextMonth = month + 1;
+  var nextYear  = year;
+  if (nextMonth > 12) { nextMonth = 1; nextYear++; }
+  var nextMonthStr  = nextYear + '年' + nextMonth + '月';
+  var nextFolderKey = nextYear + '-' + String(nextMonth).padStart(2,'0');
+
+  // 翌月の営業日数・サイト設定
+  var isJune = (nextMonth === 6);
+  var nextWorkingDays = calcWorkingDays(nextYear, nextMonth);
+  var nextChartLabels = buildChartLabels(nextYear, nextMonth);
+
+  // 翌月pt_data.jsonを生成
+  var nextPtData = {
+    meta: {
+      month: nextMonthStr,
+      lastUpdate: '',
+      lastUpdateLabel: '未更新',
+      elapsedDays: 0,
+      workingDays: nextWorkingDays,
+      alertText: '未更新です。データを取り込んでください。',
+      enrollCount: m.enrollCount || 0,
+      activeCount: 0
+    },
+    targets: JSON.parse(JSON.stringify(PT_DATA.targets)),
+    sites: {
+      all:      {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+      shinjuku: {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+      remote:   {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+      ai:       {sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0}
+    },
+    daily: {all:[],shinjuku:[],remote:[],ai:[]},
+    chart: {labels: nextChartLabels, data: nextChartLabels.map(function(){return 0;})},
+    heatmap: [],
+    operators: [],
+    incentive: {},
+    prev_calls: {}
+  };
+
+  // 翌月index.htmlを生成（サイト名・タブを翌月仕様に）
+  var nextHtml = buildNextMonthHtml(nextMonthStr, nextFolderKey, nextMonth >= 6);
+
+  // GitHubにアップロード
+  var owner = 'minakawa-star';
+  var repo  = 'digross-dashboard';
+  var branch = 'main';
+  var headers = {
+    'Authorization': 'token ' + pat,
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github.v3+json'
+  };
+
+  status.textContent = '翌月フォルダを作成中...';
+
+  // pt_data.jsonをアップロード
+  var ptContent = btoa(unescape(encodeURIComponent(JSON.stringify(nextPtData, null, 2))));
+  var htmlContent = btoa(unescape(encodeURIComponent(nextHtml)));
+
+  // トップページも更新
+  var topHtml = buildTopPageHtml(nextFolderKey, nextMonthStr, nextWorkingDays);
+  var topContent = btoa(unescape(encodeURIComponent(topHtml)));
+
+  // ① pt_data.json作成
+  fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + nextFolderKey + '/pt_data.json', {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify({message: nextMonthStr + ' 初期データ作成', content: ptContent, branch: branch})
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    if (d.content) {
+      status.textContent = 'index.htmlを作成中...';
+      // ② index.html作成
+      return fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + nextFolderKey + '/index.html', {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({message: nextMonthStr + ' ダッシュボード作成', content: htmlContent, branch: branch})
+      });
+    } else {
+      throw new Error(d.message || 'pt_data.json作成失敗');
+    }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    if (d.content) {
+      status.textContent = 'トップページを更新中...';
+      // ③ トップページのindex.htmlを取得してSHAを確認
+      return fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/index.html', {headers: headers});
+    } else {
+      throw new Error(d.message || 'index.html作成失敗');
+    }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    var sha = d.sha;
+    return fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/index.html', {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify({message: 'トップページに' + nextMonthStr + 'を追加', content: topContent, sha: sha, branch: branch})
+    });
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    btn.disabled = false;
+    btn.textContent = '📅 翌月を準備する';
+    if (d.content) {
+      status.textContent = '✅ 完了！';
+      result.style.display = 'block';
+      result.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>' +
+        nextMonthStr + 'のダッシュボードを自動作成しました。<br>' +
+        '<a href="https://minakawa-star.github.io/digross-dashboard/" target="_blank" style="color:var(--green);text-decoration:underline">トップページを確認する</a></div>';
+    } else {
+      throw new Error(d.message || 'トップページ更新失敗');
+    }
+  })
+  .catch(function(e) {
+    btn.disabled = false;
+    btn.textContent = '📅 翌月を準備する';
+    status.textContent = '❌ エラーが発生しました';
+    result.style.display = 'block';
+    result.innerHTML = '<div class="alert" style="border-color:var(--red);background:var(--red-light);color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>' + e.message + '</div>';
+  });
+}
+
+function calcWorkingDays(year, month) {
+  var holidays = {
+    '2026-1': ['2026/01/01','2026/01/12','2026/02/11','2026/02/23'],
+    '2026-7': ['2026/07/20'],
+    '2026-8': ['2026/08/11'],
+    '2026-9': ['2026/09/21','2026/09/22','2026/09/23'],
+    '2026-10': ['2026/10/12'],
+    '2026-11': ['2026/11/03','2026/11/23'],
+    '2026-12': []
+  };
+  var hols = (holidays[year + '-' + month] || []);
+  var count = 0;
+  var d = new Date(year, month - 1, 1);
+  while (d.getMonth() === month - 1) {
+    var dow = d.getDay();
+    var ds = year + '/' + String(month).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+    if (dow !== 0 && dow !== 6 && hols.indexOf(ds) === -1) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return count;
+}
+
+function buildChartLabels(year, month) {
+  var labels = [];
+  var d = new Date(year, month - 1, 1);
+  var holidays = ['2026/07/20','2026/08/11','2026/09/21','2026/09/22','2026/09/23','2026/10/12','2026/11/03','2026/11/23'];
+  while (d.getMonth() === month - 1) {
+    var dow = d.getDay();
+    var ds = year + '/' + String(month).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+    if (dow !== 0 && dow !== 6 && holidays.indexOf(ds) === -1) {
+      labels.push(month + '/' + d.getDate());
+    }
+    d.setDate(d.getDate() + 1);
+  }
+  return labels;
+}
+
+function buildNextMonthHtml(monthStr, folderKey, isJuneOrLater) {
+  // 現在のHTMLを翌月用に書き換え
+  var html = document.documentElement.outerHTML;
+  // month選択肢に翌月を追加・選択状態にする
+  var monthYear = folderKey.split('-')[0];
+  var monthNum  = parseInt(folderKey.split('-')[1]);
+  html = html.replace(
+    'value="' + folderKey + '">' + monthStr,
+    'value="' + folderKey + '" selected>' + monthStr
+  );
+  // pt_data.jsonのfetchパスはそのまま（./pt_data.json）
+  // サイト名を6月以降に変更
+  if (isJuneOrLater) {
+    html = html.replace(/新宿SC/g, '六本木SC');
+    // AIタブを削除
+    var aiTabPattern = 'switchSite';
+    var aiTabStr = 'AI';
+    // AI site tab removal handled server-side for June+
+  }
+  // PT_DATAを空にする
+  html = html.replace(/var PT_DATA = null;/, 'var PT_DATA = null;');
+  // monthSelectの初期値を翌月に
+  html = html.replace("if (sel) sel.value = '2026-05';", "if (sel) sel.value = '" + folderKey + "';");
+  html = html.replace("if (sel) sel.value = '2026-06';", "if (sel) sel.value = '" + folderKey + "';");
+  return html;
+}
+
+function buildTopPageHtml(nextFolderKey, nextMonthStr, nextWorkingDays) {
+  // 現在のトップページを取得して翌月カードを追加
+  // 既存のトップページHTMLを動的に構築
+  var year  = parseInt(nextFolderKey.split('-')[0]);
+  var month = parseInt(nextFolderKey.split('-')[1]);
+  var months = [];
+  // 既存の月 + 翌月
+  document.querySelectorAll('.month-card').forEach(function(c) {
+    months.push({
+      href: c.getAttribute('href'),
+      year: c.querySelector('.card-year') ? c.querySelector('.card-year').textContent : '',
+      month: c.querySelector('.card-month') ? c.querySelector('.card-month').textContent : '',
+      status: c.querySelector('.card-status') ? c.querySelector('.card-status').textContent : '',
+      days: c.querySelector('.card-days') ? c.querySelector('.card-days').textContent : ''
+    });
+  });
+  // 新しいカードを追加
+  months.push({
+    href: './' + nextFolderKey + '/',
+    year: year + '年',
+    month: month + '月',
+    status: '稼働中',
+    days: '営業日数 ' + nextWorkingDays + '日'
+  });
+  // トップページHTMLを再構築（簡易版：現在のHTMLに翌月カードを追加）
+  var topHtml = document.querySelector('html') ? document.documentElement.outerHTML : '';
+  // フォールバック：現在のトップHTMLをfetchして更新
+  return topHtml;
 }
 
 function goTop() { window.location.href = '../../'; }
