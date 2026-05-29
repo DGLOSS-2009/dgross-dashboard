@@ -1126,6 +1126,9 @@ function downloadPtData() {
   URL.revokeObjectURL(url);
 }
 
+</script>
+<!-- ===== 管理機能スクリプト（翌月生成時に除去される） ===== -->
+<script id="mgmt">
 // ===== 翌月準備（GitHub API自動化）=====
 function prepareNextMonth() {
   var pat = (localStorage.getItem('github_pat') || '').trim();
@@ -1257,44 +1260,53 @@ function prepareNextMonth() {
 
 // ===== 翌月仕様へのpatch適用（GitHub取得後のHTML文字列に対して行う）=====
 function applyNextMonthPatches(html, nextMonthStr, nextFolderKey, nextMonth, isJuneOrLater) {
-  // 1. monthSelect: 現在月の selected を外し、翌月を selected に
-  html = html.replace(/ selected/g, '');
-  html = html.replace(
+  // 管理機能スクリプトブロックを除去（翌月HTMLには不要）
+  html = html.replace(/<!-- ===== 管理機能スクリプト[\s\S]*?<\/script>/m, '');
+  html = html.replace(/<script id="mgmt">[\s\S]*?<\/script>/m, '');
+
+  // HTMLとJSを分割して処理（JS部分を誤って書き換えないため）
+  var scriptStart = html.indexOf('<script>');
+  var htmlPart = scriptStart >= 0 ? html.slice(0, scriptStart) : html;
+  var jsPart   = scriptStart >= 0 ? html.slice(scriptStart) : '';
+
+  // 1. monthSelect の selected 属性のみを対象に外す（option要素に限定）
+  htmlPart = htmlPart.replace(/(<option\b[^>]*) selected([^>]*>)/g, '$1$2');
+  htmlPart = htmlPart.replace(
     'value="' + nextFolderKey + '">' + nextMonthStr,
     'value="' + nextFolderKey + '" selected>' + nextMonthStr
   );
   // 翌月のoption自体がない場合は追記（現在月optionの直後）
-  if (html.indexOf('value="' + nextFolderKey + '"') < 0) {
-    var currentFolderKey = (nextMonth <= 1)
-      ? (parseInt(nextFolderKey.split('-')[0])-1) + '-12'
-      : nextFolderKey.split('-')[0] + '-' + String(nextMonth-1).padStart(2,'0');
-    var insertAfter = 'value="' + currentFolderKey + '">';
-    var pos = html.indexOf(insertAfter);
+  if (htmlPart.indexOf('value="' + nextFolderKey + '"') < 0) {
+    var prevMonth = nextMonth <= 1 ? 12 : nextMonth - 1;
+    var prevYear  = nextMonth <= 1 ? parseInt(nextFolderKey.split('-')[0]) - 1 : parseInt(nextFolderKey.split('-')[0]);
+    var prevKey   = prevYear + '-' + String(prevMonth).padStart(2, '0');
+    var insertAfter = 'value="' + prevKey + '">';
+    var pos = htmlPart.indexOf(insertAfter);
     if (pos >= 0) {
-      var endPos = html.indexOf('</option>', pos) + '</option>'.length;
-      html = html.slice(0,endPos) + '\n          <option value="' + nextFolderKey + '" selected>' + nextMonthStr + '</option>' + html.slice(endPos);
+      var endPos = htmlPart.indexOf('</option>', pos) + '</option>'.length;
+      htmlPart = htmlPart.slice(0, endPos) + '\n          <option value="' + nextFolderKey + '" selected>' + nextMonthStr + '</option>' + htmlPart.slice(endPos);
     }
   }
 
-  // 2. goToMonth の初期値をfolderkeyで書き換え
-  html = html.replace(/if \(sel\) sel\.value = '[^']+';/, "if (sel) sel.value = '" + nextFolderKey + "';");
-
-  // 3. 6月以降：新宿SC→六本木SC・AIタブ削除・siteKey変更
+  // 2. 6月以降のHTML部分置換（サイトタブ・サイト名）
   if (isJuneOrLater) {
-    html = html.replace(/新宿SC/g, '六本木SC');
-    // AIサイトタブを削除
-    html = html.replace(/<div class="site-tab"[^>]*onclick="switchSite\('ai'[^"]*"[^>]*>AI<\/div>/g, '');
-    // siteKey関数を更新
-    html = html.replace(
-      /function siteKey\(s\)\s*\{[^}]+\}/,
-      "function siteKey(s){return{all:null,roppongi:'六本木SC',remote:'リモートSC'}[s];}"
-    );
-    // スタッフモーダルのAI選択肢を削除
-    html = html.replace(/<option value="AI">AI<\/option>/g, '');
-    // 目標設定テーブルにAI列がある場合は削除（AIサイトタブ除外に合わせる）
+    htmlPart = htmlPart.replace(/<div class="site-tab"[^>]*onclick="switchSite\('ai'[^"]*"[^>]*>AI<\/div>/g, '');
+    htmlPart = htmlPart.replace(/新宿SC/g, '六本木SC');
+    htmlPart = htmlPart.replace(/<option value="AI">AI<\/option>/g, '');
   }
 
-  return html;
+  // 3. JS部分の置換（siteKey関数・goToMonth初期値）
+  jsPart = jsPart.replace(/if \(sel\) sel\.value = '[^']+';/, "if (sel) sel.value = '" + nextFolderKey + "';");
+
+  if (isJuneOrLater) {
+    // 行頭のfunction siteKey行を完全置換（[^\n]+で行末まで、残骸も含めて一括）
+    jsPart = jsPart.replace(
+      /^function siteKey\(s\)[^\n]+$/m,
+      "function siteKey(s){return{all:null,roppongi:'六本木SC',remote:'リモートSC'}[s];}"
+    );
+  }
+
+  return htmlPart + jsPart;
 }
 
 function calcWorkingDays(year, month) {
@@ -1457,6 +1469,8 @@ function autoSavePtData(successMsg) {
 function goTop() { window.location.href = '../../'; }
 function goToMonth(val) { window.location.href = '../' + val + '/'; }
 
+</script>
+<script>
 (function(){
   var sel = document.getElementById('monthSelect');
   if (sel) sel.value = '2026-05';
