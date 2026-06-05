@@ -860,9 +860,18 @@ function runUpdate() {
       renderDashboard(currentSite); renderDaily(currentSite); renderOpSummary(currentSite); renderOpTable(currentSite); renderChart2();
       document.getElementById('updateTime').textContent = '最終更新: '+PT_DATA.meta.lastUpdateLabel;
       document.getElementById('alertText').textContent  = PT_DATA.meta.alertText;
-      status.textContent='✅ 更新完了！';
+      _showWorkPeriodWarning(PT_DATA.meta.workPeriodWarning);
+      status.textContent='✅ 更新完了！GitHubに保存中...';
       result.style.display='block';
       result.innerHTML='<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>更新完了。累計'+PT_DATA.meta.elapsedDays+'営業日 / 売上'+fc(PT_DATA.sites.all.sales)+' / 原価率'+PT_DATA.sites.all.costRate+'%</div>';
+      // GitHubにpt_data.jsonを自動保存（他の画面でも最新データが表示されるように）
+      autoSavePtData('データ更新').then(function(r) {
+        if (r && r.success) {
+          status.textContent = '✅ 更新完了！（GitHub保存済み）';
+        } else if (r && !r.success) {
+          status.textContent = '✅ 更新完了！（GitHub保存失敗 - PATを確認してください）';
+        }
+      });
     })
     .catch(function(err) {
       btn.disabled=false; btn.textContent='更新する';
@@ -1155,6 +1164,44 @@ function downloadPtData() {
 </script>
 
 <script>
+// ===== GitHub API共通関数（翌月HTML生成後も保持される）=====
+var GITHUB_OWNER  = 'minakawa-star';
+var GITHUB_REPO   = 'digross-dashboard';
+var GITHUB_BRANCH = 'main';
+
+function getGithubPat() {
+  return localStorage.getItem('github_pat') || '';
+}
+function githubHeaders() {
+  var pat = getGithubPat();
+  var authPrefix = pat.indexOf('github_pat_') === 0 ? 'Bearer' : 'token';
+  return {'Authorization': authPrefix+' '+pat, 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json'};
+}
+function githubPutFile(path, content, message) {
+  return fetch('https://api.github.com/repos/'+GITHUB_OWNER+'/'+GITHUB_REPO+'/contents/'+path, {headers:githubHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var body={message:message,content:btoa(unescape(encodeURIComponent(content))),branch:GITHUB_BRANCH};
+    if(d.sha) body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+GITHUB_OWNER+'/'+GITHUB_REPO+'/contents/'+path,{method:'PUT',headers:githubHeaders(),body:JSON.stringify(body)});
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){if(d.content)return d; throw new Error(d.message||'GitHub書き込みエラー: '+path);});
+}
+function getCurrentFolder() {
+  var m = window.location.pathname.match(/(\d{4}-\d{2})/);
+  return m ? m[1] : null;
+}
+function autoSavePtData(successMsg) {
+  var pat = getGithubPat();
+  if (!pat) return Promise.resolve(null);
+  var folder = getCurrentFolder();
+  if (!folder) return Promise.resolve(null);
+  return githubPutFile(folder+'/pt_data.json', JSON.stringify(PT_DATA,null,2), 'データ更新: '+(PT_DATA.meta.lastUpdateLabel||''))
+    .then(function(){ return {success:true, msg:successMsg||'GitHubに自動保存しました'}; })
+    .catch(function(e){ return {success:false, msg:e.message}; });
+}
+
 // ナビゲーション関数（翌月HTML生成後も保持される）
 function goTop() {
   // window.location.href で遷移（ポップアップブロック回避）
