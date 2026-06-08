@@ -72,24 +72,24 @@
         "valid": 8
       },
       {
-        "apo": 5,
+        "apo": 6,
         "calls": 0,
         "cancel": 0,
         "date": "2026/06/03",
         "day": "3営業日",
         "ops": 32,
         "sales": 0,
-        "valid": 5
+        "valid": 6
       },
       {
-        "apo": 7,
+        "apo": 8,
         "calls": 0,
         "cancel": 1,
         "date": "2026/06/04",
         "day": "4営業日",
         "ops": 39,
         "sales": 0,
-        "valid": 6
+        "valid": 7
       },
       {
         "apo": 11,
@@ -156,34 +156,34 @@
     ],
     "remote": [
       {
-        "apo": 26,
+        "apo": 25,
         "calls": 0,
         "cancel": 1,
         "date": "2026/06/01",
         "day": "1営業日",
         "ops": 37,
-        "sales": 340000,
-        "valid": 25
+        "sales": 320000,
+        "valid": 24
       },
       {
-        "apo": 22,
+        "apo": 20,
         "calls": 0,
         "cancel": 3,
         "date": "2026/06/02",
         "day": "2営業日",
         "ops": 39,
-        "sales": 294000,
-        "valid": 19
+        "sales": 256000,
+        "valid": 17
       },
       {
-        "apo": 21,
+        "apo": 19,
         "calls": 0,
         "cancel": 0,
         "date": "2026/06/03",
         "day": "3営業日",
         "ops": 32,
-        "sales": 394000,
-        "valid": 21
+        "sales": 354000,
+        "valid": 19
       },
       {
         "apo": 21,
@@ -196,66 +196,66 @@
         "valid": 20
       },
       {
-        "apo": 13,
+        "apo": 9,
         "calls": 0,
         "cancel": 3,
         "date": "2026/06/05",
         "day": "5営業日",
         "ops": 41,
-        "sales": 214000,
-        "valid": 10
+        "sales": 138000,
+        "valid": 6
       }
     ],
     "shinjuku": [
       {
-        "apo": 58,
+        "apo": 59,
         "calls": 0,
         "cancel": 8,
         "date": "2026/06/01",
         "day": "1営業日",
         "ops": 37,
-        "sales": 941000,
-        "valid": 50
+        "sales": 961000,
+        "valid": 51
       },
       {
-        "apo": 55,
+        "apo": 57,
         "calls": 0,
         "cancel": 13,
         "date": "2026/06/02",
         "day": "2営業日",
         "ops": 39,
-        "sales": 918000,
-        "valid": 42
+        "sales": 956000,
+        "valid": 44
       },
       {
-        "apo": 63,
+        "apo": 64,
         "calls": 0,
         "cancel": 7,
         "date": "2026/06/03",
         "day": "3営業日",
         "ops": 32,
-        "sales": 1452000,
-        "valid": 56
+        "sales": 1492000,
+        "valid": 57
       },
       {
-        "apo": 75,
+        "apo": 74,
         "calls": 0,
         "cancel": 7,
         "date": "2026/06/04",
         "day": "4営業日",
         "ops": 39,
         "sales": 1611000,
-        "valid": 68
+        "valid": 67
       },
       {
-        "apo": 57,
+        "apo": 61,
         "calls": 0,
         "cancel": 6,
         "date": "2026/06/05",
         "day": "5営業日",
         "ops": 41,
-        "sales": 1242000,
-        "valid": 51
+        "sales": 1318000,
+        "valid": 55
       }
     ]
   },
@@ -691,16 +691,16 @@
       "apoRate": 1.8,
       "calls": 511,
       "cancel": 0,
-      "costRate": 54.1,
+      "costRate": 46,
       "days": 4,
       "incentive_daily": 0,
-      "labor": 94091,
-      "labor_base": 94091,
+      "labor": 80000,
+      "labor_base": 80000,
       "name": "原田航0225",
-      "rank": "管理者",
+      "rank": "トップ",
       "sales": 174000,
       "sales_dash": 174000,
-      "site": "リモートSC",
+      "site": "新宿SC",
       "unitPerDay": 43500,
       "valid": 9,
       "workH": 32
@@ -1232,7 +1232,7 @@
       "rank": "ルーキー",
       "sales": 0,
       "sales_dash": 0,
-      "site": "新宿SC",
+      "site": "AI",
       "unitPerDay": 0,
       "valid": 2,
       "workH": 35
@@ -1508,18 +1508,18 @@
   },
   "sites": {
     "ai": {
-      "apo": 41,
+      "apo": 43,
       "apoRate": 0,
       "calls": 0,
       "cancel": 1,
-      "cancelRate": 2.4,
+      "cancelRate": 2.3,
       "costRate": 0,
-      "gross": -423095,
-      "labor": 423095,
+      "gross": -486095,
+      "labor": 486095,
       "ops": 41,
       "sales": 0,
       "unit": 0,
-      "valid": 40
+      "valid": 42
     },
     "all": {
       "apo": 454,
@@ -1527,41 +1527,41 @@
       "calls": 21299,
       "cancel": 50,
       "cancelRate": 11,
-      "costRate": 48.1,
-      "gross": 4020271,
-      "labor": 3719729,
+      "costRate": 47.9,
+      "gross": 4034362,
+      "labor": 3705638,
       "ops": 41,
       "sales": 7740000,
       "unit": 45969,
       "valid": 404
     },
     "remote": {
-      "apo": 103,
+      "apo": 94,
       "apoRate": 0,
       "calls": 0,
       "cancel": 8,
-      "cancelRate": 7.8,
-      "costRate": 42.6,
-      "gross": 880340,
-      "labor": 652660,
+      "cancelRate": 8.5,
+      "costRate": 41.1,
+      "gross": 800431,
+      "labor": 558569,
       "ops": 41,
-      "sales": 1533000,
-      "unit": 33071,
-      "valid": 95
+      "sales": 1359000,
+      "unit": 31974,
+      "valid": 86
     },
     "shinjuku": {
-      "apo": 308,
+      "apo": 315,
       "apoRate": 0,
       "calls": 0,
       "cancel": 41,
-      "cancelRate": 13.3,
-      "costRate": 42.9,
-      "gross": 3520026,
-      "labor": 2643974,
+      "cancelRate": 13,
+      "costRate": 42,
+      "gross": 3677026,
+      "labor": 2660974,
       "ops": 41,
-      "sales": 6164000,
-      "unit": 50446,
-      "valid": 267
+      "sales": 6338000,
+      "unit": 50224,
+      "valid": 274
     }
   },
   "targets": {
