@@ -987,23 +987,23 @@ function closeMemberModal(e) {
 }
 
 function renderHeatmap() {
-  // サイト別OP実績TOP5（売上順）
-  var filter = siteKey(currentSite);
-  var isJuneOrLater = !siteKey('ai');
-  var ops = PT_DATA.operators.filter(function(op){
-    if (!op.rank) return false;
-    if (isJuneOrLater && op.site === 'AI') return false;
-    if (filter && op.site !== filter) return false;
-    return op.sales > 0;
-  }).sort(function(a, b){ return b.sales - a.sales; }).slice(0, 5);
-
-  var maxSales = ops.length > 0 ? ops[0].sales : 1;
-  var html = ops.map(function(op, i) {
-    var pct = Math.round(op.sales / maxSales * 100);
-    return '<div class="hm-row"><div class="hm-rank">' + (i+1) + '</div>' +
-      '<div class="hm-name">' + op.name + '</div>' +
+  // サイト別案件TOP5（heatmapデータから取得）
+  var hm = PT_DATA.heatmap;
+  var top5;
+  if (hm && typeof hm === 'object' && !Array.isArray(hm)) {
+    // サイト別heatmap（新形式）
+    top5 = (hm[currentSite] || hm['all'] || []).slice(0, 5);
+  } else {
+    // 旧形式（配列）後方互換
+    top5 = (hm || []).slice(0, 5);
+  }
+  var maxSales = top5.length > 0 ? top5[0].sales : 1;
+  var html = top5.map(function(h) {
+    var pct = Math.round(h.sales / maxSales * 100);
+    return '<div class="hm-row"><div class="hm-rank">' + h.rank + '</div>' +
+      '<div class="hm-name">' + h.name + '</div>' +
       '<div class="hm-bar-bg"><div class="hm-bar-fill" style="width:' + pct + '%"></div></div>' +
-      '<div class="hm-val">' + fc(op.sales) + '</div></div>';
+      '<div class="hm-val">' + fc(h.sales) + '</div></div>';
   }).join('');
   document.getElementById('heatmap-list').innerHTML = html ||
     '<div style="color:var(--text3);font-size:12px;padding:12px">データなし</div>';
