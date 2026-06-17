@@ -464,7 +464,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="page" id="page-import">
       <div class="card" style="margin-bottom:12px">
         <div class="card-title">データ取込</div>
-        <div class="alert" style="margin-bottom:14px"><div class="alert-dot"></div>4ファイルを選択して「更新する」をクリックしてください。自動で集計・反映されます。</div>
+        <div class="alert" style="margin-bottom:14px"><div class="alert-dot"></div>3ファイルを選択して「更新する」をクリックしてください。自動で集計・反映されます。</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
           <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">① アポイントリスト <span style="color:var(--red)">*必須</span></div>
             <div class="file-drop" id="drop-apo" onclick="triggerFile('apo')"><input type="file" id="file-apo" accept=".xlsx" style="display:none" onchange="onFileSelect('apo',this)"><div style="font-size:22px">📋</div><div class="file-drop-text" id="text-apo">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx</div><button id="clear-apo" onclick="clearFile(event,'apo')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
@@ -472,11 +472,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
             <div class="file-drop" id="drop-prod" onclick="triggerFile('prod')"><input type="file" id="file-prod" accept=".csv" style="display:none" onchange="onFileSelect('prod',this)"><div style="font-size:22px">📊</div><div class="file-drop-text" id="text-prod">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv</div><button id="clear-prod" onclick="clearFile(event,'prod')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
           <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">③ 勤務データ <span style="color:var(--red)">*必須</span></div>
             <div class="file-drop" id="drop-work" onclick="triggerFile('work')"><input type="file" id="file-work" accept=".csv,.zip" style="display:none" onchange="onFileSelect('work',this)"><div style="font-size:22px">⏱️</div><div class="file-drop-text" id="text-work">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv / .zip</div><button id="clear-work" onclick="clearFile(event,'work')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
-          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">④ レポート <span style="color:var(--red)">*必須</span></div>
-            <div class="file-drop" id="drop-report" onclick="triggerFile('report')"><input type="file" id="file-report" accept=".csv" style="display:none" onchange="onFileSelect('report',this)"><div style="font-size:22px">📈</div><div class="file-drop-text" id="text-report">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.csv</div><button id="clear-report" onclick="clearFile(event,'report')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
-          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">⑤ スタッフマスター <span style="color:var(--text3)">任意（変更時のみ）</span></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">④ スタッフマスター <span style="color:var(--text3)">任意（変更時のみ）</span></div>
             <div class="file-drop" id="drop-master" onclick="triggerFile('master')"><input type="file" id="file-master" accept=".xlsx" style="display:none" onchange="onFileSelect('master',this)"><div style="font-size:22px">👥</div><div class="file-drop-text" id="text-master">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx</div><button id="clear-master" onclick="clearFile(event,'master')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
-          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">⑥ インセンティブ <span style="color:var(--text3)">任意・月1回</span></div>
+          <div><div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:6px">⑤ インセンティブ <span style="color:var(--text3)">任意・月1回</span></div>
             <div class="file-drop" id="drop-inc" onclick="triggerFile('inc')"><input type="file" id="file-inc" accept=".xlsx" style="display:none" onchange="onFileSelect('inc',this)"><div style="font-size:22px">💰</div><div class="file-drop-text" id="text-inc">クリックまたはドロップ</div><div style="font-size:10px;color:var(--text3)">.xlsx（月1回）</div><button id="clear-inc" onclick="clearFile(event,'inc')" style="display:none;margin-top:4px;font-size:10px;padding:2px 8px;border:1px solid var(--red);border-radius:4px;color:var(--red);background:#fff;cursor:pointer">✕ 削除</button></div></div>
         </div>
         <div style="display:flex;align-items:center;gap:14px">
@@ -1423,8 +1421,8 @@ function setStep(n, state) {
 
 function runUpdate() {
   if (!PT_DATA) { alert('データが読み込まれていません。ページを再読み込みしてください。'); return; }
-  var required = ['apo','prod','work','report'];
-  var labels = ['アポイントリスト','生産性レポート','勤務データ','レポート'];
+  var required = ['apo','prod','work'];
+  var labels = ['アポイントリスト','生産性レポート','勤務データ'];
   for (var i = 0; i < required.length; i++) {
     if (!selectedFiles[required[i]]) { alert('必須ファイルが選択されていません：'+labels[i]); return; }
   }
@@ -1449,7 +1447,6 @@ function runUpdate() {
     form.append('apo',    selectedFiles['apo']);
     form.append('prod',   selectedFiles['prod']);
     form.append('work',   selectedFiles['work']);
-    form.append('report', selectedFiles['report']);
     if (selectedFiles['master']) form.append('master', selectedFiles['master']);
     if (selectedFiles['inc'])    form.append('inc',    selectedFiles['inc']);
     var ptBlob = new Blob([JSON.stringify(PT_DATA)], {type:'application/json'});
