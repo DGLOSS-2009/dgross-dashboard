@@ -12875,11 +12875,11 @@
       "calls": 57178,
       "cancel": 222,
       "cancelRate": 18.7,
-      "costRate": 57.5,
-      "gross": 8094059,
+      "costRate": 56.9,
+      "gross": 8294059,
       "labor": 10968441,
       "ops": 35,
-      "sales": 19062500,
+      "sales": 19262500,
       "unit": 41211,
       "valid": 965
     },
@@ -12933,5 +12933,15 @@
       "sales": 24840000,
       "unit": 45000
     }
-  }
+  },
+  "_baseSales": 19062500,
+  "_baseGross": 8094059,
+  "additionalRevenues": [
+    {
+      "type": "コール課金",
+      "name": "LOOV",
+      "amount": 200000
+    }
+  ],
+  "additionalTotal": 200000
 }
