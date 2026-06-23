@@ -1993,7 +1993,107 @@ function goTop() {
     window.open('https://DGLOSS-2009.github.io/dgross-dashboard/', '_blank');
   }
 }
-function goToMonth(val) {
+function prepareNextMonth() {
+  var pat = getGithubPat();
+  if (!pat) { alert('設定画面でGitHub PATを設定してください'); return; }
+
+  // 現在月から翌月を計算
+  var mm = (PT_DATA.meta.month || '').match(/(\d{4})年(\d+)月/);
+  if (!mm) { alert('現在月が取得できません'); return; }
+  var y = parseInt(mm[1]), m = parseInt(mm[2]);
+  m++; if (m > 12) { m = 1; y++; }
+  var nextKey   = y + '-' + String(m).padStart(2, '0');  // 例：2026-07
+  var nextLabel = y + '年' + m + '月';
+
+  var statusEl = document.getElementById('next-month-status');
+  var resultEl = document.getElementById('next-month-result');
+  statusEl.textContent = nextLabel + 'のHTMLを生成中...';
+  resultEl.style.display = 'none';
+
+  // 現在のHTMLを取得してパッチ適用
+  githubGetFile(nextKey + '/index.html').then(function(existing) {
+    if (existing) {
+      statusEl.textContent = '';
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div class="alert" style="border-color:var(--orange)"><div class="alert-dot"></div>' +
+        nextLabel + 'のHTMLは既に存在します。上書きする場合は再度クリックしてください。</div>';
+      // 2回目クリックで上書き
+      document.getElementById('btn-next-month').onclick = function() { _doGenerateNextMonth(nextKey, nextLabel, pat, statusEl, resultEl); };
+      return;
+    }
+    _doGenerateNextMonth(nextKey, nextLabel, pat, statusEl, resultEl);
+  }).catch(function() {
+    _doGenerateNextMonth(nextKey, nextLabel, pat, statusEl, resultEl);
+  });
+}
+
+function _doGenerateNextMonth(nextKey, nextLabel, pat, statusEl, resultEl) {
+  statusEl.textContent = nextLabel + 'のHTMLを生成・保存中...';
+
+  // 現在のHTMLソースを取得
+  fetch(window.location.href)
+    .then(function(r){ return r.text(); })
+    .then(function(src) {
+      // mgmtスクリプトブロックを除去
+      var patched = src
+        .replace(/<script id="mgmt">[\s\S]*?<\/script>/g, '')
+        .replace(/<!-- ===== 管理機能スクリプト[\s\S]*?<\/script>/g, '');
+
+      // HTML部分とJS部分を分離してから処理
+      var scriptIdx = patched.indexOf('<script>');
+      var htmlPart  = scriptIdx >= 0 ? patched.slice(0, scriptIdx) : patched;
+      var jsPart    = scriptIdx >= 0 ? patched.slice(scriptIdx)    : '';
+
+      // HTML部分のみ：サイト名・AI除外・selected除去
+      htmlPart = htmlPart.replace(/(<option\b[^>]*) selected([^>]*>)/g, '$1$2');
+      htmlPart = htmlPart.replace(/<div class="site-tab"[^>]*onclick="switchSite\('ai'[^"]*"[^>]*>AI<\/div>/g, '');
+      htmlPart = htmlPart.replace(/<option value="AI">AI<\/option>/g, '');
+
+      // siteKey関数のみJS部分で置換
+      jsPart = jsPart.replace(
+        /^function siteKey\(s\)[^\n]+$/m,
+        "function siteKey(s){return{all:null,shinjuku:'六本木SC',remote:'リモートSC'}[s];}"
+      );
+
+      var finalHtml = htmlPart + jsPart;
+
+      // 翌月の空pt_data.jsonを作成
+      var emptyPt = JSON.stringify({
+        meta: { month: nextLabel, lastUpdate: null, lastUpdateLabel: '未取込', elapsedDays: 0,
+                enrollCount: 0, activeCount: 0, workingDays: 0, alertText: null,
+                workPeriodWarning: null, enrollBySite: null, activeBySite: null },
+        sites: { all:{sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+                 shinjuku:{sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+                 remote:{sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0},
+                 ai:{sales:0,apo:0,cancel:0,valid:0,cancelRate:0,labor:0,costRate:0,gross:0,ops:0,unit:0,calls:0,apoRate:0} },
+        daily:{all:[],shinjuku:[],remote:[],ai:[]},
+        chart:{data:[],labels:[],bySite:{all:[],shinjuku:[],remote:[],ai:[]}},
+        heatmap:{all:[],shinjuku:[],remote:[],ai:[]},
+        operators:[], targets:{all:{sales:0,costRate:50,unit:0},shinjuku:{sales:0,costRate:50,unit:0},remote:{sales:0,costRate:50,unit:0},ai:{sales:0,costRate:0,unit:0}},
+        incentive:{}, additionalRevenues:[], additionalTotal:0, prev_calls:{}
+      }, null, 2);
+
+      // GitHubに保存
+      return Promise.all([
+        githubPutFile(nextKey + '/index.html', finalHtml,    nextLabel + ' HTML生成'),
+        githubPutFile(nextKey + '/pt_data.json', emptyPt,   nextLabel + ' 初期データ生成'),
+      ]);
+    })
+    .then(function() {
+      statusEl.textContent = '';
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)">' +
+        '<div class="alert-dot" style="background:var(--green)"></div>' +
+        nextLabel + 'の準備完了！ダッシュボードが <a href="../' + nextKey + '/" style="color:var(--green);font-weight:bold">こちら</a> から確認できます。</div>';
+      // ボタンを元に戻す
+      document.getElementById('btn-next-month').onclick = prepareNextMonth;
+    })
+    .catch(function(e) {
+      statusEl.textContent = '';
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = '<div class="alert" style="border-color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>エラー: ' + e.message + '</div>';
+    });
+}
   if (!val) return;
   if (window.location.href.indexOf('github.io') >= 0) {
     window.location.href = '../' + val + '/';
