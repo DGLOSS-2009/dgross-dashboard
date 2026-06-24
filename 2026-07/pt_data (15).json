@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "month": "2026年7月",
+    "lastUpdate": null,
+    "lastUpdateLabel": "未取込",
+    "elapsedDays": 0,
+    "enrollCount": 0,
+    "activeCount": 0,
+    "workingDays": 23,
+    "alertText": null,
+    "workPeriodWarning": null,
+    "enrollBySite": null,
+    "activeBySite": null
+  },
+  "sites": {
+    "all": {
+      "sales": 0,
+      "apo": 0,
+      "cancel": 0,
+      "valid": 0,
+      "cancelRate": 0,
+      "labor": 0,
+      "costRate": 0,
+      "gross": 0,
+      "ops": 0,
+      "unit": 0,
+      "calls": 0,
+      "apoRate": 0
+    },
+    "shinjuku": {
+      "sales": 0,
+      "apo": 0,
+      "cancel": 0,
+      "valid": 0,
+      "cancelRate": 0,
+      "labor": 0,
+      "costRate": 0,
+      "gross": 0,
+      "ops": 0,
+      "unit": 0,
+      "calls": 0,
+      "apoRate": 0
+    },
+    "remote": {
+      "sales": 0,
+      "apo": 0,
+      "cancel": 0,
+      "valid": 0,
+      "cancelRate": 0,
+      "labor": 0,
+      "costRate": 0,
+      "gross": 0,
+      "ops": 0,
+      "unit": 0,
+      "calls": 0,
+      "apoRate": 0
+    },
+    "ai": {
+      "sales": 0,
+      "apo": 0,
+      "cancel": 0,
+      "valid": 0,
+      "cancelRate": 0,
+      "labor": 0,
+      "costRate": 0,
+      "gross": 0,
+      "ops": 0,
+      "unit": 0,
+      "calls": 0,
+      "apoRate": 0
+    }
+  },
+  "daily": {
+    "all": [],
+    "shinjuku": [],
+    "remote": [],
+    "ai": []
+  },
+  "chart": {
+    "data": [],
+    "labels": [],
+    "bySite": {
+      "all": [],
+      "shinjuku": [],
+      "remote": [],
+      "ai": []
+    }
+  },
+  "heatmap": {
+    "all": [],
+    "shinjuku": [],
+    "remote": [],
+    "ai": []
+  },
+  "operators": [],
+  "targets": {
+    "all": {
+      "sales": 0,
+      "costRate": 50,
+      "unit": 0
+    },
+    "shinjuku": {
+      "sales": 0,
+      "costRate": 50,
+      "unit": 0
+    },
+    "remote": {
+      "sales": 0,
+      "costRate": 50,
+      "unit": 0
+    },
+    "ai": {
+      "sales": 0,
+      "costRate": 0,
+      "unit": 0
+    }
+  },
+  "incentive": {},
+  "additionalRevenues": [],
+  "additionalTotal": 0,
+  "prev_calls": {},
+  "siteMapping": []
+}
