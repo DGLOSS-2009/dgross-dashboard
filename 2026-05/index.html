@@ -748,21 +748,43 @@ function siteKey(s){return{all:null,shinjuku:'六本木SC',remote:'リモートS
 
 // Renderサーバーのウォームアップ（スリープ起動の遅延を回避）
 function _warmupServer() {
-  var el = document.getElementById('server-status');
-  if (el) { el.textContent = '○ サーバー確認中...'; el.style.color = 'var(--text3)'; }
-  fetch(SERVER_URL + '/health', {method: 'GET'})
-    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function() {
-      if (el) { el.textContent = '● 準備完了'; el.style.color = 'var(--green)'; }
-    })
-    .catch(function() {
-      // 失敗しても無視（バックグラウンド処理）
-      // 50秒後に再試行
-      setTimeout(function() {
-        fetch(SERVER_URL + '/health').catch(function(){});
-        if (el) { el.textContent = '○ サーバー起動中（初回更新に時間がかかる場合があります）'; }
-      }, 50000);
-    });
+  var el  = document.getElementById('server-status');
+  var btn = document.getElementById('btn-update');
+
+  // サーバー起動完了まで更新ボタンを無効化
+  if (btn) { btn.disabled = true; btn.textContent = 'サーバー確認中...'; }
+  if (el)  { el.textContent = '○ サーバー確認中...'; el.style.color = 'var(--text3)'; }
+
+  function tryWarmup(attempt) {
+    fetch(SERVER_URL + '/health', {method: 'GET'})
+      .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function() {
+        // 起動完了 → ボタン有効化
+        if (btn) { btn.disabled = false; btn.textContent = '更新する'; }
+        if (el)  { el.textContent = '● 準備完了'; el.style.color = 'var(--green)'; }
+      })
+      .catch(function() {
+        if (attempt >= 3) {
+          // 3回試行しても失敗 → ボタンを有効化してユーザーに判断させる
+          if (btn) { btn.disabled = false; btn.textContent = '更新する'; }
+          if (el)  { el.textContent = '△ サーバー応答なし（更新時に自動リトライします）'; el.style.color = 'var(--amber)'; }
+          return;
+        }
+        // 60秒後に再試行
+        var remaining = 60;
+        if (el) el.textContent = '○ サーバー起動中... ' + remaining + '秒後に再確認';
+        var timer = setInterval(function() {
+          remaining--;
+          if (el) el.textContent = '○ サーバー起動中... ' + remaining + '秒後に再確認';
+          if (remaining <= 0) {
+            clearInterval(timer);
+            tryWarmup(attempt + 1);
+          }
+        }, 1000);
+      });
+  }
+
+  tryWarmup(1);
 }
 
 function _showWorkPeriodWarning(msg) {
@@ -1528,11 +1550,75 @@ function runUpdate() {
       });
     })
     .catch(function(err) {
-      setStep(2, 'error');
-      btn.disabled = false; btn.textContent = '更新する';
-      status.textContent = '❌ 通信エラー（サーバーが起動中の場合は1分後に再試行してください）';
+      // サーバースリープ起動中の可能性→自動リトライ
+      _retryUpdate(form, btn, status, result, 1);
     });
   }, 300);
+}
+
+// 自動リトライ（最大3回・60秒間隔）
+function _retryUpdate(form, btn, status, result, attempt) {
+  var MAX = 3;
+  var WAIT = 60;
+  if (attempt > MAX) {
+    setStep(2, 'error');
+    btn.disabled = false; btn.textContent = '更新する';
+    status.textContent = '❌ 通信エラー（' + MAX + '回リトライしましたが失敗しました）';
+    result.style.display = 'block';
+    result.innerHTML = '<div class="alert" style="border-color:var(--red);background:var(--red-light);color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>サーバーに接続できませんでした。しばらく待ってから再度お試しください。</div>';
+    return;
+  }
+  setStep(2, 'active');
+  var remaining = WAIT;
+  status.textContent = 'サーバー起動中... ' + remaining + '秒後に自動リトライ（' + attempt + '/' + MAX + '回目）';
+  var timer = setInterval(function() {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(timer);
+      status.textContent = 'リトライ中（' + attempt + '/' + MAX + '回目）...';
+      setStep(3, 'active');
+      var ptBlob = new Blob([JSON.stringify(PT_DATA)], {type:'application/json'});
+      var newForm = new FormData();
+      form.forEach(function(val, key) {
+        if (key !== 'prev') newForm.append(key, val);
+      });
+      newForm.append('prev', ptBlob, 'pt_data.json');
+      fetch(SERVER_URL + '/update', {method:'POST', body:newForm})
+        .then(function(res){ return res.json(); })
+        .then(function(data) {
+          if (data.error) {
+            setStep(3, 'error');
+            btn.disabled = false; btn.textContent = '更新する';
+            status.textContent = '❌ 集計エラー';
+            result.style.display = 'block';
+            result.innerHTML = '<div class="alert" style="border-color:var(--red);background:var(--red-light);color:var(--red)"><div class="alert-dot" style="background:var(--red)"></div>' + data.error + '</div>';
+            return;
+          }
+          setStep(4, 'active');
+          status.textContent = '画面に反映中...';
+          PT_DATA = data.data;
+          if (additionalRevenues.length > 0) PT_DATA.additionalRevenues = additionalRevenues;
+          renderDashboard(currentSite); renderDaily(currentSite); renderOpSummary(currentSite); renderOpTable(currentSite); renderChart2();
+          document.getElementById('updateTime').textContent = '最終更新: ' + PT_DATA.meta.lastUpdateLabel;
+          document.getElementById('alertText').textContent  = PT_DATA.meta.alertText;
+          _showWorkPeriodWarning(PT_DATA.meta.workPeriodWarning);
+          result.style.display = 'block';
+          result.innerHTML = '<div class="alert" style="border-color:var(--green);background:var(--green-light);color:var(--green)"><div class="alert-dot" style="background:var(--green)"></div>更新完了。累計' + PT_DATA.meta.elapsedDays + '営業日 / 売上' + fc(PT_DATA.sites.all.sales) + ' / 原価率' + PT_DATA.sites.all.costRate + '%</div>';
+          setStep(5, 'active');
+          status.textContent = 'GitHubに保存中...';
+          autoSavePtData('データ更新').then(function(r) {
+            btn.disabled = false; btn.textContent = '更新する';
+            if (r && r.success) { setStep(5, 'done'); status.textContent = '✅ 更新完了！（GitHub保存済み）'; }
+            else { setStep(5, 'error'); status.textContent = '✅ 更新完了（GitHub保存失敗 - PATを確認）'; }
+          });
+        })
+        .catch(function() {
+          _retryUpdate(newForm, btn, status, result, attempt + 1);
+        });
+    } else {
+      status.textContent = 'サーバー起動中... ' + remaining + '秒後に自動リトライ（' + attempt + '/' + MAX + '回目）';
+    }
+  }, 1000);
 }
 
 // ===== スタッフ管理 =====
