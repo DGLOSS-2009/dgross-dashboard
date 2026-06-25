@@ -14,9 +14,14 @@
       "type": "DP",
       "name": "本間さん分",
       "amount": 60000
+    },
+    {
+      "type": "リスト・レポート作成費用",
+      "name": "日清食品オンラインセミナー",
+      "amount": 60000
     }
   ],
-  "additionalTotal": 1162000,
+  "additionalTotal": 1222000,
   "chart": {
     "bySite": {
       "ai": [
@@ -15140,11 +15145,11 @@
       "calls": 65734,
       "cancel": 262,
       "cancelRate": 19,
-      "costRate": 47.5,
-      "gross": 13721996,
+      "costRate": 47.4,
+      "gross": 13781996,
       "labor": 12414504,
       "ops": 35,
-      "sales": 26136500,
+      "sales": 26196500,
       "unit": 44348,
       "valid": 1118
     },
