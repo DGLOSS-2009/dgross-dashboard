@@ -705,7 +705,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 var PT_DATA = null;
 
 // pt_data.jsonを外部ファイルから読み込む
-fetch('./pt_data.json')
+fetch('./pt_data.json?v=' + Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data) {
     PT_DATA = data;
